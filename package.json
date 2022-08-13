@@ -1,0 +1,33 @@
+{
+  "name": "we-care-server",
+  "version": "1.0.0",
+  "description": "Back end for app allowing efficient collaboration between carers and care users.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "seed": "node src/seeds/index.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/C-Sim/we-care-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/C-Sim/we-care-server/issues"
+  },
+  "homepage": "https://github.com/C-Sim/we-care-server#readme",
+  "dependencies": {
+    "@faker-js/faker": "^7.4.0",
+    "apollo-server": "^3.10.1",
+    "bcrypt": "^5.0.1",
+    "date-fns": "^2.29.1",
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
