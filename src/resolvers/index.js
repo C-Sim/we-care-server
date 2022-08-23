@@ -5,8 +5,8 @@ const userInfo = require("./user");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
 const {
-  findPatientsByCarerSex,
-  findPatientsByCarerSexAndDay,
+  findPatientsByCarergender,
+  findPatientsByCarergenderAndDay,
 } = require("./matchingPatient");
 
 const resolvers = {
@@ -17,8 +17,8 @@ const resolvers = {
     userInfo,
     patientDashboard,
     carerDashboard,
-    findPatientsByCarerSex,
-    findPatientsByCarerSexAndDay,
+    findPatientsByCarergender,
+    findPatientsByCarergenderAndDay,
   },
   //   Mutation: {
   //     createUser,

@@ -42,6 +42,11 @@ const userSchema = {
 
 const schema = new Schema(userSchema, { toJSON: { virtuals: true } });
 
+schema.method("checkPassword", async function (password) {
+  const isValid = await bcrypt.compare(password, this.password);
+  return isValid;
+});
+
 schema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const password = await bcrypt.hash(this.password, 10);
