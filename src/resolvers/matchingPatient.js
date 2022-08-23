@@ -1,15 +1,15 @@
 const { Carer, Patient } = require("../models");
 const { getDay, parseISO } = require("date-fns");
 
-const findPatientsByCarerSex = async (_, { userId }) => {
+const findPatientsByCarergender = async (_, { userId }) => {
   const carer = await Carer.findOne({ userId: userId });
-  const { sex } = carer;
+  const { gender } = carer;
 
-  const patients = await Patient.find({ sex: sex }).populate("userId");
+  const patients = await Patient.find({ gender: gender }).populate("userId");
   return patients;
 };
 
-const findPatientsByCarerSexAndDay = async (_, { userId, dayInput }) => {
+const findPatientsByCarergenderAndDay = async (_, { userId, dayInput }) => {
   const daysList = [
     "sunday",
     "monday",
@@ -22,17 +22,17 @@ const findPatientsByCarerSexAndDay = async (_, { userId, dayInput }) => {
   const date = parseISO(dayInput.date);
 
   const carer = await Carer.findOne({ userId: userId });
-  const { sex } = carer;
+  const { gender } = carer;
 
   if (!date) {
-    return await Patient.find({ sex: sex }).populate("userId");
+    return await Patient.find({ gender: gender }).populate("userId");
   } else {
     const day = daysList[getDay(date)];
     const patients = await Patient.find({
-      $and: [{ sex: sex }, { days: { $all: [day] } }],
+      $and: [{ gender: gender }, { days: { $all: [day] } }],
     }).populate("userId");
     return patients;
   }
 };
 
-module.exports = { findPatientsByCarerSex, findPatientsByCarerSexAndDay };
+module.exports = { findPatientsByCarergender, findPatientsByCarergenderAndDay };

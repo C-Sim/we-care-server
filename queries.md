@@ -139,18 +139,18 @@ variables
 }
 ```
 
-Query for matching patients - by carer sex only, or by carer sex and day of week
+Query for matching patients - by carer gender only, or by carer gender and day of week
 
 ```graphql
-query FindPatientsByCarerSex($userId: ID!) {
-  findPatientsByCarerSex(userId: $userId) {
+query FindPatientsByCarergender($userId: ID!) {
+  findPatientsByCarergender(userId: $userId) {
       userId {
           id
           firstName
           lastName
           email
       }
-      sex
+      gender
       postcode
       days
       notificationCount
@@ -167,15 +167,15 @@ variables
 ```
 
 ```graphql
-query FindPatientsByCarerSexAndDay($userId: ID!, $dayInput: DayInput) {
-  findPatientsByCarerSexAndDay(userId: $userId, dayInput: $dayInput) {
+query FindPatientsByCarergenderAndDay($userId: ID!, $dayInput: DayInput) {
+  findPatientsByCarergenderAndDay(userId: $userId, dayInput: $dayInput) {
     userId {
       id
       firstName
       lastName
       email
     }
-    sex
+    gender
     postcode
     days
     notificationCount

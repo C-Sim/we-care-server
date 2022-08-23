@@ -32,6 +32,11 @@ const patientSchema = {
     enum: ["male", "female"],
     required: true,
   },
+  genderPreference: {
+    type: String,
+    enum: ["male", "female", "none"],
+    default: "none",
+  },
   isPremiumMember: {
     type: Boolean,
     required: true,
