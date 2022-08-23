@@ -58,11 +58,9 @@ const appointmentSchema = {
   patientReview: reviewSchema,
 };
 
-const schema = new Schema(
-  appointmentSchema,
-  { toJSON: { virtuals: true, getters: true } },
-  { toObject: { virtuals: true } }
-);
+const schema = new Schema(appointmentSchema, {
+  toJSON: { virtuals: true, getters: true },
+});
 
 schema.virtual("notesCount").get(function () {
   return this.notes.length;

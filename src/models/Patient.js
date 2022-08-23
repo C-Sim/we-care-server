@@ -27,8 +27,9 @@ const patientSchema = {
       required: true,
     },
   ],
-  sex: {
+  gender: {
     type: String,
+    enum: ["male", "female"],
     required: true,
   },
   isPremiumMember: {
@@ -52,11 +53,7 @@ const patientSchema = {
   favouriteResources: [resourceSchema],
 };
 
-const schema = new Schema(
-  patientSchema,
-  { toJSON: { virtuals: true } },
-  { toObject: { virtuals: true } }
-);
+const schema = new Schema(patientSchema, { toJSON: { virtuals: true } });
 
 schema.virtual("appointmentCount").get(function () {
   return this.appointments.length;

@@ -100,7 +100,7 @@ const createSecondProfile = async () => {
     ["wednesday", "thursday", "friday", "saturday", "sunday"],
     ["thursday", "friday", "saturday", "sunday", "monday"],
   ];
-  const sexArray = ["female", "male"];
+  const genderArray = ["female", "male"];
 
   for (let i = 0; i < users.length; i += 1) {
     const { _id: userId } = users[i];
@@ -109,7 +109,7 @@ const createSecondProfile = async () => {
     const address = userAddress;
     const appointments = [];
     const notifications = [];
-    const sex = sexArray[Math.floor(Math.random() * sexArray.length)];
+    const gender = genderArray[Math.floor(Math.random() * genderArray.length)];
 
     if (accountType === "carer") {
       const days = daysArray[Math.floor(Math.random() * 4)];
@@ -119,7 +119,7 @@ const createSecondProfile = async () => {
         postcode,
         address,
         days,
-        sex,
+        gender,
         appointments,
         notifications,
       };
@@ -140,7 +140,7 @@ const createSecondProfile = async () => {
         postcode,
         address,
         days,
-        sex,
+        gender,
         appointments,
         notifications,
       };

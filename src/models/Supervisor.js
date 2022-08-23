@@ -24,11 +24,7 @@ const supervisorSchema = {
   ],
 };
 
-const schema = new Schema(
-  supervisorSchema,
-  { toJSON: { virtuals: true } },
-  { toObject: { virtuals: true } }
-);
+const schema = new Schema(supervisorSchema, { toJSON: { virtuals: true } });
 
 schema.virtual("carerCount").get(function () {
   return this.assignedCarers.length;

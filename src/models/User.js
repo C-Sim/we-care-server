@@ -27,6 +27,7 @@ const userSchema = {
   },
   accountType: {
     type: String,
+    enum: ["supervisor", "carer", "patient"],
     required: true,
   },
   password: {
@@ -35,16 +36,11 @@ const userSchema = {
   },
   approvedStatus: {
     type: Boolean,
-    required: true,
     default: false,
   },
 };
 
-const schema = new Schema(
-  userSchema,
-  { toJSON: { virtuals: true } },
-  { toObject: { virtuals: true } }
-);
+const schema = new Schema(userSchema, { toJSON: { virtuals: true } });
 
 schema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {

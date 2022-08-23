@@ -61,7 +61,7 @@ const typeDefs = gql`
     days: [String!]
     notificationCount: String!
     appointmentCount: String!
-    sex: String!
+    gender: String!
   }
 
   type Patient {
@@ -70,7 +70,7 @@ const typeDefs = gql`
     days: [String!]
     notificationCount: String!
     appointmentCount: String!
-    sex: String!
+    gender: String!
   }
 
   type carerDashboard {
@@ -121,8 +121,8 @@ const typeDefs = gql`
     userInfo(userId: ID!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
-    findPatientsByCarerSexAndDay(userId: ID!, dayInput: DayInput): [Patient]
-    findPatientsByCarerSex(userId: ID!): [Patient]
+    findPatientsByCarergenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
+    findPatientsByCarergender(userId: ID!): [Patient]
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess

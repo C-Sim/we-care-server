@@ -34,8 +34,7 @@ const notificationSchema = {
 
 const schema = new Schema(
   notificationSchema,
-  { toJSON: { virtuals: true, getters: true } },
-  { toObject: { virtuals: true } }
+  { toJSON: { virtuals: true, getters: true } }
 );
 
 
