@@ -19,7 +19,6 @@ const findPatientsByCarerSexAndDay = async (_, { userId, dayInput }) => {
     "friday",
     "saturday",
   ];
-  console.log(dayInput);
   const date = parseISO(dayInput.date);
 
   const carer = await Carer.findOne({ userId: userId });
