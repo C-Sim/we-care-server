@@ -2,12 +2,15 @@ const addressLookup = require("./addressLookup");
 const users = require("./users");
 const appointments = require("./appointments");
 const userInfo = require("./user");
+const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
 const {
   findPatientsByCarergender,
   findPatientsByCarergenderAndDay,
 } = require("./matchingPatient");
+const { signup, patientSetup } = require("./signup");
+const login = require("./login");
 
 const resolvers = {
   Query: {
@@ -15,16 +18,17 @@ const resolvers = {
     users,
     appointments,
     userInfo,
+    supervisor,
     patientDashboard,
     carerDashboard,
     findPatientsByCarergender,
     findPatientsByCarergenderAndDay,
   },
-  //   Mutation: {
-  //     createUser,
-  //     createThought,
-  //     createReaction,
-  //   },
+  Mutation: {
+    signup,
+    patientSetup,
+    login,
+  },
 };
 
 module.exports = resolvers;

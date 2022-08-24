@@ -5,7 +5,7 @@ const prepareUsersData = () => {
   const users = [];
 
   //create a small number of supervisors
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 1; i += 1) {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const email = faker.internet.exampleEmail();
@@ -147,7 +147,12 @@ const createSecondProfile = async () => {
       const newPatient = await Patient.create(newPatientData);
     } else {
       const assignedCarers = [];
-      const newSupervisorData = { userId, username, assignedCarers, notifications };
+      const newSupervisorData = {
+        userId,
+        username,
+        assignedCarers,
+        notifications,
+      };
       const newSupervisor = await Supervisor.create(newSupervisorData);
     }
   }

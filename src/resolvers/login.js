@@ -27,6 +27,7 @@ const login = async (_, { loginInput }) => {
     return {
       success: true,
       token: signToken(user),
+      user: user,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to login | ${error.message}`);

@@ -19,7 +19,6 @@ const patientSchema = {
   },
   address: {
     type: Address,
-    required: true,
   },
   days: [
     {

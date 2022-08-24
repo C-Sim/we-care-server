@@ -66,6 +66,7 @@ const typeDefs = gql`
 
   type Patient {
     userId: User
+    username: String!
     postcode: String!
     days: [String!]
     notificationCount: String!
@@ -85,6 +86,12 @@ const typeDefs = gql`
     notifications: [Notification]
   }
 
+  type PatientSetupSuccess {
+    success: Boolean!
+    patient: Patient
+    userId: String
+  }
+
   type SignupSuccess {
     success: Boolean!
     user: User
@@ -101,8 +108,17 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     password: String!
-    days: String!
-    address: ID!
+    accountType: String!
+  }
+
+  input PatientInput {
+    userId: String!
+    gender: String!
+    genderPreference: String!
+    username: String
+    postcode: String!
+    days: [String]
+    address: ID
   }
 
   input LoginInput {
@@ -119,6 +135,7 @@ const typeDefs = gql`
     users: [User]
     appointments: [Appointment]
     userInfo(userId: ID!): User
+    supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
     findPatientsByCarergenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
@@ -127,6 +144,7 @@ const typeDefs = gql`
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
     signup(signupInput: SignupInput!): SignupSuccess
+    patientSetup(patientInput: PatientInput!): PatientSetupSuccess
   }
 `;
 

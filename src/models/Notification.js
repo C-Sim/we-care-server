@@ -6,6 +6,7 @@ const notificationSchema = {
     type: Date,
     required: true,
     trim: true,
+    default: new Date(),
     get: (val) => format(new Date(val), "yyyy-MM-dd"),
   },
   isRead: {
@@ -32,12 +33,9 @@ const notificationSchema = {
   },
 };
 
-const schema = new Schema(
-  notificationSchema,
-  { toJSON: { virtuals: true, getters: true } }
-);
-
-
+const schema = new Schema(notificationSchema, {
+  toJSON: { virtuals: true, getters: true },
+});
 
 const Notification = model("Notification", schema);
 
