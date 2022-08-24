@@ -7,188 +7,341 @@
 	},
 	"item": [
 		{
-			"name": "GET All users",
-			"event": [
+			"name": "Random",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"  pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var response = JSON.parse(responseBody);\r",
-							"\r",
-							"var carers = response.data.users.filter((user)=> user.accountType === \"carer\");\r",
-							"var carerId = carers[0].id;\r",
-							"pm.collectionVariables.set(\"carerId\", carerId);\r",
-							"\r",
-							"var patients = response.data.users.filter((user)=> user.accountType === \"patient\");\r",
-							"var patientId = patients[0].id;\r",
-							"pm.collectionVariables.set(\"patientId\", patientId);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query Users {\r\n  users {\r\n    id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n  }\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
+					"name": "GET All users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"var carers = response.data.users.filter((user)=> user.accountType === \"carer\");\r",
+									"var carerId = carers[0].id;\r",
+									"pm.collectionVariables.set(\"carerId\", carerId);\r",
+									"\r",
+									"var patients = response.data.users.filter((user)=> user.accountType === \"patient\");\r",
+									"var patientId = patients[0].id;\r",
+									"pm.collectionVariables.set(\"patientId\", patientId);"
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"port": "4000"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Users {\r\n  users {\r\n    id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Supervisor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"var supervisorId = response.data.supervisor.id;\r",
+									"pm.collectionVariables.set(\"supervisorId\", supervisorId);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Supervisor($accountType: String!) {\r\n  supervisor(accountType: $accountType) {\r\n    id\r\n    firstName\r\n    lastName\r\n    email\r\n  }\r\n}",
+								"variables": "{\r\n    \"accountType\": \"supervisor\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Appointments",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Appointments {\r\n  appointments {\r\n    id\r\n    patientId\r\n    carerId\r\n    start\r\n    end\r\n    status\r\n    actualStart\r\n    actualEnd\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET User By ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query UserInfo($userId: ID!) {\r\n  userInfo(userId: $userId) {\r\n    id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n  }\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "GET All Appointments",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query Appointments {\r\n  appointments {\r\n    id\r\n    patientId\r\n    carerId\r\n    start\r\n    end\r\n    status\r\n    actualStart\r\n    actualEnd\r\n  }\r\n}",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "SIGNUP New User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var response = JSON.parse(responseBody);\r",
+									"\r",
+									"var newUser = response.data.signup.user;\r",
+									"var newUserEmail = newUser.email;\r",
+									"var newUserId = newUser.id;\r",
+									"var username = `${newUser.firstName} ${newUser.lastName}`;\r",
+									"pm.collectionVariables.set(\"newUserId\", newUserId);\r",
+									"pm.collectionVariables.set(\"newUserEmail\", newUserEmail);\r",
+									"pm.collectionVariables.set(\"username\", username);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"port": "4000"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation($signupInput: SignupInput!) {\r\n  signup(signupInput: $signupInput) {\r\n    success\r\n    user{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n  }\r\n}",
+								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"accountType\": \"patient\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE PatientSetup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation($patientInput: PatientInput!) {\r\n  patientSetup(patientInput: $patientInput) {\r\n    success\r\n    patient{\r\n        username\r\n    }\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"patientInput\": {\r\n      \"userId\": \"{{newUserId}}\",\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"username\": \"{{username}}\",\r\n    \"postcode\": \"B29 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation($loginInput: LoginInput!) {\r\n  login(loginInput: $loginInput) {\r\n    success\r\n    token\r\n    user{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n  }\r\n}",
+								"variables": "{\r\n  \"loginInput\": {\r\n    \"email\": \"{{newUserEmail}}\",\r\n    \"password\": \"Password123!\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "GET User By ID",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query UserInfo($userId: ID!) {\r\n  userInfo(userId: $userId) {\r\n    id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n  }\r\n}",
-						"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
-					}
+			"name": "Dashboards",
+			"item": [
+				{
+					"name": "GET Carer dashboard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query CarerDashboard($userId: ID!) {\r\n  carerDashboard(userId: $userId) {\r\n    carer {\r\n      userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000"
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Carer dashboard",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query CarerDashboard($userId: ID!) {\r\n  carerDashboard(userId: $userId) {\r\n    carer {\r\n      userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
-						"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
-					}
+				{
+					"name": "GET Patient dashboard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query PatientDashboard($userId: ID!) {\r\n  patientDashboard(userId: $userId) {\r\n    patient {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000"
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Patient dashboard",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query PatientDashboard($userId: ID!) {\r\n  patientDashboard(userId: $userId) {\r\n    patient {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
-						"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
-					}
+				{
+					"name": "GET Matching patients for Carer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query FindPatientsByCarerSexAndDay($userId: ID!, $dayInput: DayInput) {\r\n  findPatientsByCarerSexAndDay(userId: $userId, dayInput: $dayInput) {\r\n    userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      sex\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"dayInput\": {\r\n        \"date\": \"2022-09-21T07:00:00.000+00:00\"\r\n    }\r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000"
+				{
+					"name": "GET Matching patients for Carer - Sex only",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query FindPatientsByCarerSex($userId: ID!) {\r\n  findPatientsByCarerSex(userId: $userId) {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      sex\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Matching patients for Carer",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query FindPatientsByCarerSexAndDay($userId: ID!, $dayInput: DayInput) {\r\n  findPatientsByCarerSexAndDay(userId: $userId, dayInput: $dayInput) {\r\n    userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      sex\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n  }\r\n",
-						"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"dayInput\": {\r\n        \"date\": \"2022-09-21T07:00:00.000+00:00\"\r\n    }\r\n    \r\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000"
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Matching patients for Carer - Sex only",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "query FindPatientsByCarerSex($userId: ID!) {\r\n  findPatientsByCarerSex(userId: $userId) {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      sex\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n\r\n}",
-						"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000"
-				}
-			},
-			"response": []
+			]
 		}
 	],
 	"variable": [
@@ -198,6 +351,22 @@
 		},
 		{
 			"key": "patientId",
+			"value": ""
+		},
+		{
+			"key": "supervisorId",
+			"value": ""
+		},
+		{
+			"key": "newUserId",
+			"value": ""
+		},
+		{
+			"key": "newUserEmail",
+			"value": ""
+		},
+		{
+			"key": "username",
 			"value": ""
 		}
 	]
