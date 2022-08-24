@@ -20,9 +20,7 @@ const signup = async (_, { signupInput }) => {
 
 const patientSetup = async (_, { patientInput }) => {
   try {
-    //create patient data
-
-    //create new patient
+    //create new patient (and making sure to pass userId in the patientInput)
     const patient = await Patient.create(patientInput);
 
     //create notification to supervisor so they can approve them as a new patient

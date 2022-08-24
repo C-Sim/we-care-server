@@ -44,7 +44,7 @@ variables
 }
 ```
 
-Query all appointments
+Query all appointments (practice only - not needed for app)
 
 ```graphql
 query Appointments {
@@ -191,6 +191,102 @@ variables
   "userId": "{{carerId}}",
   "dayInput": {
     "date": "2022-09-21T07:00:00.000+00:00"
+  }
+}
+```
+
+Query for signing up as a new user (patient account type):
+
+```graphql
+mutation Mutation($signupInput: SignupInput!) {
+  signup(signupInput: $signupInput) {
+    success
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "signupInput": {
+    "firstName": "{{$randomFirstName}}",
+    "lastName": "{{$randomLastName}}",
+    "email": "{{$randomExampleEmail}}",
+    "password": "Password123!",
+    "accountType": "patient"
+  }
+}
+```
+
+Query for setting up the new profile (account type patient if done by patient after signup (2nd page of form) - or account type carer if entered by supervisor):
+
+```graphql
+mutation Mutation($patientInput: PatientInput!) {
+  patientSetup(patientInput: $patientInput) {
+    success
+    patient {
+      username
+    }
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "patientInput": {
+    "userId": "{{newUserId}}",
+    "gender": "female",
+    "genderPreference": "none",
+    "username": "{{username}}",
+    "postcode": "B29 5PZ",
+    "days": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ]
+  }
+}
+```
+
+Query for logging in (any account type):
+
+```graphql
+mutation Mutation($loginInput: LoginInput!) {
+  login(loginInput: $loginInput) {
+    success
+    token
+    user {
+      id
+      firstName
+      lastName
+      email
+      accountType
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "loginInput": {
+    "email": "{{userEmail}}",
+    "password": "Password123!"
   }
 }
 ```

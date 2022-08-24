@@ -229,7 +229,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation Mutation($loginInput: LoginInput!) {\r\n  login(loginInput: $loginInput) {\r\n    success\r\n    token\r\n    user{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n  }\r\n}",
+								"query": "mutation Mutation($loginInput: LoginInput!) {\r\n  login(loginInput: $loginInput) {\r\n    success\r\n    token\r\n    user{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          accountType\r\n      }\r\n  }\r\n}",
 								"variables": "{\r\n  \"loginInput\": {\r\n    \"email\": \"{{newUserEmail}}\",\r\n    \"password\": \"Password123!\"\r\n  }\r\n}"
 							}
 						},
