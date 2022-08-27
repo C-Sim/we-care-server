@@ -11,12 +11,14 @@ const prepareUsersData = () => {
     const email = faker.internet.exampleEmail();
     const password = "password123";
     const accountType = "supervisor";
+    const phoneNumber = "07777777777";
     const approvedStatus = true;
 
     const user = {
       firstName,
       lastName,
       email,
+      phoneNumber,
       accountType,
       password,
       approvedStatus,
@@ -31,12 +33,14 @@ const prepareUsersData = () => {
     const email = faker.internet.exampleEmail();
     const password = "password123";
     const accountType = "carer";
+    const phoneNumber = "07777777777";
     const approvedStatus = true;
 
     const user = {
       firstName,
       lastName,
       email,
+      phoneNumber,
       accountType,
       password,
       approvedStatus,
@@ -50,12 +54,14 @@ const prepareUsersData = () => {
     const email = faker.internet.exampleEmail();
     const password = "password123";
     const accountType = "patient";
+    const phoneNumber = "07777777777";
     const approvedStatus = true;
 
     const user = {
       firstName,
       lastName,
       email,
+      phoneNumber,
       accountType,
       password,
       approvedStatus,
