@@ -110,6 +110,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     accountType: String!
+    phoneNumber: String
   }
 
   input PatientInput {
