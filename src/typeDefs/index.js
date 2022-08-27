@@ -53,6 +53,7 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     accountType: String!
+    phoneNumber: String
   }
 
   type Carer {
@@ -109,6 +110,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     accountType: String!
+    phoneNumber: String
   }
 
   input PatientInput {
