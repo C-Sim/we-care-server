@@ -53,6 +53,7 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     accountType: String!
+    phoneNumber: String
   }
 
   type Carer {
