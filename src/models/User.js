@@ -25,6 +25,10 @@ const userSchema = {
     unique: true,
     match: [/^([a-zA-Z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/],
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
   accountType: {
     type: String,
     enum: ["supervisor", "carer", "patient"],
