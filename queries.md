@@ -123,6 +123,27 @@ variables:
 
 #### Query sent notifications by userId
 
+```graphql
+query SentNotificationsByUserId($userId: ID!) {
+  sentNotificationsByUserId(userId: $userId) {
+    id
+    notificationDate
+    senderId
+    receiverId
+    notificationText
+    isRead
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{carerId}}"
+}
+```
+
 #### Query all notifications by userId
 
 ### Queries for dashboards
