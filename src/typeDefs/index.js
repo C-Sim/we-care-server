@@ -94,6 +94,11 @@ const typeDefs = gql`
     notifications: [Notification]
   }
 
+  type UpdateInfoSuccess {
+    success: Boolean!
+    userId: String
+  }
+
   type PatientSetupSuccess {
     success: Boolean!
     patient: Patient
@@ -109,6 +114,21 @@ const typeDefs = gql`
     success: Boolean!
     token: String!
     user: User
+  }
+
+  input CarerInfoInput {
+    gender: String
+    postcode: String
+    days: [String]
+    address: ID
+  }
+
+  input PatientInfoInput {
+    gender: String
+    genderPreference: String
+    postcode: String
+    days: [String]
+    address: ID
   }
 
   input SignupInput {
@@ -160,6 +180,11 @@ const typeDefs = gql`
     login(loginInput: LoginInput!): LoginSuccess
     signup(signupInput: SignupInput!): SignupSuccess
     patientSetup(patientInput: PatientInput!): PatientSetupSuccess
+    updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateInfoSuccess
+    updatePatientInfo(
+      userId: ID!
+      updateInput: PatientInfoInput
+    ): UpdateInfoSuccess
   }
 `;
 

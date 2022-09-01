@@ -5,7 +5,12 @@ const {
   receivedNotificationsByUserId,
   sentNotificationsByUserId,
 } = require("./notifications");
-const { carerInfo, patientInfo } = require("./user");
+const {
+  carerInfo,
+  patientInfo,
+  updateCarerInfo,
+  updatePatientInfo,
+} = require("./user");
 const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
@@ -38,6 +43,8 @@ const resolvers = {
     signup,
     patientSetup,
     login,
+    updateCarerInfo,
+    updatePatientInfo,
   },
 };
 
