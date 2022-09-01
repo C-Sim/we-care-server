@@ -193,41 +193,41 @@ query Carers {
 ```graphql
 query Patients {
   patients {
-    userId{
-          id
-          firstName
-          lastName
-          email
-          phoneNumber
-      }
-      postcode
-      gender
-      genderPreference
-      days
-      notificationCount
-      appointmentCount
+    userId {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+    }
+    postcode
+    gender
+    genderPreference
+    days
+    notificationCount
+    appointmentCount
   }
 }
 ```
 
-
 #### Query for matching patients - by carer gender only, or by carer gender and day of week
 
 ```graphql
-query FindPatientsByCarergender($userId: ID!) {
-  findPatientsByCarergender(userId: $userId) {
-      userId {
-          id
-          firstName
-          lastName
-          email
-      }
-      gender
-      postcode
-      days
-      notificationCount
-      appointmentCount
+query FindPatientsByCarerGender($userId: ID!) {
+  findPatientsByCarerGender(userId: $userId) {
+    userId {
+      id
+      firstName
+      lastName
+      email
     }
+    gender
+    genderPreference
+    postcode
+    days
+    notificationCount
+    appointmentCount
+  }
 }
 ```
 
@@ -240,8 +240,8 @@ variables
 ```
 
 ```graphql
-query FindPatientsByCarergenderAndDay($userId: ID!, $dayInput: DayInput) {
-  findPatientsByCarergenderAndDay(userId: $userId, dayInput: $dayInput) {
+query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {
+  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {
     userId {
       id
       firstName
@@ -401,4 +401,7 @@ variables:
 #### Mutations for creating a notification
 
 #### Mutation for updating notification status by userId and notification id
-````
+
+```
+
+```
