@@ -141,6 +141,7 @@ const typeDefs = gql`
     allAppointments: [Appointment]
     appointmentsByUserId(userId: ID!): [Appointment]
     receivedNotificationsByUserId(userId: ID!): [Notification]
+    sentNotificationsByUserId(userId: ID!): [Notification]
     userInfo(userId: ID!): User
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
