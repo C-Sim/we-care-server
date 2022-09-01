@@ -138,7 +138,8 @@ const typeDefs = gql`
     users: [User]
     carers: [Carer]
     patients: [Patient]
-    appointments: [Appointment]
+    allAppointments: [Appointment]
+    appointmentsByUserId(userId: ID!): [Appointment]
     userInfo(userId: ID!): User
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard

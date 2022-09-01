@@ -1,8 +1,15 @@
 const { Appointment } = require("../models");
 
-const appointments = async () => {
+const allAppointments = async () => {
   const appointments = await Appointment.find({});
   return appointments;
 };
 
-module.exports = appointments;
+const appointmentsByUserId = async (_, { userId }) => {
+  const appointments = await Appointment.find({
+    $or: [{ carerId: userId }, { patientId: userId }],
+  });
+  return appointments;
+};
+
+module.exports = { allAppointments, appointmentsByUserId };
