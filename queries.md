@@ -71,9 +71,30 @@ query Appointments {
 }
 ```
 
-#### Query appointments by carer
+#### Query appointments by userId (carer or patient)
 
-#### Query appointments by patient
+```graphql
+query AppointmentsByUserId($userId: ID!) {
+  appointmentsByUserId(userId: $userId) {
+    id
+    patientId
+    carerId
+    start
+    end
+    status
+    actualStart
+    actualEnd
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{patientId}}"
+}
+```
 
 ### Query notifications
 
