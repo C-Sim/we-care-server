@@ -570,6 +570,24 @@ variables:
 
 #### Mutation for deleting an appointment
 
+```graphql
+mutation DeleteAppointment($appointmentId: ID!) {
+  deleteAppointment(appointmentId: $appointmentId) {
+    success
+    carerId
+    patientId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}"
+}
+```
+
 #### Mutation for updating appointments by userId (adding extra appointment)
 
 ### Mutations for appointments
