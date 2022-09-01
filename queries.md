@@ -1,12 +1,14 @@
-# social-network-graphql
+# we-care-server - queries and mutations
 
-## Queries
+## Postman setup
 
 Request URL: `http://localhost:4000`
 Query type: `POST`
 Query & Variables location: Body > GraphQL
 
-Query all users
+## Queries
+
+### Query all users --> not needed for the app
 
 ```graphql
 query Users {
@@ -22,7 +24,9 @@ query Users {
 
 Note: In "Tests" section, create variables `carerId` and `patientId` from the response (for use in subsequent queries)
 
-Query for user by ID:
+### Query by ID
+
+#### Query users by ID
 
 ```graphql
 query UserInfo($userId: ID!) {
@@ -44,7 +48,13 @@ variables
 }
 ```
 
-Query all appointments (practice only - not needed for app)
+#### Query Carer by userId:
+
+#### Query Patient by userId:
+
+### Query appointments
+
+#### Query all appointments - not needed for app
 
 ```graphql
 query Appointments {
@@ -61,7 +71,21 @@ query Appointments {
 }
 ```
 
-Query for dashboard
+#### Query appointments by carer
+
+#### Query appointments by patient
+
+### Query notifications
+
+#### Query notifications by supervisor
+
+#### Query notifications by carer
+
+#### Query notifications by patient
+
+### Queries for dashboards
+
+#### Query for carer dashboard
 
 ```graphql
 query CarerDashboard($userId: ID!) {
@@ -101,6 +125,8 @@ variables
 }
 ```
 
+#### Query for patient dashboard
+
 ```graphql
 query PatientDashboard($userId: ID!) {
   patientDashboard(userId: $userId) {
@@ -139,7 +165,13 @@ variables
 }
 ```
 
-Query for matching patients - by carer gender only, or by carer gender and day of week
+### Queries for supervisor account
+
+#### Query all carers
+
+#### Query all patients
+
+#### Query for matching patients - by carer gender only, or by carer gender and day of week
 
 ```graphql
 query FindPatientsByCarergender($userId: ID!) {
@@ -195,7 +227,11 @@ variables
 }
 ```
 
-Query for signing up as a new user (patient account type):
+## Mutations
+
+### Mutation for signing up as a new user (patient account type)
+
+1st part: mutation to set up the new user (account type: patient - part of signup form)
 
 ```graphql
 mutation Mutation($signupInput: SignupInput!) {
@@ -225,7 +261,7 @@ variables:
 }
 ```
 
-Query for setting up the new profile (account type patient if done by patient after signup (2nd page of form) - or account type carer if entered by supervisor):
+2nd part: mutation for setting up the new profile (part of signup form):
 
 ```graphql
 mutation Mutation($patientInput: PatientInput!) {
@@ -262,7 +298,7 @@ variables:
 }
 ```
 
-Query for logging in (any account type):
+### Mutation for logging in (any account type):
 
 ```graphql
 mutation Mutation($loginInput: LoginInput!) {
@@ -290,3 +326,33 @@ variables:
   }
 }
 ```
+
+### Mutation for updating profile info
+
+#### Mutation for updating carer profile info
+
+#### Mutation for updating patient profile info
+
+### Mutations for supervisor account
+
+#### Mutation for adding a new carer: new user (account type carer) + new carer profile
+
+#### Mutation for approving a patient
+
+#### Mutation for creating an appointment
+
+#### Mutation for deleting an appointment
+
+#### Mutation for updating appointments by userId (adding extra appointment)
+
+### Mutations for appointments
+
+#### Mutation for adding review/notes/comment to appointment
+
+### Mutation for adding carer review
+
+### Mutations for notifications
+
+#### Mutations for creating a notification
+
+#### Mutation for updating notification status by userId and notification id
