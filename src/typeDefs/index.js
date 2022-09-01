@@ -135,6 +135,8 @@ const typeDefs = gql`
   type Query {
     addressLookup(postcode: String!): AddressLookup
     users: [User]
+    carers: [Carer]
+    patients: [Patient]
     appointments: [Appointment]
     userInfo(userId: ID!): User
     supervisor(accountType: String!): User
