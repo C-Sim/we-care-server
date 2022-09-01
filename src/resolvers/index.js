@@ -6,8 +6,8 @@ const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
 const {
-  findPatientsByCarergender,
-  findPatientsByCarergenderAndDay,
+  findPatientsByCarerGender,
+  findPatientsByCarerGenderAndDay,
 } = require("./matchingPatient");
 const { signup, patientSetup } = require("./signup");
 const login = require("./login");
@@ -23,8 +23,8 @@ const resolvers = {
     supervisor,
     patientDashboard,
     carerDashboard,
-    findPatientsByCarergender,
-    findPatientsByCarergenderAndDay,
+    findPatientsByCarerGender,
+    findPatientsByCarerGenderAndDay,
   },
   Mutation: {
     signup,

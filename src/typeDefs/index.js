@@ -143,8 +143,8 @@ const typeDefs = gql`
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
-    findPatientsByCarergenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
-    findPatientsByCarergender(userId: ID!): [Patient]
+    findPatientsByCarerGenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
+    findPatientsByCarerGender(userId: ID!): [Patient]
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
