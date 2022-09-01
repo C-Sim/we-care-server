@@ -347,6 +347,10 @@ variables:
 
 ### Mutations for appointments
 
+#### Mutation for checking in (carer - actual start time of an appointment)
+
+#### Mutation for checking out (carer - actual end time of an appointment)
+
 #### Mutation for adding review/notes/comment to appointment
 
 ### Mutation for adding carer review
