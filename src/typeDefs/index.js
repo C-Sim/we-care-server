@@ -94,6 +94,10 @@ const typeDefs = gql`
     notifications: [Notification]
   }
 
+  type CreateSuccess {
+    success: Boolean!
+    id: String
+  }
   type UpdateInfoSuccess {
     success: Boolean!
     userId: String
@@ -114,6 +118,15 @@ const typeDefs = gql`
     success: Boolean!
     token: String!
     user: User
+  }
+
+  input AppointmentInput {
+    patientId: String!
+    carerId: String!
+    start: String
+    end: String
+    appointmentDate: String
+    title: String
   }
 
   input CarerInfoInput {
@@ -185,6 +198,7 @@ const typeDefs = gql`
       userId: ID!
       updateInput: PatientInfoInput
     ): UpdateInfoSuccess
+    createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
   }
 `;
 
