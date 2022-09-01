@@ -1,9 +1,15 @@
-const { User, Appointment, Notification } = require("../models");
+const { User, Carer, Patient } = require("../models");
 
-const userInfo = async (_, { userId }) => {
-  const user = await User.findById(userId);
+const carerInfo = async (_, { userId }) => {
+  const carer = await Carer.findOne({ userId }).populate("userId");
 
-  return user;
+  return carer;
 };
 
-module.exports = userInfo;
+const patientInfo = async (_, { userId }) => {
+  const patient = await Patient.findOne({ userId }).populate("userId");
+
+  return patient;
+};
+
+module.exports = { carerInfo, patientInfo };

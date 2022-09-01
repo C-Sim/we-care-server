@@ -1,8 +1,11 @@
 const addressLookup = require("./addressLookup");
 const { users, carers, patients } = require("./users");
 const { allAppointments, appointmentsByUserId } = require("./appointments");
-const { receivedNotificationsByUserId, sentNotificationsByUserId } = require("./notifications");
-const userInfo = require("./user");
+const {
+  receivedNotificationsByUserId,
+  sentNotificationsByUserId,
+} = require("./notifications");
+const { carerInfo, patientInfo } = require("./user");
 const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
@@ -23,7 +26,8 @@ const resolvers = {
     appointmentsByUserId,
     receivedNotificationsByUserId,
     sentNotificationsByUserId,
-    userInfo,
+    carerInfo,
+    patientInfo,
     supervisor,
     patientDashboard,
     carerDashboard,

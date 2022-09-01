@@ -76,6 +76,12 @@ const typeDefs = gql`
     genderPreference: String
   }
 
+  type UserInfo {
+    user: User
+    carer: Carer
+    patient: Patient
+  }
+
   type carerDashboard {
     carer: Carer
     appointments: [Appointment]
@@ -142,7 +148,8 @@ const typeDefs = gql`
     appointmentsByUserId(userId: ID!): [Appointment]
     receivedNotificationsByUserId(userId: ID!): [Notification]
     sentNotificationsByUserId(userId: ID!): [Notification]
-    userInfo(userId: ID!): User
+    carerInfo(userId: ID!): Carer
+    patientInfo(userId: ID!): Patient
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
