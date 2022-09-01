@@ -169,7 +169,47 @@ variables
 
 #### Query all carers
 
+```graphql
+query Carers {
+  carers {
+    userId {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+    }
+    postcode
+    gender
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
 #### Query all patients
+
+```graphql
+query Patients {
+  patients {
+    userId{
+          id
+          firstName
+          lastName
+          email
+          phoneNumber
+      }
+      postcode
+      gender
+      genderPreference
+      days
+      notificationCount
+      appointmentCount
+  }
+}
+```
+
 
 #### Query for matching patients - by carer gender only, or by carer gender and day of week
 
@@ -188,6 +228,7 @@ query FindPatientsByCarergender($userId: ID!) {
       notificationCount
       appointmentCount
     }
+}
 ```
 
 variables
@@ -360,3 +401,4 @@ variables:
 #### Mutations for creating a notification
 
 #### Mutation for updating notification status by userId and notification id
+````
