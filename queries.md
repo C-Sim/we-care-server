@@ -489,7 +489,49 @@ variables:
 
 #### Mutation for updating carer profile info
 
+```graphql
+mutation UpdateCarerInfo($userId: ID!, $updateInput: CarerInfoInput) {
+  updateCarerInfo(userId: $userId, updateInput: $updateInput) {
+    success
+    userId
+  }
+}
+```
+
+variables (example):
+
+```json
+{
+  "userId": "{{carerId}}",
+  "updateInput": {
+    "postcode": "B15 4RT",
+    "gender": "female"
+  }
+}
+```
+
 #### Mutation for updating patient profile info
+
+```graphql
+mutation UpdatePatientInfo($userId: ID!, $updateInput: PatientInfoInput) {
+  updatePatientInfo(userId: $userId, updateInput: $updateInput) {
+    success
+    userId
+  }
+}
+```
+
+variables (example):
+
+```json
+{
+  "userId": "{{patientId}}",
+  "updateInput": {
+    "postcode": "B12 4RT",
+    "genderPreference": "female"
+  }
+}
+```
 
 ### Mutations for supervisor account
 
@@ -518,6 +560,10 @@ variables:
 #### Mutations for creating a notification
 
 #### Mutation for updating notification status by userId and notification id
+
+```
+
+```
 
 ```
 
