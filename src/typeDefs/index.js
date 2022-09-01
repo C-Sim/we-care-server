@@ -41,7 +41,7 @@ const typeDefs = gql`
   type Notification {
     id: ID!
     notificationDate: String!
-    senderId: String!
+    senderId: String
     receiverId: String
     notificationText: String
     isRead: Boolean
@@ -140,6 +140,7 @@ const typeDefs = gql`
     patients: [Patient]
     allAppointments: [Appointment]
     appointmentsByUserId(userId: ID!): [Appointment]
+    receivedNotificationsByUserId(userId: ID!): [Notification]
     userInfo(userId: ID!): User
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
