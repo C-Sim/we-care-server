@@ -48,9 +48,63 @@ variables
 }
 ```
 
-#### Query Carer by userId:
+#### Query Carer info by userId
 
-#### Query Patient by userId:
+```graphql
+query CarerInfo($userId: ID!) {
+  carerInfo(userId: $userId) {
+    userId {
+      id
+      firstName
+      lastName
+      email
+      accountType
+    }
+    postcode
+    gender
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{carerId}}"
+}
+```
+
+#### Query Patient info by userId
+
+```graphql
+query PatientInfo($userId: ID!) {
+  patientInfo(userId: $userId) {
+    userId {
+      id
+      firstName
+      lastName
+      email
+      accountType
+    }
+    postcode
+    gender
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{patientId}}"
+}
+```
 
 ### Query appointments
 
