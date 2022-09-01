@@ -73,6 +73,7 @@ const typeDefs = gql`
     notificationCount: String!
     appointmentCount: String!
     gender: String!
+    genderPreference: String
   }
 
   type carerDashboard {
