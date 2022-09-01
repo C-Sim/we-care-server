@@ -49,4 +49,54 @@ const createAppointment = async (_, { appointmentInput }) => {
   }
 };
 
-module.exports = { allAppointments, appointmentsByUserId, createAppointment };
+const deleteAppointment = async (_, { appointmentId }) => {
+  try {
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      console.log(`[ERROR]: Appointment not found | ${appointmentId}`);
+
+      throw new ApolloError("Appointment not found");
+    }
+
+    const { carerId, patientId, _id } = appointment;
+    const deletedAppointment = await Appointment.findByIdAndDelete(_id);
+
+    //update carer's appointments array
+    const carerToUpdate = await Carer.findOneAndUpdate(
+      { userId: carerId },
+      {
+        $pull: {
+          appointments: _id,
+        },
+      }
+    );
+
+    //update patient's appointments array
+    const patientToUpdate = await Patient.findOneAndUpdate(
+      { userId: patientId },
+      {
+        $pull: {
+          appointments: _id,
+        },
+      }
+    );
+
+    return {
+      success: true,
+      carerId,
+      patientId,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to delete appointment | ${error.message}`);
+
+    throw new ApolloError("Failed to delete appointment");
+  }
+};
+
+module.exports = {
+  allAppointments,
+  appointmentsByUserId,
+  createAppointment,
+  deleteAppointment,
+};

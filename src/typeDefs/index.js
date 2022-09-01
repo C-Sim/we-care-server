@@ -94,6 +94,11 @@ const typeDefs = gql`
     notifications: [Notification]
   }
 
+  type DeleteSuccess {
+    success: Boolean!
+    carerId: String
+    patientId: String
+  }
   type CreateSuccess {
     success: Boolean!
     id: String
@@ -199,6 +204,7 @@ const typeDefs = gql`
       updateInput: PatientInfoInput
     ): UpdateInfoSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
+    deleteAppointment(appointmentId: ID!): DeleteSuccess
   }
 `;
 
