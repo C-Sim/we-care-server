@@ -537,9 +537,36 @@ variables (example):
 
 #### Mutation for adding a new carer: new user (account type carer) + new carer profile
 
+Hoping to use the signup mutation (passing it accountType: carer)
+Need to confirm if it works after signup mutation is updated
+
 #### Mutation for approving a patient
 
 #### Mutation for creating an appointment
+
+```graphql
+mutation CreateAppointment($appointmentInput: AppointmentInput!) {
+  createAppointment(appointmentInput: $appointmentInput) {
+    success
+    id
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentInput": {
+    "carerId": "{{carerId}}",
+    "patientId": "{{patientId}}",
+    "start": "2022-09-22T16:00:00.000+00:00",
+    "end": "2022-09-22T17:00:00.000+00:00",
+    "appointmentDate": "2022-09-22T16:00:00.000+00:00",
+    "title": "New appointment"
+  }
+}
+```
 
 #### Mutation for deleting an appointment
 
