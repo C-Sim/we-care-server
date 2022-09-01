@@ -9,6 +9,10 @@ const notificationSchema = {
     default: new Date(),
     get: (val) => format(new Date(val), "yyyy-MM-dd"),
   },
+  type: {
+    type: String,
+    enum: ["Schedule change", "New patient review", "New care requirement"],
+  },
   isRead: {
     type: Boolean,
     required: true,
