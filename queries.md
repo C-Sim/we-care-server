@@ -98,11 +98,32 @@ variables:
 
 ### Query notifications
 
-#### Query notifications by supervisor
+#### Query received notifications by userId
 
-#### Query notifications by carer
+```graphql
+query ReceivedNotificationsByUserId($userId: ID!) {
+  receivedNotificationsByUserId(userId: $userId) {
+    id
+    notificationDate
+    senderId
+    receiverId
+    notificationText
+    isRead
+  }
+}
+```
 
-#### Query notifications by patient
+variables:
+
+```
+{
+    "userId": "{{patientId}}"
+}
+```
+
+#### Query sent notifications by userId
+
+#### Query all notifications by userId
 
 ### Queries for dashboards
 
