@@ -13,6 +13,30 @@ const notificationsByUserId = async (_, { userId, mailType }) => {
   }
 };
 
+const updateIsReadStatus = async (_, { notificationId, userId }) => {
+  try {
+    const notification = await Notification.findById(notificationId);
+
+    const updatedNotification = await Notification.findOneAndUpdate(
+      { _id: notificationId },
+      { $set: { isRead: true } },
+      {
+        new: true,
+      }
+    );
+
+    return {
+      success: true,
+      userId,
+    };
+  } catch (error) {
+    console.log(
+      `[ERROR]: Failed to update notification status | ${error.message}`
+    );
+  }
+};
+
 module.exports = {
   notificationsByUserId,
+  updateIsReadStatus,
 };

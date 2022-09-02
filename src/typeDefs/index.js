@@ -226,6 +226,7 @@ const typeDefs = gql`
       trigger: String!
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
+    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateInfoSuccess
   }
 `;
 
