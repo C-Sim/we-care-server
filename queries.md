@@ -150,6 +150,27 @@ variables:
 }
 ```
 
+#### Query all past notes from appointments by patientId
+
+Uses the same appointmentsByUserId query but targets different fields for the response
+
+```graphql
+query AppointmentNotesByUserId($userId: ID!) {
+  appointmentsByUserId(userId: $userId) {
+    start
+    notes
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{patientId}}"
+}
+```
+
 ### Query notifications
 
 #### Query received notifications by userId
@@ -588,7 +609,7 @@ variables:
 }
 ```
 
-#### Mutation for updating appointments by userId (adding extra appointment)
+#### Mutation for reallocating an appointment by userId (update carerId)
 
 ### Mutations for appointments
 
@@ -604,7 +625,11 @@ variables:
 
 #### Mutations for creating a notification
 
-#### Mutation for updating notification status by userId and notification id
+To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver)
+
+#### Mutation for updating notification status by notification id
+
+Updates the `isRead` status when the receiver opens the notification
 
 ```
 

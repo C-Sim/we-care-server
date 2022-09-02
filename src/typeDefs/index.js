@@ -37,6 +37,7 @@ const typeDefs = gql`
     status: String
     actualStart: String
     actualEnd: String
+    notes: [String]
   }
   type Notification {
     id: ID!

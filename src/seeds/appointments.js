@@ -163,6 +163,8 @@ const prepareMaleAppointmentsData = async () => {
         const patientId = chosenPatients[iii].userId;
         const title = `Visit to ${chosenPatients[iii].username} by ${carerUsername}`;
         const notes = [];
+        const firstNote = faker.lorem.sentences(3);
+        notes.push(firstNote);
         const patientReview = {
           reviewDate: addHours(start, 6),
           score: 3,
