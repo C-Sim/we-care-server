@@ -105,7 +105,7 @@ const typeDefs = gql`
     success: Boolean!
     id: String
   }
-  type UpdateInfoSuccess {
+  type UpdateSuccess {
     success: Boolean!
     userId: String
   }
@@ -212,12 +212,9 @@ const typeDefs = gql`
     login(loginInput: LoginInput!): LoginSuccess
     signup(signupInput: SignupInput!): SignupSuccess
     patientSetup(patientInput: PatientInput!): PatientSetupSuccess
-    updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateInfoSuccess
-    updatePatientInfo(
-      userId: ID!
-      updateInput: PatientInfoInput
-    ): UpdateInfoSuccess
-    updateApprovedStatus(userId: ID!): UpdateInfoSuccess
+    updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
+    updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
+    updateApprovedStatus(userId: ID!): UpdateSuccess
 
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
@@ -226,7 +223,7 @@ const typeDefs = gql`
       trigger: String!
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
-    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateInfoSuccess
+    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
   }
 `;
 
