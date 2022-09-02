@@ -37,7 +37,8 @@ const typeDefs = gql`
     status: String
     actualStart: String
     actualEnd: String
-    notes: [String]
+    carerNotes: [String]
+    patientNotes: [String]
   }
   type Notification {
     id: ID!
@@ -109,6 +110,11 @@ const typeDefs = gql`
     userId: String
   }
 
+  type UpdateAppointmentSuccess {
+    success: Boolean!
+    appointment: Appointment
+  }
+
   type PatientSetupSuccess {
     success: Boolean!
     patient: Patient
@@ -126,6 +132,14 @@ const typeDefs = gql`
     user: User
   }
 
+  input AppointmentUpdateInput {
+    carerId: String
+    start: String
+    end: String
+    actualStart: String
+    actualEnd: String
+    note: String
+  }
   input AppointmentInput {
     patientId: String!
     carerId: String!
@@ -206,6 +220,11 @@ const typeDefs = gql`
     ): UpdateInfoSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
+    updateAppointment(
+      appointmentId: ID!
+      trigger: String!
+      appointmentUpdateInput: AppointmentUpdateInput
+    ): UpdateAppointmentSuccess
   }
 `;
 

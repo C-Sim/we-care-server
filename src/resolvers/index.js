@@ -5,6 +5,7 @@ const {
   appointmentsByUserId,
   createAppointment,
   deleteAppointment,
+  updateAppointment,
 } = require("./appointments");
 const {
   receivedNotificationsByUserId,
@@ -52,6 +53,7 @@ const resolvers = {
     updatePatientInfo,
     createAppointment,
     deleteAppointment,
+    updateAppointment,
   },
 };
 

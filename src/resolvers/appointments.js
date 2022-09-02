@@ -120,6 +120,7 @@ const updateAppointment = async (
             new: true,
           }
         );
+        break;
       case "checkout":
         const actualEnd = new Date();
         updatedAppointment = await Appointment.findOneAndUpdate(
@@ -131,7 +132,8 @@ const updateAppointment = async (
             new: true,
           }
         );
-      case "carerNotes":
+        break;
+      case "carerNote":
         const carerNote = appointmentUpdateInput.note;
         updatedAppointment = await Appointment.findOneAndUpdate(
           { _id: appointmentId },
@@ -145,7 +147,7 @@ const updateAppointment = async (
           }
         );
         break;
-      case "patientNotes":
+      case "patientNote":
         const patientNote = appointmentUpdateInput.note;
         updatedAppointment = await Appointment.findOneAndUpdate(
           { _id: appointmentId },
@@ -162,10 +164,11 @@ const updateAppointment = async (
       case "carerChange":
         const previousCarerId = appointment.carerId;
         const newCarerId = appointmentUpdateInput.carerId;
+        const { start, end } = appointmentUpdateInput;
         updatedAppointment = await Appointment.findOneAndUpdate(
           { _id: appointmentId },
           {
-            $set: { carerId: newCarerId },
+            $set: { carerId: newCarerId, start, end },
           },
           {
             new: true,
@@ -192,13 +195,12 @@ const updateAppointment = async (
 
     return {
       success: true,
-      carerId,
-      patientId,
+      appointment: updatedAppointment,
     };
   } catch (error) {
-    console.log(`[ERROR]: Failed to delete appointment | ${error.message}`);
+    console.log(`[ERROR]: Failed to update appointment | ${error.message}`);
 
-    throw new ApolloError("Failed to delete appointment");
+    throw new ApolloError("Failed to update appointment");
   }
 };
 
@@ -207,4 +209,5 @@ module.exports = {
   appointmentsByUserId,
   createAppointment,
   deleteAppointment,
+  updateAppointment,
 };
