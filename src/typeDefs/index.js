@@ -60,10 +60,11 @@ const typeDefs = gql`
 
   type Carer {
     userId: User
+    username: String!
     postcode: String!
     days: [String!]
-    notificationCount: String!
-    appointmentCount: String!
+    notificationCount: String
+    appointmentCount: String
     gender: String!
   }
 
@@ -117,13 +118,16 @@ const typeDefs = gql`
 
   type PatientSetupSuccess {
     success: Boolean!
+    user: User
     patient: Patient
     userId: String
   }
 
-  type SignupSuccess {
+  type CarerSignupSuccess {
     success: Boolean!
     user: User
+    carer: Carer
+    userId: String
   }
 
   type LoginSuccess {
@@ -182,6 +186,14 @@ const typeDefs = gql`
     address: ID
   }
 
+  input CarerInput {
+    gender: String!
+    username: String
+    postcode: String!
+    days: [String]
+    address: ID
+  }
+
   input LoginInput {
     email: String!
     password: String!
@@ -227,7 +239,11 @@ const typeDefs = gql`
     patientSignup(
       signupInput: SignupInput!
       patientInput: PatientInput!
-    ): PatientSetupSuccess
+    ): PatientSignupSuccess
+    carerSignup(
+      signupInput: SignupInput!
+      carerInput: CarerInput!
+    ): CarerSignupSuccess
   }
 `;
 

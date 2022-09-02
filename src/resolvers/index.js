@@ -25,7 +25,7 @@ const {
   findPatientsByCarerGender,
   findPatientsByCarerGenderAndDay,
 } = require("./matchingPatient");
-const { patientSignup } = require("./signup");
+const { patientSignup, carerSignup } = require("./signup");
 const login = require("./login");
 
 const resolvers = {
@@ -47,6 +47,7 @@ const resolvers = {
   },
   Mutation: {
     patientSignup,
+    carerSignup,
     login,
     updateCarerInfo,
     updatePatientInfo,
