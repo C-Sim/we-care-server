@@ -94,6 +94,114 @@ const deleteAppointment = async (_, { appointmentId }) => {
   }
 };
 
+const updateAppointment = async (
+  _,
+  { appointmentId, trigger, appointmentUpdateInput }
+) => {
+  try {
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      console.log(`[ERROR]: Appointment not found | ${appointmentId}`);
+
+      throw new ApolloError("Appointment not found");
+    }
+
+    let updatedAppointment;
+    switch (trigger) {
+      case "checkin":
+        const actualStart = new Date();
+        updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: appointmentId },
+          {
+            $set: { actualStart, status: "ongoing" },
+          },
+          {
+            new: true,
+          }
+        );
+      case "checkout":
+        const actualEnd = new Date();
+        updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: appointmentId },
+          {
+            $set: { actualEnd, status: "completed" },
+          },
+          {
+            new: true,
+          }
+        );
+      case "carerNotes":
+        const carerNote = appointmentUpdateInput.note;
+        updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: appointmentId },
+          {
+            $push: {
+              carerNotes: carerNote,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+        break;
+      case "patientNotes":
+        const patientNote = appointmentUpdateInput.note;
+        updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: appointmentId },
+          {
+            $push: {
+              patientNotes: patientNote,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+        break;
+      case "carerChange":
+        const previousCarerId = appointment.carerId;
+        const newCarerId = appointmentUpdateInput.carerId;
+        updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: appointmentId },
+          {
+            $set: { carerId: newCarerId },
+          },
+          {
+            new: true,
+          }
+        );
+        const previousCarerToUpdate = await Carer.findOneAndUpdate(
+          { userId: previousCarerId },
+          {
+            $pull: {
+              appointments: appointmentId,
+            },
+          }
+        );
+        const newCarerToUpdate = await Carer.findOneAndUpdate(
+          { userId: newCarerId },
+          {
+            $push: {
+              appointments: appointmentId,
+            },
+          }
+        );
+        break;
+    }
+
+    return {
+      success: true,
+      carerId,
+      patientId,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to delete appointment | ${error.message}`);
+
+    throw new ApolloError("Failed to delete appointment");
+  }
+};
+
 module.exports = {
   allAppointments,
   appointmentsByUserId,
