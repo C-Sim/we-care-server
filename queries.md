@@ -844,10 +844,20 @@ To be added as part of each action that triggers a notification (for clarity of 
 
 Updates the `isRead` status when the receiver opens the notification
 
+```graphql
+mutation UpdateIsReadStatus($notificationId: ID!, $userId: ID) {
+  updateIsReadStatus(notificationId: $notificationId, userId: $userId) {
+    success
+    userId
+  }
+}
 ```
 
-```
+variables:
 
-```
-
+```json
+{
+  "userId": "6311f2d9c3dd8bb84a9377aa",
+  "notificationId": "6311f2dcc3dd8bb84a937b55"
+}
 ```
