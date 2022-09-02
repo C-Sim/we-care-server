@@ -176,8 +176,8 @@ variables:
 #### Query received notifications by userId
 
 ```graphql
-query ReceivedNotificationsByUserId($userId: ID!) {
-  receivedNotificationsByUserId(userId: $userId) {
+query ReceivedNotificationsByUserId($userId: ID!, $mailType: String!) {
+  notificationsByUserId(userId: $userId, mailType: $mailType) {
     id
     notificationDate
     senderId
@@ -190,17 +190,18 @@ query ReceivedNotificationsByUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}",
+  "mailType": "received"
 }
 ```
 
 #### Query sent notifications by userId
 
 ```graphql
-query SentNotificationsByUserId($userId: ID!) {
-  sentNotificationsByUserId(userId: $userId) {
+query SentNotificationsByUserId($userId: ID!, $mailType: String!) {
+  notificationsByUserId(userId: $userId, mailType: $mailType) {
     id
     notificationDate
     senderId
@@ -213,13 +214,36 @@ query SentNotificationsByUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{carerId}}"
+  "userId": "{{carerId}}",
+  "mailType": "sent"
 }
 ```
 
 #### Query all notifications by userId
+
+```graphql
+query AllNotificationsByUserId($userId: ID!, $mailType: String!) {
+  notificationsByUserId(userId: $userId, mailType: $mailType) {
+    id
+    notificationDate
+    senderId
+    receiverId
+    notificationText
+    isRead
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{carerId}}",
+  "mailType": "all"
+}
+```
 
 ### Queries for dashboards
 
@@ -561,7 +585,7 @@ variables (example):
 Hoping to use the signup mutation (passing it accountType: carer)
 Need to confirm if it works after signup mutation is updated
 
-#### Mutation for approving a patient
+#### Mutation for approving a new patient (update user field approvedStatus)
 
 ```graphql
 mutation UpdateApprovedStatus($userId: ID!) {

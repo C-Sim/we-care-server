@@ -7,10 +7,7 @@ const {
   deleteAppointment,
   updateAppointment,
 } = require("./appointments");
-const {
-  receivedNotificationsByUserId,
-  sentNotificationsByUserId,
-} = require("./notifications");
+const { notificationsByUserId } = require("./notifications");
 const {
   carerInfo,
   patientInfo,
@@ -36,8 +33,7 @@ const resolvers = {
     patients,
     allAppointments,
     appointmentsByUserId,
-    receivedNotificationsByUserId,
-    sentNotificationsByUserId,
+    notificationsByUserId,
     carerInfo,
     patientInfo,
     supervisor,
