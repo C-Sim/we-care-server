@@ -861,3 +861,5 @@ variables:
   "notificationId": "6311f2dcc3dd8bb84a937b55"
 }
 ```
+
+Note: in frontend: on success, using the userId to recall the notifications (update state and re-render components)
