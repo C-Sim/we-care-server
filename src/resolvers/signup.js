@@ -1,25 +1,14 @@
 const { ApolloError } = require("apollo-server");
-const { User, Patient, Supervisor, Notification } = require("../models");
+const { User, Patient, Carer, Supervisor, Notification } = require("../models");
 
-const signup = async (_, { signupInput }) => {
+const patientSignup = async (_, { signupInput, patientInput }) => {
   try {
-    //create user
-    //check if we get the user id back after creation
+    //   //create user
+    //   //check if we get the user id back after creation
     const user = await User.create(signupInput);
 
-    return {
-      success: true,
-      user: user,
-    };
-  } catch (error) {
-    console.log(`[ERROR]: Failed to sign up | ${error.message}`);
+    patientInput.userId = user._id;
 
-    throw new ApolloError("Failed to sign up");
-  }
-};
-
-const patientSetup = async (_, { patientInput }) => {
-  try {
     //create new patient (and making sure to pass userId in the patientInput)
     const patient = await Patient.create(patientInput);
 
@@ -49,4 +38,27 @@ const patientSetup = async (_, { patientInput }) => {
   }
 };
 
-module.exports = { signup, patientSetup };
+const carerSignup = async (_, { signupInput, carerInput }) => {
+  try {
+    //   //create user
+    //   //check if we get the user id back after creation
+    const user = await User.create(signupInput);
+
+    carerInput.userId = user._id;
+
+    //create new patient (and making sure to pass userId in the patientInput)
+    const carer = await Carer.create(carerInput);
+
+    return {
+      success: true,
+      carer: carer,
+      userId: carer.userId,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to create patient | ${error.message}`);
+
+    throw new ApolloError("Failed to create patient");
+  }
+};
+
+module.exports = { patientSignup, carerSignup };

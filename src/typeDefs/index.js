@@ -60,10 +60,11 @@ const typeDefs = gql`
 
   type Carer {
     userId: User
+    username: String!
     postcode: String!
     days: [String!]
-    notificationCount: String!
-    appointmentCount: String!
+    notificationCount: String
+    appointmentCount: String
     gender: String!
   }
 
@@ -72,8 +73,8 @@ const typeDefs = gql`
     username: String!
     postcode: String!
     days: [String!]
-    notificationCount: String!
-    appointmentCount: String!
+    notificationCount: String
+    appointmentCount: String
     gender: String!
     genderPreference: String
   }
@@ -115,15 +116,18 @@ const typeDefs = gql`
     appointment: Appointment
   }
 
-  type PatientSetupSuccess {
+  type PatientSignupSuccess {
     success: Boolean!
+    user: User
     patient: Patient
     userId: String
   }
 
-  type SignupSuccess {
+  type CarerSignupSuccess {
     success: Boolean!
     user: User
+    carer: Carer
+    userId: String
   }
 
   type LoginSuccess {
@@ -174,9 +178,16 @@ const typeDefs = gql`
   }
 
   input PatientInput {
-    userId: String!
     gender: String!
     genderPreference: String!
+    username: String
+    postcode: String!
+    days: [String]
+    address: ID
+  }
+
+  input CarerInput {
+    gender: String!
     username: String
     postcode: String!
     days: [String]
@@ -210,8 +221,6 @@ const typeDefs = gql`
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
-    signup(signupInput: SignupInput!): SignupSuccess
-    patientSetup(patientInput: PatientInput!): PatientSetupSuccess
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
     updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
@@ -224,6 +233,15 @@ const typeDefs = gql`
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
     updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
+
+    patientSignup(
+      signupInput: SignupInput!
+      patientInput: PatientInput!
+    ): PatientSignupSuccess
+    carerSignup(
+      signupInput: SignupInput!
+      carerInput: CarerInput!
+    ): CarerSignupSuccess
   }
 `;
 

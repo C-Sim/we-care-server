@@ -20,17 +20,17 @@
   },
   "homepage": "https://github.com/C-Sim/we-care-server#readme",
   "dependencies": {
-    "apollo-server": "^3.10.1",
+    "apollo-server": "^3.10.2",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
-    "date-fns": "^2.29.1",
-    "dotenv": "^16.0.1",
+    "date-fns": "^2.29.2",
+    "dotenv": "^16.0.2",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.5.2"
+    "mongoose": "^6.5.4"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.4.0",
+    "@faker-js/faker": "^7.5.0",
     "nodemon": "^2.0.19"
   }
 }
