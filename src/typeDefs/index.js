@@ -174,7 +174,7 @@ const typeDefs = gql`
   }
 
   input PatientInput {
-    userId: String!
+    userId: String
     gender: String!
     genderPreference: String!
     username: String
@@ -209,7 +209,7 @@ const typeDefs = gql`
     findPatientsByCarerGender(userId: ID!): [Patient]
   }
   type Mutation {
-    login(loginInput: LoginInput!): LoginSuccess
+    login(loginInput: LoginInput!): LoginSucces
     signup(signupInput: SignupInput!): SignupSuccess
     patientSetup(patientInput: PatientInput!): PatientSetupSuccess
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
