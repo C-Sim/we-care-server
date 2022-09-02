@@ -218,6 +218,8 @@ const typeDefs = gql`
       userId: ID!
       updateInput: PatientInfoInput
     ): UpdateInfoSuccess
+    updateApprovedStatus(userId: ID!): UpdateInfoSuccess
+
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
     updateAppointment(

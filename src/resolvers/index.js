@@ -16,6 +16,7 @@ const {
   patientInfo,
   updateCarerInfo,
   updatePatientInfo,
+  updateApprovedStatus,
 } = require("./user");
 const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
@@ -51,6 +52,7 @@ const resolvers = {
     login,
     updateCarerInfo,
     updatePatientInfo,
+    updateApprovedStatus,
     createAppointment,
     deleteAppointment,
     updateAppointment,
