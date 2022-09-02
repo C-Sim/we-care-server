@@ -9,8 +9,6 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
 
     patientInput.userId = user._id;
 
-    console.log(patientInput);
-
     //create new patient (and making sure to pass userId in the patientInput)
     const patient = await Patient.create(patientInput);
 
@@ -30,7 +28,6 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
 
     return {
       success: true,
-      user: user,
       patient: patient,
       userId: patient.userId,
     };

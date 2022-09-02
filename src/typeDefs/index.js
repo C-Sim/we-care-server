@@ -72,8 +72,8 @@ const typeDefs = gql`
     username: String!
     postcode: String!
     days: [String!]
-    notificationCount: String!
-    appointmentCount: String!
+    notificationCount: String
+    appointmentCount: String
     gender: String!
     genderPreference: String
   }
@@ -174,7 +174,6 @@ const typeDefs = gql`
   }
 
   input PatientInput {
-    userId: String
     gender: String!
     genderPreference: String!
     username: String
@@ -224,6 +223,11 @@ const typeDefs = gql`
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
     updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
+
+    patientSignup(
+      signupInput: SignupInput!
+      patientInput: PatientInput!
+    ): PatientSetupSuccess
   }
 `;
 
