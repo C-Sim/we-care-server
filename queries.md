@@ -609,15 +609,187 @@ variables:
 }
 ```
 
-#### Mutation for reallocating an appointment by userId (update carerId)
+#### Mutation for reallocating an appointment by appointmentId (update carerId)
+
+Uses the `updateAppointment` resolver function with switch case trigger = "carerChange"
+
+```graphql
+mutation UpdateAppointmentCarer(
+  $appointmentId: ID!
+  $trigger: String!
+  $appointmentUpdateInput: AppointmentUpdateInput
+) {
+  updateAppointment(
+    appointmentId: $appointmentId
+    trigger: $trigger
+    appointmentUpdateInput: $appointmentUpdateInput
+  ) {
+    success
+    appointment {
+      id
+      carerId
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "trigger": "carerChange",
+  "appointmentUpdateInput": {
+    "carerId": "{{alternativeCarerId}}",
+    "start": "2022-09-22T19:00:00.000+00:00",
+    "end": "2022-09-22T20:00:00.000+00:00"
+  }
+}
+```
 
 ### Mutations for appointments
 
 #### Mutation for checking in (carer - actual start time of an appointment)
 
+Uses the `updateAppointment` resolver function with switch case trigger = "checkin"
+
+```graphql
+mutation UpdateAppointmentCheckin(
+  $appointmentId: ID!
+  $trigger: String!
+  $appointmentUpdateInput: AppointmentUpdateInput
+) {
+  updateAppointment(
+    appointmentId: $appointmentId
+    trigger: $trigger
+    appointmentUpdateInput: $appointmentUpdateInput
+  ) {
+    success
+    appointment {
+      id
+      start
+      actualStart
+      status
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "trigger": "checkin"
+}
+```
+
 #### Mutation for checking out (carer - actual end time of an appointment)
 
-#### Mutation for adding review/notes/comment to appointment
+Uses the `updateAppointment` resolver function with switch case trigger = "checkout"
+
+```graphql
+mutation UpdateAppointmentCheckout(
+  $appointmentId: ID!
+  $trigger: String!
+  $appointmentUpdateInput: AppointmentUpdateInput
+) {
+  updateAppointment(
+    appointmentId: $appointmentId
+    trigger: $trigger
+    appointmentUpdateInput: $appointmentUpdateInput
+  ) {
+    success
+    appointment {
+      id
+      end
+      actualEnd
+      status
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "trigger": "checkout"
+}
+```
+
+#### Mutation for adding a patient note to appointment
+
+Uses the `updateAppointment` resolver function with switch case trigger = "patientNote"
+
+```graphql
+mutation UpdateAppointmentPatientNote(
+  $appointmentId: ID!
+  $trigger: String!
+  $appointmentUpdateInput: AppointmentUpdateInput
+) {
+  updateAppointment(
+    appointmentId: $appointmentId
+    trigger: $trigger
+    appointmentUpdateInput: $appointmentUpdateInput
+  ) {
+    success
+    appointment {
+      id
+      patientNotes
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "trigger": "patientNote",
+  "appointmentUpdateInput": {
+    "note": "{{$randomLoremSentence}}"
+  }
+}
+```
+
+#### Mutation for adding a carer note to appointment
+
+Uses the `updateAppointment` resolver function with switch case trigger = "carerNote"
+
+```graphql
+mutation UpdateAppointmentCarerNote(
+  $appointmentId: ID!
+  $trigger: String!
+  $appointmentUpdateInput: AppointmentUpdateInput
+) {
+  updateAppointment(
+    appointmentId: $appointmentId
+    trigger: $trigger
+    appointmentUpdateInput: $appointmentUpdateInput
+  ) {
+    success
+    appointment {
+      id
+      carerNotes
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "trigger": "carerNote",
+  "appointmentUpdateInput": {
+    "note": "{{$randomLoremSentence}}"
+  }
+}
+```
 
 ### Mutation for adding carer review
 
