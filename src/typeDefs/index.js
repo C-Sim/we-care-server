@@ -116,7 +116,7 @@ const typeDefs = gql`
     appointment: Appointment
   }
 
-  type PatientSetupSuccess {
+  type PatientSignupSuccess {
     success: Boolean!
     user: User
     patient: Patient
@@ -220,9 +220,7 @@ const typeDefs = gql`
     findPatientsByCarerGender(userId: ID!): [Patient]
   }
   type Mutation {
-    login(loginInput: LoginInput!): LoginSucces
-    signup(signupInput: SignupInput!): SignupSuccess
-    patientSetup(patientInput: PatientInput!): PatientSetupSuccess
+    login(loginInput: LoginInput!): LoginSuccess
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
     updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
