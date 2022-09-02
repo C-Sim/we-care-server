@@ -55,7 +55,9 @@ const prepareFemaleAppointmentsData = async () => {
         const actualEnd = end;
         const patientId = chosenPatients[iii].userId;
         const title = `Visit to ${chosenPatients[iii].username} by ${carerUsername}`;
-        const notes = [];
+        const carerNotes = [];
+        const firstNote = faker.lorem.sentences(3);
+        carerNotes.push(firstNote);
         const patientReview = {
           reviewDate: addHours(start, 6),
           score: 3,
@@ -73,7 +75,7 @@ const prepareFemaleAppointmentsData = async () => {
           actualEnd,
           patientId,
           carerId,
-          notes,
+          carerNotes,
           patientReview,
         };
 
@@ -160,7 +162,9 @@ const prepareMaleAppointmentsData = async () => {
         const actualEnd = end;
         const patientId = chosenPatients[iii].userId;
         const title = `Visit to ${chosenPatients[iii].username} by ${carerUsername}`;
-        const notes = [];
+        const carerNotes = [];
+        const firstNote = faker.lorem.sentences(3);
+        carerNotes.push(firstNote);
         const patientReview = {
           reviewDate: addHours(start, 6),
           score: 3,
@@ -178,7 +182,7 @@ const prepareMaleAppointmentsData = async () => {
           actualEnd,
           patientId,
           carerId,
-          notes,
+          carerNotes,
           patientReview,
         };
 

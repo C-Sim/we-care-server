@@ -28,7 +28,8 @@ const appointmentSchema = {
   status: {
     type: String,
     required: true,
-    default: "not started",
+    enum: ["upcoming", "ongoing", "completed"],
+    default: "upcoming",
   },
   actualStart: {
     type: Date,
@@ -50,7 +51,12 @@ const appointmentSchema = {
     ref: "User",
     required: true,
   },
-  notes: [
+  patientNotes: [
+    {
+      type: String,
+    },
+  ],
+  carerNotes: [
     {
       type: String,
     },

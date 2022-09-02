@@ -1,13 +1,29 @@
 const addressLookup = require("./addressLookup");
-const users = require("./users");
-const appointments = require("./appointments");
-const userInfo = require("./user");
+const { users, carers, patients } = require("./users");
+const {
+  allAppointments,
+  appointmentsByUserId,
+  createAppointment,
+  deleteAppointment,
+  updateAppointment,
+} = require("./appointments");
+const {
+  notificationsByUserId,
+  updateIsReadStatus,
+} = require("./notifications");
+const {
+  carerInfo,
+  patientInfo,
+  updateCarerInfo,
+  updatePatientInfo,
+  updateApprovedStatus,
+} = require("./user");
 const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
 const {
-  findPatientsByCarergender,
-  findPatientsByCarergenderAndDay,
+  findPatientsByCarerGender,
+  findPatientsByCarerGenderAndDay,
 } = require("./matchingPatient");
 const { signup, patientSetup } = require("./signup");
 const login = require("./login");
@@ -16,18 +32,30 @@ const resolvers = {
   Query: {
     addressLookup,
     users,
-    appointments,
-    userInfo,
+    carers,
+    patients,
+    allAppointments,
+    appointmentsByUserId,
+    notificationsByUserId,
+    carerInfo,
+    patientInfo,
     supervisor,
     patientDashboard,
     carerDashboard,
-    findPatientsByCarergender,
-    findPatientsByCarergenderAndDay,
+    findPatientsByCarerGender,
+    findPatientsByCarerGenderAndDay,
   },
   Mutation: {
     signup,
     patientSetup,
     login,
+    updateCarerInfo,
+    updatePatientInfo,
+    updateApprovedStatus,
+    createAppointment,
+    deleteAppointment,
+    updateAppointment,
+    updateIsReadStatus,
   },
 };
 

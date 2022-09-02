@@ -37,11 +37,13 @@ const typeDefs = gql`
     status: String
     actualStart: String
     actualEnd: String
+    carerNotes: [String]
+    patientNotes: [String]
   }
   type Notification {
     id: ID!
     notificationDate: String!
-    senderId: String!
+    senderId: String
     receiverId: String
     notificationText: String
     isRead: Boolean
@@ -73,6 +75,13 @@ const typeDefs = gql`
     notificationCount: String!
     appointmentCount: String!
     gender: String!
+    genderPreference: String
+  }
+
+  type UserInfo {
+    user: User
+    carer: Carer
+    patient: Patient
   }
 
   type carerDashboard {
@@ -85,6 +94,25 @@ const typeDefs = gql`
     patient: Patient
     appointments: [Appointment]
     notifications: [Notification]
+  }
+
+  type DeleteSuccess {
+    success: Boolean!
+    carerId: String
+    patientId: String
+  }
+  type CreateSuccess {
+    success: Boolean!
+    id: String
+  }
+  type UpdateSuccess {
+    success: Boolean!
+    userId: String
+  }
+
+  type UpdateAppointmentSuccess {
+    success: Boolean!
+    appointment: Appointment
   }
 
   type PatientSetupSuccess {
@@ -102,6 +130,38 @@ const typeDefs = gql`
     success: Boolean!
     token: String!
     user: User
+  }
+
+  input AppointmentUpdateInput {
+    carerId: String
+    start: String
+    end: String
+    actualStart: String
+    actualEnd: String
+    note: String
+  }
+  input AppointmentInput {
+    patientId: String!
+    carerId: String!
+    start: String
+    end: String
+    appointmentDate: String
+    title: String
+  }
+
+  input CarerInfoInput {
+    gender: String
+    postcode: String
+    days: [String]
+    address: ID
+  }
+
+  input PatientInfoInput {
+    gender: String
+    genderPreference: String
+    postcode: String
+    days: [String]
+    address: ID
   }
 
   input SignupInput {
@@ -135,18 +195,35 @@ const typeDefs = gql`
   type Query {
     addressLookup(postcode: String!): AddressLookup
     users: [User]
-    appointments: [Appointment]
-    userInfo(userId: ID!): User
+    carers: [Carer]
+    patients: [Patient]
+    allAppointments: [Appointment]
+    appointmentsByUserId(userId: ID!): [Appointment]
+    notificationsByUserId(userId: ID!, mailType: String!): [Notification]
+    carerInfo(userId: ID!): Carer
+    patientInfo(userId: ID!): Patient
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
-    findPatientsByCarergenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
-    findPatientsByCarergender(userId: ID!): [Patient]
+    findPatientsByCarerGenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
+    findPatientsByCarerGender(userId: ID!): [Patient]
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
     signup(signupInput: SignupInput!): SignupSuccess
     patientSetup(patientInput: PatientInput!): PatientSetupSuccess
+    updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
+    updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
+    updateApprovedStatus(userId: ID!): UpdateSuccess
+
+    createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
+    deleteAppointment(appointmentId: ID!): DeleteSuccess
+    updateAppointment(
+      appointmentId: ID!
+      trigger: String!
+      appointmentUpdateInput: AppointmentUpdateInput
+    ): UpdateAppointmentSuccess
+    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
   }
 `;
 
