@@ -563,6 +563,23 @@ Need to confirm if it works after signup mutation is updated
 
 #### Mutation for approving a patient
 
+```graphql
+mutation UpdateApprovedStatus($userId: ID!) {
+  updateApprovedStatus(userId: $userId) {
+    success
+    userId
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{nonApprovedUserId}}"
+}
+```
+
 #### Mutation for creating an appointment
 
 ```graphql
