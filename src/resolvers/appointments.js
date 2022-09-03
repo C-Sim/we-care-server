@@ -1,5 +1,6 @@
 const { ApolloError } = require("apollo-server");
 const { Appointment, Supervisor, Carer, Patient } = require("../models");
+const sendNotification = require("./sendNotification");
 
 const allAppointments = async () => {
   const appointments = await Appointment.find({});
@@ -174,6 +175,8 @@ const updateAppointment = async (
             new: true,
           }
         );
+
+        //update previous carer's appointments
         const previousCarerToUpdate = await Carer.findOneAndUpdate(
           { userId: previousCarerId },
           {
@@ -182,6 +185,18 @@ const updateAppointment = async (
             },
           }
         );
+
+        ///notify previous carer
+        const previousCarerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId: previousCarerId,
+          type: "Schedule change",
+          notificationText:
+            "Your request has been approved and the appointment has been removed from your schedule",
+          appointmentId,
+        });
+
+        //update new carer's appointments
         const newCarerToUpdate = await Carer.findOneAndUpdate(
           { userId: newCarerId },
           {
@@ -190,6 +205,26 @@ const updateAppointment = async (
             },
           }
         );
+
+        ///notify new carer
+        const newCarerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId: newCarerId,
+          type: "Schedule change",
+          notificationText:
+            "You have been assigned a new appointment in your schedule",
+          appointmentId,
+        });
+
+        //notify patient of the update
+        const patientNotified = await sendNotification({
+          receiverType: "patient",
+          receiverId: appointment.patientId,
+          type: "Carer change",
+          notificationText: "Your carer for that appointment has changed.",
+          appointmentId,
+        });
+
         break;
     }
 
