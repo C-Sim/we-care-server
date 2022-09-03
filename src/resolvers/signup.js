@@ -4,17 +4,20 @@ const { User, Patient, Carer, Supervisor, Notification } = require("../models");
 const patientSignup = async (_, { signupInput, patientInput }) => {
   try {
     //   //create user
+    signupInput.accountType = "patient";
+    console.log(signupInput);
     //   //check if we get the user id back after creation
     const user = await User.create(signupInput);
 
     patientInput.userId = user._id;
+    patientInput.username = `${user.firstName} ${user.lastName}`;
 
     //create new patient (and making sure to pass userId in the patientInput)
     const patient = await Patient.create(patientInput);
 
-    //create notification to supervisor so they can approve them as a new patient
+    //create notification
     const supervisor = await Supervisor.findOne({});
-    const supervisorId = supervisor.id;
+    const supervisorId = supervisor.userId;
 
     const notificationData = {
       receiverId: supervisorId,
@@ -23,8 +26,19 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
         "New patient signup - Your action: review and approve profile",
     };
 
-    //check how we pass supervisor id and patient id
-    await Notification.create(notificationData);
+    const newNotification = await Notification.create(notificationData);
+
+    //add notification into the supervisor's notifications array
+    const notificationId = newNotification._id;
+
+    const notificationArrayUpdate = await Supervisor.findOneAndUpdate(
+      { userId: supervisorId },
+      {
+        $push: {
+          notifications: notificationId,
+        },
+      }
+    );
 
     return {
       success: true,
