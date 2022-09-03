@@ -173,8 +173,8 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     password: String!
-    accountType: String!
     phoneNumber: String
+    accountType: String
   }
 
   input PatientInput {
