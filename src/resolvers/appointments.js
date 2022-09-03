@@ -239,25 +239,22 @@ const updateAppointment = async (
   }
 };
 
-const updateAppointmentReview = async (
-  _,
-  { reviewInput, userId, appointmentId }
-) => {
+const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
   try {
     //find the appointment data
     const appointment = await Appointment.findById(appointmentId);
     //add fields to the review input
-    reviewInput.patientId = userId;
     reviewInput.appointmentId = appointmentId;
+    reviewInput.patientId = appointment.patientId;
     reviewInput.carerId = appointment.carerId;
 
-    //push the review in the carer's reviews array
+    //update the "patientReview" subdocument in the appointment document
     appointment.patientReview = reviewInput;
     const updatedAppointment = await appointment.save();
 
     return {
       success: true,
-      userId: userId,
+      userId: appointment.patientId,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update patient | ${error.message}`);

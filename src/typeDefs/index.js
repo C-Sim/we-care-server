@@ -242,7 +242,6 @@ const typeDefs = gql`
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
     updateAppointmentReview(
-      userId: ID!
       reviewInput: ReviewInput
       appointmentId: ID!
     ): UpdateSuccess
