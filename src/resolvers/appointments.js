@@ -148,6 +148,10 @@ const updateAppointment = async (
             new: true,
           }
         );
+        //get all appointments for that day
+        //find this appointment's position in the array
+        //if not the last one, find the next appointment and get the patient id
+        //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
         break;
       case "carerNote":
         const carerNote = appointmentUpdateInput.note;
