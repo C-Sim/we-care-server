@@ -432,20 +432,20 @@ variables
 
 ## Mutations
 
-### Mutation for signing up as a new user (patient account type)
-
-1st part: mutation to set up the new user (account type: patient - part of signup form)
+### Mutation for signing up as a new patient
 
 ```graphql
-mutation Mutation($signupInput: SignupInput!) {
-  signup(signupInput: $signupInput) {
+mutation PatientSignup(
+  $signupInput: SignupInput!
+  $patientInput: PatientInput!
+) {
+  patientSignup(signupInput: $signupInput, patientInput: $patientInput) {
     success
-    user {
-      id
-      firstName
-      lastName
-      email
+    patient {
+      username
+      gender
     }
+    userId
   }
 }
 ```
@@ -459,34 +459,11 @@ variables:
     "lastName": "{{$randomLastName}}",
     "email": "{{$randomExampleEmail}}",
     "password": "Password123!",
-    "accountType": "patient"
-  }
-}
-```
-
-2nd part: mutation for setting up the new profile (part of signup form):
-
-```graphql
-mutation Mutation($patientInput: PatientInput!) {
-  patientSetup(patientInput: $patientInput) {
-    success
-    patient {
-      username
-    }
-    userId
-  }
-}
-```
-
-variables:
-
-```json
-{
+    "phoneNumber": "07777777777"
+  },
   "patientInput": {
-    "userId": "{{newUserId}}",
     "gender": "female",
     "genderPreference": "none",
-    "username": "{{username}}",
     "postcode": "B29 5PZ",
     "days": [
       "monday",
@@ -580,10 +557,39 @@ variables (example):
 
 ### Mutations for supervisor account
 
-#### Mutation for adding a new carer: new user (account type carer) + new carer profile
+#### Mutation for creating a new carer (done by supervisor)
 
-Hoping to use the signup mutation (passing it accountType: carer)
-Need to confirm if it works after signup mutation is updated
+```graphql
+mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {
+  carerSignup(signupInput: $signupInput, carerInput: $carerInput) {
+    success
+    carer {
+      username
+      gender
+    }
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "signupInput": {
+    "firstName": "{{$randomFirstName}}",
+    "lastName": "{{$randomLastName}}",
+    "email": "{{$randomExampleEmail}}",
+    "password": "Password123!",
+    "phoneNumber": "07777777777"
+  },
+  "carerInput": {
+    "gender": "female",
+    "postcode": "B29 5PZ",
+    "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  }
+}
+```
 
 #### Mutation for approving a new patient (update user field approvedStatus)
 
