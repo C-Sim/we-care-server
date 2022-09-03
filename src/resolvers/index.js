@@ -6,6 +6,7 @@ const {
   createAppointment,
   deleteAppointment,
   updateAppointment,
+  updateAppointmentReview,
 } = require("./appointments");
 const {
   notificationsByUserId,
@@ -57,6 +58,7 @@ const resolvers = {
     createAppointment,
     deleteAppointment,
     updateAppointment,
+    updateAppointmentReview,
     updateIsReadStatus,
   },
 };
