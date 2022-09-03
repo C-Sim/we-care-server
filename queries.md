@@ -140,18 +140,19 @@ query AppointmentsByUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}"
 }
 ```
 
 #### Query appointments by date and userId (for timeline and reallocating)
 
 ```graphql
-query AppointmentsByDateAndUserId($userId: ID!) {
-  appointmentsByDateAndUserId(userId: $userId) {
+query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
+  appointmentsByDateAndUserId(userId: $userId, dateInput: $dateInput) {
     id
+    appointmentDate
     patientId
     carerId
     start
@@ -163,9 +164,13 @@ query AppointmentsByDateAndUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}",
+  "dateInput": {
+    "dayStart": "2022-09-02T00:00:00",
+    "dayEnd": "2022-09-03T00:00:00"
+  }
 }
 ```
 
@@ -184,9 +189,9 @@ query AppointmentNotesByUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}"
 }
 ```
 
