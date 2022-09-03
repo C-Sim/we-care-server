@@ -845,16 +845,18 @@ variables:
 #### Mutations for creating a notification
 
 To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver).
-Two steps:
+It requires 2 steps:
 
 - 1: create the notification
 - 2: update the receiver's notifications array
 
-Notifications are triggered at these stages:
+These steps are built into the `sendNotification` function in the **sendNotification.js** file in the resolvers folder.
 
-- check out of appointment > notification to next appointment's patient
-- patient signup > notification to supervisor
-- reallocation of appointment > notifications to each carer
+Notifications are triggered by calling the `sendNotification` function in the following resolvers: (and passing it the relevant fields)
+
+- **signup** > `patientSignup` > notification to supervisor
+- **appointments** > `updateAppointment` > reallocation of appointment > notifications to each carer
+- **appointments** > `updateAppointment` > check out of appointment > notification to next appointment's patient
 
 #### Mutation for updating notification status by notification id
 
