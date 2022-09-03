@@ -11,7 +11,12 @@ const notificationSchema = {
   },
   type: {
     type: String,
-    enum: ["Schedule change", "New patient review", "New care requirement"],
+    enum: [
+      "Schedule change",
+      "Carer change",
+      "New patient review",
+      "New care requirement",
+    ],
   },
   isRead: {
     type: Boolean,
@@ -21,7 +26,6 @@ const notificationSchema = {
   senderId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   receiverId: {
     type: Schema.Types.ObjectId,
