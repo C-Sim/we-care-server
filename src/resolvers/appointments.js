@@ -257,7 +257,7 @@ const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
       userId: appointment.patientId,
     };
   } catch (error) {
-    console.log(`[ERROR]: Failed to update patient | ${error.message}`);
+    console.log(`[ERROR]: Failed to update review | ${error.message}`);
   }
 };
 
