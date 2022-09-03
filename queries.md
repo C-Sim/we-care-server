@@ -840,6 +840,27 @@ variables:
 
 ### Mutation for adding carer review
 
+```graphql
+mutation UpdateCarerReviews($userId: ID!, $reviewInput: ReviewInput) {
+  updateCarerReviews(userId: $userId, reviewInput: $reviewInput) {
+    success
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{carerId}}",
+  "reviewInput": {
+    "comment": "nice carer with good manners!",
+    "score": 4
+  }
+}
+```
+
 ### Mutations for notifications
 
 #### Mutations for creating a notification
@@ -855,6 +876,7 @@ These steps are built into the `sendNotification` function in the **sendNotifica
 Notifications are triggered by calling the `sendNotification` function in the following resolvers: (and passing it the relevant fields)
 
 - **signup** > `patientSignup` > notification to supervisor
+- **user** > `updateCarerReview` > notification to carer
 - **appointments** > `updateAppointment` > reallocation of appointment > notifications to each carer
 - **appointments** > `updateAppointment` > check out of appointment > notification to next appointment's patient
 
