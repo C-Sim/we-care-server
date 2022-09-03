@@ -838,7 +838,17 @@ variables:
 
 #### Mutations for creating a notification
 
-To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver)
+To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver).
+Two steps:
+
+- 1: create the notification
+- 2: update the receiver's notifications array
+
+Notifications are triggered at these stages:
+
+- check out of appointment > notification to next appointment's patient
+- patient signup > notification to supervisor
+- reallocation of appointment > notifications to each carer
 
 #### Mutation for updating notification status by notification id
 
