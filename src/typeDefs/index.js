@@ -154,6 +154,14 @@ const typeDefs = gql`
     title: String
   }
 
+  input ReviewInput {
+    score: Float
+    comment: String
+    patientId: ID
+    appointmentId: ID
+    carerId: ID
+  }
+
   input CarerInfoInput {
     gender: String
     postcode: String
@@ -225,7 +233,7 @@ const typeDefs = gql`
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
     updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
-
+    updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
     updateAppointment(

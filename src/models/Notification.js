@@ -17,6 +17,7 @@ const notificationSchema = {
       "New patient review",
       "New care requirement",
       "Update",
+      "New review",
     ],
     default: "Update",
   },

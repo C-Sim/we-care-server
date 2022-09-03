@@ -186,7 +186,7 @@ const updateAppointment = async (
           }
         );
 
-        ///notify previous carer
+        //notify previous carer
         const previousCarerNotified = await sendNotification({
           receiverType: "carer",
           receiverId: previousCarerId,
