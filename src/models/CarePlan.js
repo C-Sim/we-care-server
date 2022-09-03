@@ -13,43 +13,43 @@ const carePlanSchema = {
   },
   disabilities: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   mobility: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   communication: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   allergies: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   personalCare: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   mentalHealth: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],
   dietaryRequirements: [
     {
-      type: string,
+      type: String,
       default: false,
     },
   ],

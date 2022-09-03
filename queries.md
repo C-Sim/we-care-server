@@ -434,18 +434,25 @@ variables
 
 ### Mutation for signing up as a new user (patient account type)
 
-1st part: mutation to set up the new user (account type: patient - part of signup form)
-
 ```graphql
-mutation Mutation($signupInput: SignupInput!) {
-  signup(signupInput: $signupInput) {
+mutation Mutation($signupInput: SignupInput!, $patientInput: PatientInput!) {
+  patientSignup(signupInput: $signupInput, patientInput: $patientInput) {
     success
     user {
-      id
       firstName
       lastName
       email
+      accountType
     }
+    patient {
+      username
+      postcode
+      days
+      notificationCount
+      appointmentCount
+      gender
+    }
+    userId
   }
 }
 ```
@@ -464,42 +471,9 @@ variables:
 }
 ```
 
-2nd part: mutation for setting up the new profile (part of signup form):
+### Mutation for signing up as a new user (carer account type)
 
-```graphql
-mutation Mutation($patientInput: PatientInput!) {
-  patientSetup(patientInput: $patientInput) {
-    success
-    patient {
-      username
-    }
-    userId
-  }
-}
-```
-
-variables:
-
-```json
-{
-  "patientInput": {
-    "userId": "{{newUserId}}",
-    "gender": "female",
-    "genderPreference": "none",
-    "username": "{{username}}",
-    "postcode": "B29 5PZ",
-    "days": [
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday"
-    ]
-  }
-}
-```
+<!-- to do later -->
 
 ### Mutation for logging in (any account type):
 
