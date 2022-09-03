@@ -464,9 +464,27 @@ variables:
   "signupInput": {
     "firstName": "{{$randomFirstName}}",
     "lastName": "{{$randomLastName}}",
-    "email": "{{$randomExampleEmail}}",
+    // change the email every attempt/test for user signup as cannot duplicate
+    "email": "test@gmail.com",
     "password": "Password123!",
-    "accountType": "patient"
+    "accountType": "carer",
+    "phoneNumber": "07777777777"
+  },
+  "patientInput": {
+    "gender": "female",
+    "genderPreference": "female",
+    "username": "bob smith",
+    "postcode": "B29 5PZ",
+    "days": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "address": null
   }
 }
 ```
