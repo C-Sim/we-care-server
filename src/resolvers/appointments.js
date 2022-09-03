@@ -14,6 +14,21 @@ const appointmentsByUserId = async (_, { userId }) => {
   return appointments;
 };
 
+const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
+  const appointments = await Appointment.find({
+    $and: [
+      { $or: [{ carerId: userId }, { patientId: userId }] },
+      {
+        appointmentDate: {
+          $gte: new Date(dateInput.dayStart),
+          $lte: new Date(dateInput.dayEnd),
+        },
+      },
+    ],
+  }).sort("appointmentDate");
+  return appointments;
+};
+
 const createAppointment = async (_, { appointmentInput }) => {
   try {
     const createdAppointment = await Appointment.create(appointmentInput);
@@ -264,6 +279,7 @@ const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
 module.exports = {
   allAppointments,
   appointmentsByUserId,
+  appointmentsByDateAndUserId,
   createAppointment,
   deleteAppointment,
   updateAppointment,

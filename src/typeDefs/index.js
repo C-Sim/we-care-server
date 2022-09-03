@@ -30,6 +30,7 @@ const typeDefs = gql`
 
   type Appointment {
     id: ID!
+    appointmentDate: String
     patientId: String!
     carerId: String
     start: String!
@@ -212,6 +213,11 @@ const typeDefs = gql`
     date: String
   }
 
+  input DateInput {
+    dayStart: String
+    dayEnd: String
+  }
+
   type Query {
     addressLookup(postcode: String!): AddressLookup
     users: [User]
@@ -219,6 +225,10 @@ const typeDefs = gql`
     patients: [Patient]
     allAppointments: [Appointment]
     appointmentsByUserId(userId: ID!): [Appointment]
+    appointmentsByDateAndUserId(
+      userId: ID!
+      dateInput: DateInput
+    ): [Appointment]
     notificationsByUserId(userId: ID!, mailType: String!): [Notification]
     carerInfo(userId: ID!): Carer
     patientInfo(userId: ID!): Patient

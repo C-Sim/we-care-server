@@ -119,8 +119,6 @@ query Appointments {
     start
     end
     status
-    actualStart
-    actualEnd
   }
 }
 ```
@@ -136,8 +134,29 @@ query AppointmentsByUserId($userId: ID!) {
     start
     end
     status
-    actualStart
-    actualEnd
+  }
+}
+```
+
+variables:
+
+```
+{
+    "userId": "{{patientId}}"
+}
+```
+
+#### Query appointments by date and userId (for timeline and reallocating)
+
+```graphql
+query AppointmentsByDateAndUserId($userId: ID!) {
+  appointmentsByDateAndUserId(userId: $userId) {
+    id
+    patientId
+    carerId
+    start
+    end
+    status
   }
 }
 ```

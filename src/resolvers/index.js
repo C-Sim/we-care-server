@@ -3,6 +3,7 @@ const { users, carers, patients } = require("./users");
 const {
   allAppointments,
   appointmentsByUserId,
+  appointmentsByDateAndUserId,
   createAppointment,
   deleteAppointment,
   updateAppointment,
@@ -38,6 +39,7 @@ const resolvers = {
     patients,
     allAppointments,
     appointmentsByUserId,
+    appointmentsByDateAndUserId,
     notificationsByUserId,
     carerInfo,
     patientInfo,
