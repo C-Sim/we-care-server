@@ -13,16 +13,46 @@ const carePlanSchema = {
   },
   disabilities: [
     {
-      type: String,
-      trim: true,
+      type: string,
+      default: false,
     },
   ],
-  carePlanText: {
-    type: String,
-  },
-  additionalInfo: {
-    type: String,
-  },
+  mobility: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
+  communication: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
+  allergies: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
+  personalCare: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
+  mentalHealth: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
+  dietaryRequirements: [
+    {
+      type: string,
+      default: false,
+    },
+  ],
 };
 
 const schema = new Schema(carePlanSchema, {
