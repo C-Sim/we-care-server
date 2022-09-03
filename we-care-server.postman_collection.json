@@ -449,6 +449,57 @@
 			]
 		},
 		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Update Carer reviews",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateCarerReviews($userId: ID!, $reviewInput: ReviewInput) {\r\n  updateCarerReviews(userId: $userId, reviewInput: $reviewInput) {\r\n    success\r\n    userId\r\n}\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"reviewInput\": {\r\n        \"comment\": \"nice carer with good manners!\",\r\n        \"score\": 4\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Appointment review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateAppointmentReview($reviewInput: ReviewInput, $appointmentId: ID!) {\r\n  updateAppointmentReview(reviewInput: $reviewInput, appointmentId: $appointmentId) {\r\n    success\r\n    userId\r\n}\r\n}",
+								"variables": "{\r\n    \"appointmentId\": \"{{appointmentId}}\",\r\n    \"reviewInput\": {\r\n        \"comment\": \"I had a very nice carer and he was on time!\",\r\n        \"score\": 5\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Appointments",
 			"item": [
 				{
