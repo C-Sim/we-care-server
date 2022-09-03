@@ -838,6 +838,35 @@ variables:
 }
 ```
 
+#### Mutation for adding a review in an appointment (patient review of their appointment)
+
+```graphql
+mutation UpdateAppointmentReview(
+  $reviewInput: ReviewInput
+  $appointmentId: ID!
+) {
+  updateAppointmentReview(
+    reviewInput: $reviewInput
+    appointmentId: $appointmentId
+  ) {
+    success
+    userId
+  }
+}
+```
+
+variables
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "reviewInput": {
+    "comment": "I had a very nice carer and he was on time!",
+    "score": 5
+  }
+}
+```
+
 ### Mutation for adding carer review
 
 ```graphql
