@@ -45,6 +45,7 @@ const typeDefs = gql`
     notificationDate: String!
     senderId: String
     receiverId: String
+    notificationType: String
     notificationText: String
     isRead: Boolean
   }

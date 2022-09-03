@@ -4,7 +4,7 @@ const { Patient, Carer, Supervisor, Notification } = require("../models");
 const sendNotification = async ({
   receiverType,
   receiverId,
-  type,
+  notificationType,
   notificationText,
   appointmentId,
 }) => {
@@ -12,7 +12,7 @@ const sendNotification = async ({
     //create notification data
     const notificationData = {
       receiverId,
-      type,
+      notificationType,
       notificationText,
       appointmentId,
     };

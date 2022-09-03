@@ -190,7 +190,7 @@ const updateAppointment = async (
         const previousCarerNotified = await sendNotification({
           receiverType: "carer",
           receiverId: previousCarerId,
-          type: "Schedule change",
+          notificationType: "Schedule change",
           notificationText:
             "Your request has been approved and the appointment has been removed from your schedule",
           appointmentId,
@@ -210,7 +210,7 @@ const updateAppointment = async (
         const newCarerNotified = await sendNotification({
           receiverType: "carer",
           receiverId: newCarerId,
-          type: "Schedule change",
+          notificationType: "Schedule change",
           notificationText:
             "You have been assigned a new appointment in your schedule",
           appointmentId,
@@ -220,7 +220,7 @@ const updateAppointment = async (
         const patientNotified = await sendNotification({
           receiverType: "patient",
           receiverId: appointment.patientId,
-          type: "Carer change",
+          notificationType: "Carer change",
           notificationText: "Your carer for that appointment has changed.",
           appointmentId,
         });
