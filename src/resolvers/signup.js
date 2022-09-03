@@ -3,22 +3,23 @@ const { User, Patient, Carer, Supervisor, Notification } = require("../models");
 
 const patientSignup = async (_, { signupInput, patientInput }) => {
   try {
-    //   //create user
+    //add account type to signup input
     signupInput.accountType = "patient";
-    console.log(signupInput);
-    //   //check if we get the user id back after creation
-    const user = await User.create(signupInput);
 
+    //create user
+    const user = await User.create(signupInput);
+    //retrieve relevant info and add to patientInput
     patientInput.userId = user._id;
     patientInput.username = `${user.firstName} ${user.lastName}`;
 
-    //create new patient (and making sure to pass userId in the patientInput)
+    //create new patient
     const patient = await Patient.create(patientInput);
 
-    //create notification
+    //retrieve supervisor info
     const supervisor = await Supervisor.findOne({});
     const supervisorId = supervisor.userId;
 
+    //create notification
     const notificationData = {
       receiverId: supervisorId,
       senderId: patient.userId,
@@ -54,13 +55,17 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
 
 const carerSignup = async (_, { signupInput, carerInput }) => {
   try {
-    //   //create user
-    //   //check if we get the user id back after creation
+    //add account type to signup input
+    signupInput.accountType = "carer";
+
+    //create user
     const user = await User.create(signupInput);
 
+    //retrieve relevant info and add to carerInput
     carerInput.userId = user._id;
+    carerInput.username = `${user.firstName} ${user.lastName}`;
 
-    //create new patient (and making sure to pass userId in the patientInput)
+    //create new patient
     const carer = await Carer.create(carerInput);
 
     return {
@@ -69,9 +74,9 @@ const carerSignup = async (_, { signupInput, carerInput }) => {
       userId: carer.userId,
     };
   } catch (error) {
-    console.log(`[ERROR]: Failed to create patient | ${error.message}`);
+    console.log(`[ERROR]: Failed to create carer | ${error.message}`);
 
-    throw new ApolloError("Failed to create patient");
+    throw new ApolloError("Failed to create carer");
   }
 };
 
