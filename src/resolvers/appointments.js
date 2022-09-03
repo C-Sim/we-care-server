@@ -25,7 +25,7 @@ const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
         },
       },
     ],
-  }).sort("appointmentDate");
+  }).sort("start");
   return appointments;
 };
 
