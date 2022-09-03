@@ -26,6 +26,7 @@ const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
       },
     ],
   }).sort("start");
+  //sort({start: -1}) to have it in descending order - latest appointment first
   return appointments;
 };
 
@@ -138,20 +139,55 @@ const updateAppointment = async (
         );
         break;
       case "checkout":
+        //create the actual end time
         const actualEnd = new Date();
-        updatedAppointment = await Appointment.findOneAndUpdate(
-          { _id: appointmentId },
-          {
-            $set: { actualEnd, status: "completed" },
-          },
-          {
-            new: true,
-          }
-        );
+        //update the actualEnd field and the status in the Appointment document
+        const appointment = await Appointment.findById(appointmentId);
+        appointment.actualEnd = actualEnd;
+        appointment.status = "completed";
+        updatedAppointment = await appointment.save();
+
+        //get the fields we need for the notification prep
+        const userId = appointment.carerId;
+        const filterTime = appointment.end;
+        const selectedDate = new Date(filterTime);
+        const dateInput = {
+          dayStart: selectedDate.setUTCHours(0, 0, 0, 0),
+          dayEnd: selectedDate.setUTCHours(23, 59, 59, 999),
+        };
+
         //get all appointments for that day
+        const appointments = await Appointment.find({
+          $and: [
+            { carerId: userId },
+            {
+              appointmentDate: {
+                $gte: new Date(dateInput.dayStart),
+                $lte: new Date(dateInput.dayEnd),
+              },
+            },
+          ],
+        }).sort("start");
+
         //find this appointment's position in the array
+        const followingAppointments = appointments.filter(
+          (i) => new Date(i.start) > selectedDate
+        );
+        console.log(followingAppointments);
+
         //if not the last one, find the next appointment and get the patient id
-        //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
+        if (followingAppointments.length) {
+          const nextAppointmentId = followingAppointments[0].id;
+          const receiverId = followingAppointments[0].patientId;
+          //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
+          const patientNotified = await sendNotification({
+            receiverType: "patient",
+            receiverId,
+            notificationType: "Update",
+            notificationText: "Your carer is on their way to you!",
+            appointmentId: nextAppointmentId,
+          });
+        }
         break;
       case "carerNote":
         const carerNote = appointmentUpdateInput.note;
