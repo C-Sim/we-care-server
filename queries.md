@@ -939,6 +939,7 @@ Notifications are triggered by calling the `sendNotification` function in the fo
 
 - **signup** > `patientSignup` > notification to supervisor
 - **user** > `updateCarerReview` > notification to carer
+- **appointments** > `updateAppointment` > new patientNote > notifications to the carer
 - **appointments** > `updateAppointment` > reallocation of appointment > notifications to each carer
 - **appointments** > `updateAppointment` > check out of appointment > notification to next appointment's patient
 
