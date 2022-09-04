@@ -171,12 +171,10 @@ const updateAppointment = async (
         const followingAppointments = appointments.filter(
           (i) => new Date(i.start) > new Date(filterTime)
         );
-        console.log(followingAppointments);
 
         //if not the last one, find the next appointment and get the patient id
         if (followingAppointments.length) {
           const nextAppointmentId = followingAppointments[0].id;
-          console.log(nextAppointmentId);
           const receiverId = followingAppointments[0].patientId;
           //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
           const patientNotified = await sendNotification({
