@@ -255,7 +255,7 @@ const typeDefs = gql`
       reviewInput: ReviewInput
       appointmentId: ID!
     ): UpdateSuccess
-    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
+    updateIsReadStatus(notificationId: ID!, userId: ID): [Notification]
 
     patientSignup(
       signupInput: SignupInput!
