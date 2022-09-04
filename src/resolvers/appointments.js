@@ -151,10 +151,8 @@ const updateAppointment = async (
         const userId = appointment.carerId;
         const filterTime = appointment.end;
         const selectedDate = new Date(filterTime);
-        const dateInput = {
-          dayStart: selectedDate.setUTCHours(0, 0, 0, 0),
-          dayEnd: selectedDate.setUTCHours(23, 59, 59, 999),
-        };
+        const dayStart = selectedDate.setUTCHours(0, 0, 0, 0);
+        const dayEnd = selectedDate.setUTCHours(23, 59, 59, 999);
 
         //get all appointments for that day
         const appointments = await Appointment.find({
@@ -162,8 +160,8 @@ const updateAppointment = async (
             { carerId: userId },
             {
               appointmentDate: {
-                $gte: new Date(dateInput.dayStart),
-                $lte: new Date(dateInput.dayEnd),
+                $gte: new Date(dayStart),
+                $lte: new Date(dayEnd),
               },
             },
           ],
@@ -171,13 +169,14 @@ const updateAppointment = async (
 
         //find this appointment's position in the array
         const followingAppointments = appointments.filter(
-          (i) => new Date(i.start) > selectedDate
+          (i) => new Date(i.start) > new Date(filterTime)
         );
         console.log(followingAppointments);
 
         //if not the last one, find the next appointment and get the patient id
         if (followingAppointments.length) {
           const nextAppointmentId = followingAppointments[0].id;
+          console.log(nextAppointmentId);
           const receiverId = followingAppointments[0].patientId;
           //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
           const patientNotified = await sendNotification({
