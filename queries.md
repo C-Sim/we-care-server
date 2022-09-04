@@ -738,7 +738,11 @@ mutation UpdateAppointmentCheckin(
     success
     appointment {
       id
+      appointmentDate
+      patientId
+      carerId
       start
+      end
       actualStart
       status
     }
@@ -773,7 +777,12 @@ mutation UpdateAppointmentCheckout(
     success
     appointment {
       id
+      appointmentDate
+      patientId
+      carerId
+      start
       end
+      actualStart
       actualEnd
       status
     }
