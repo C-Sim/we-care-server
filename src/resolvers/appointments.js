@@ -213,6 +213,17 @@ const updateAppointment = async (
             new: true,
           }
         );
+        //find carer for this appointment
+        const receiverId = updatedAppointment.carerId;
+        //notify previous carer
+        const carerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId,
+          notificationType: "New care requirement",
+          notificationText:
+            "The patient has added a note for their upcoming appointment",
+          appointmentId,
+        });
         break;
       case "carerChange":
         const previousCarerId = appointment.carerId;
