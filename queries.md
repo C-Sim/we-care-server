@@ -949,8 +949,12 @@ Updates the `isRead` status when the receiver opens the notification
 ```graphql
 mutation UpdateIsReadStatus($notificationId: ID!, $userId: ID) {
   updateIsReadStatus(notificationId: $notificationId, userId: $userId) {
-    success
-    userId
+    id
+    notificationDate
+    senderId
+    receiverId
+    notificationText
+    isRead
   }
 }
 ```
@@ -964,4 +968,4 @@ variables:
 }
 ```
 
-Note: in frontend: on success, using the userId to recall the notifications (update state and re-render components)
+Note: in frontend: this mutation returns the array of received notifications after the update has been made, so this data can be assigned to the relevant state variable, and it will update the list of notifications displayed on state change
