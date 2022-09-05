@@ -434,18 +434,25 @@ variables
 
 ### Mutation for signing up as a new user (patient account type)
 
-1st part: mutation to set up the new user (account type: patient - part of signup form)
-
 ```graphql
-mutation Mutation($signupInput: SignupInput!) {
-  signup(signupInput: $signupInput) {
+mutation Mutation($signupInput: SignupInput!, $patientInput: PatientInput!) {
+  patientSignup(signupInput: $signupInput, patientInput: $patientInput) {
     success
     user {
-      id
       firstName
       lastName
       email
+      accountType
     }
+    patient {
+      username
+      postcode
+      days
+      notificationCount
+      appointmentCount
+      gender
+    }
+    userId
   }
 }
 ```
@@ -457,36 +464,16 @@ variables:
   "signupInput": {
     "firstName": "{{$randomFirstName}}",
     "lastName": "{{$randomLastName}}",
-    "email": "{{$randomExampleEmail}}",
+    // change the email every attempt/test for user signup as cannot duplicate
+    "email": "test@gmail.com",
     "password": "Password123!",
-    "accountType": "patient"
-  }
-}
-```
-
-2nd part: mutation for setting up the new profile (part of signup form):
-
-```graphql
-mutation Mutation($patientInput: PatientInput!) {
-  patientSetup(patientInput: $patientInput) {
-    success
-    patient {
-      username
-    }
-    userId
-  }
-}
-```
-
-variables:
-
-```json
-{
+    "accountType": "carer",
+    "phoneNumber": "07777777777"
+  },
   "patientInput": {
-    "userId": "{{newUserId}}",
     "gender": "female",
-    "genderPreference": "none",
-    "username": "{{username}}",
+    "genderPreference": "female",
+    "username": "bob smith",
     "postcode": "B29 5PZ",
     "days": [
       "monday",
@@ -496,10 +483,15 @@ variables:
       "friday",
       "saturday",
       "sunday"
-    ]
+    ],
+    "address": null
   }
 }
 ```
+
+### Mutation for signing up as a new user (carer account type)
+
+<!-- to do later -->
 
 ### Mutation for logging in (any account type):
 
@@ -863,3 +855,28 @@ variables:
 ```
 
 Note: in frontend: on success, using the userId to recall the notifications (update state and re-render components)
+
+### Mutations for creating and updating a Care Plan for Patient
+
+Create/update the Care Plan when the Patient submit the Care Plan form
+
+```graphql
+mutation Mutation($userId: ID!, $carePlanInput: CarePlanInput!) {
+  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
+    success
+    id
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "6310bb9a290a5d43c53e1797",
+  "carePlanInput": {
+    "disabilities": "random",
+    "mobility": "test"
+  }
+}
+```

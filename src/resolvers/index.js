@@ -27,6 +27,7 @@ const {
 } = require("./matchingPatient");
 const { patientSignup, carerSignup } = require("./signup");
 const login = require("./login");
+const { createCarePlan } = require("./carePlan");
 
 const resolvers = {
   Query: {
@@ -56,6 +57,7 @@ const resolvers = {
     deleteAppointment,
     updateAppointment,
     updateIsReadStatus,
+    createCarePlan,
   },
 };
 

@@ -153,6 +153,17 @@ const typeDefs = gql`
     title: String
   }
 
+  input CarePlanInput {
+    disabilities: String
+    mobility: String
+    communication: String
+    allergies: String
+    personalCare: String
+    mentalHealth: String
+    dietaryRequirements: String
+    designatedPerson: String
+  }
+
   input CarerInfoInput {
     gender: String
     postcode: String
@@ -242,6 +253,7 @@ const typeDefs = gql`
       signupInput: SignupInput!
       carerInput: CarerInput!
     ): CarerSignupSuccess
+    createCarePlan(userId: ID!, carePlanInput: CarePlanInput!): CreateSuccess
   }
 `;
 
