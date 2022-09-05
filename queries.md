@@ -725,7 +725,6 @@ mutation UpdateAppointmentCarer(
     success
     appointment {
       id
-      carerId
     }
   }
 }

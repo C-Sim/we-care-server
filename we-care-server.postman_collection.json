@@ -741,31 +741,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation UpdateAppointmentCarer($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        carerId\r\n    }\r\n}\r\n}",
+								"query": "mutation UpdateAppointmentCarer($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n    }\r\n}\r\n}",
 								"variables": "{\r\n    \"appointmentId\": \"{{appointmentId}}\",\r\n    \"trigger\": \"carerChange\",\r\n    \"appointmentUpdateInput\":{\r\n        \"carerId\": \"{{alternativeCarerId}}\",\r\n        \"start\": \"2022-09-22T19:00:00.000+00:00\",\r\n        \"end\":\"2022-09-22T20:00:00.000+00:00\"\r\n    }\r\n}"
-							}
-						},
-						"url": {
-							"raw": "http://localhost:4000",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000"
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add review to appointment",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation UpdateAppointmentCarer($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        carerId\r\n    }\r\n}\r\n}",
-								"variables": "{\r\n    \"appointmentId\": \"{{appointmentId}}\",\r\n    \"trigger\": \"review\",\r\n    \"appointmentUpdateInput\":{\r\n        \"carerId\": \"{{alternativeCarerId}}\",\r\n        \"review\": {\r\n            \"patientId\": \"{{patientId}}\",\r\n            \"score\": 4\r\n        }\r\n    }\r\n}"
 							}
 						},
 						"url": {
