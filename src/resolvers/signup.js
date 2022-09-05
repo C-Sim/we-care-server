@@ -15,6 +15,18 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
     //create new patient
     const patient = await Patient.create(patientInput);
 
+    //assign patient profile id to user field
+    const patientProfileId = patient.id;
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: { patientProfileId },
+      },
+      {
+        new: true,
+      }
+    );
+
     //retrieve supervisor info
     const supervisor = await Supervisor.findOne({});
     const supervisorId = supervisor.userId;
@@ -67,6 +79,18 @@ const carerSignup = async (_, { signupInput, carerInput }) => {
 
     //create new patient
     const carer = await Carer.create(carerInput);
+
+    //assign carer profile id to user field
+    const carerProfileId = carer.id;
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: { carerProfileId },
+      },
+      {
+        new: true,
+      }
+    );
 
     return {
       success: true,
