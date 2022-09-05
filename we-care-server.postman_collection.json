@@ -627,7 +627,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation CreateAppointment($appointmentInput: AppointmentInput!) {\r\n  createAppointment(appointmentInput: $appointmentInput) {\r\n   success\r\n   id\r\n  }\r\n}",
-								"variables": "{\r\n    \"appointmentInput\":{\r\n    \"carerId\": \"{{carerId}}\",\r\n    \"patientId\": \"{{patient4Id}}\",\r\n    \"start\": \"2022-09-26T14:00:00.000+00:00\",\r\n    \"end\": \"2022-09-26T15:00:00.000+00:00\",\r\n    \"appointmentDate\": \"2022-09-26T14:00:00.000+00:00\",\r\n    \"title\": \"New appointment\"\r\n    }\r\n}"
+								"variables": "{\r\n    \"appointmentInput\":{\r\n    \"carerId\": \"{{carerId}}\",\r\n    \"patientId\": \"{{patient4Id}}\",\r\n    \"start\": \"2022-09-26T12:00:00.000+00:00\",\r\n    \"end\": \"2022-09-26T13:00:00.000+00:00\",\r\n    \"appointmentDate\": \"2022-09-26T12:00:00.000+00:00\",\r\n    \"title\": \"New appointment\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -672,8 +672,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation UpdateAppointmentCheckin($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        appointmentDate\r\n        patientId\r\n        carerId\r\n        start\r\n        end\r\n        actualStart\r\n        status\r\n    }\r\n}\r\n}",
-								"variables": "{\r\n    \"appointmentId\": \"63149343a2c0f0b84c6e1522\",\r\n    \"trigger\": \"checkin\"\r\n}"
+								"query": "mutation UpdateAppointmentCheckin($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        appointmentDate\r\n        patientId{\r\n            id\r\n            firstName\r\n            lastName\r\n        }\r\n        start\r\n        end\r\n        actualStart\r\n        status\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n    \"appointmentId\": \"6315f356add94c34ebcfcbdb\",\r\n    \"trigger\": \"checkin\"\r\n}"
 							}
 						},
 						"url": {
@@ -695,8 +695,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation UpdateAppointmentCheckout($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        appointmentDate\r\n        patientId\r\n        carerId\r\n        start\r\n        end\r\n        actualStart\r\n        actualEnd\r\n        status\r\n    }\r\n}\r\n}",
-								"variables": "{\r\n    \"appointmentId\": \"63149343a2c0f0b84c6e1522\",\r\n    \"trigger\": \"checkout\"\r\n}"
+								"query": "mutation UpdateAppointmentCheckout($appointmentId: ID!, $trigger: String!, $appointmentUpdateInput: AppointmentUpdateInput) {\r\n  updateAppointment(appointmentId: $appointmentId, trigger: $trigger, appointmentUpdateInput: $appointmentUpdateInput) {\r\n    success\r\n    appointment{\r\n        id\r\n        appointmentDate\r\n        patientId{\r\n            id\r\n            firstName\r\n            lastName\r\n        }\r\n        start\r\n        end\r\n        actualStart\r\n        actualEnd\r\n        status\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n    \"appointmentId\": \"6315f356add94c34ebcfcbdb\",\r\n    \"trigger\": \"checkout\"\r\n}"
 							}
 						},
 						"url": {

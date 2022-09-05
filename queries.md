@@ -766,8 +766,11 @@ mutation UpdateAppointmentCheckin(
     appointment {
       id
       appointmentDate
-      patientId
-      carerId
+      patientId {
+        id
+        firstName
+        lastName
+      }
       start
       end
       actualStart
@@ -805,8 +808,11 @@ mutation UpdateAppointmentCheckout(
     appointment {
       id
       appointmentDate
-      patientId
-      carerId
+      patientId {
+        id
+        firstName
+        lastName
+      }
       start
       end
       actualStart
