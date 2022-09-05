@@ -306,6 +306,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create CarePlan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateCarePlan($userId: ID!, $carePlanInput: CarePlanInput!) {\r\n createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {\r\n    success\r\n    id\r\n}\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{patient2Id}}\",\r\n    \"carePlanInput\": {\r\n        \"disabilities\": \"{{$randomWord}}\",\r\n        \"mobility\": \"{{$randomWord}}\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -345,7 +368,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation PatientSignup($signupInput: SignupInput!, $patientInput: PatientInput!) {\r\n  patientSignup(signupInput: $signupInput, patientInput: $patientInput) {\r\n    success\r\n    patient{\r\n        username\r\n        gender\r\n    }\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07777777777\"\r\n  },\r\n  \"patientInput\":{\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"postcode\": \"B29 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}"
+								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07788777777\"\r\n  },\r\n  \"patientInput\":{\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"postcode\": \"B11 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -392,7 +415,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {\r\n  carerSignup(signupInput: $signupInput, carerInput: $carerInput) {\r\n    success\r\n    carer{\r\n        username\r\n        gender\r\n    }\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07777777777\"\r\n  },\r\n  \"carerInput\":{\r\n    \"gender\": \"female\",\r\n    \"postcode\": \"B29 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\"\r\n      ]\r\n  }\r\n}"
+								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07779857777\"\r\n  },\r\n  \"carerInput\":{\r\n    \"gender\": \"female\",\r\n    \"postcode\": \"B15 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\"\r\n      ]\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -1027,6 +1050,14 @@
 		},
 		{
 			"key": "patient4Id",
+			"value": ""
+		},
+		{
+			"key": "newPatientId",
+			"value": ""
+		},
+		{
+			"key": "patientUsername",
 			"value": ""
 		}
 	]

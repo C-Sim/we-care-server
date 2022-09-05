@@ -6,27 +6,15 @@ Request URL: `http://localhost:4000`
 Query type: `POST`
 Query & Variables location: Body > GraphQL
 
-## Queries
+Note 1: In "Tests" section, for each of the **Get User By Type** queries, we create some variables `carerId` and `patientId` from the response for use in subsequent queries and mutations.
+Note 2: In "Tests" section, for some of the mutations, we create additional variables from the various responses for use in subsequent mutations.
+These variables are recalled by using the {{}} notation. For these variables to be used correctly, it is important to run the queries and mutations in an order that allows for the creation and population of the variables first.
 
-### Query all users --> not needed for the app
+## 1-Queries
 
-```graphql
-query Users {
-  users {
-    id
-    firstName
-    lastName
-    email
-    accountType
-  }
-}
-```
+### 1.1-Query by ID
 
-Note: In "Tests" section, create variables `carerId` and `patientId` from the response (for use in subsequent queries)
-
-### Query by ID
-
-#### Query users by ID
+#### 1.1.1-Query users by ID
 
 ```graphql
 query UserInfo($userId: ID!) {
@@ -48,7 +36,7 @@ variables
 }
 ```
 
-#### Query Carer info by userId
+#### 1.1.2-Query Carer info by userId
 
 ```graphql
 query CarerInfo($userId: ID!) {
@@ -77,7 +65,7 @@ variables:
 }
 ```
 
-#### Query Patient info by userId
+#### 1.1.3-Query Patient info by userId
 
 ```graphql
 query PatientInfo($userId: ID!) {
@@ -106,24 +94,9 @@ variables:
 }
 ```
 
-### Query appointments
+### 1.2-Query appointments
 
-#### Query all appointments - not needed for app
-
-```graphql
-query Appointments {
-  appointments {
-    id
-    patientId
-    carerId
-    start
-    end
-    status
-  }
-}
-```
-
-#### Query appointments by userId (carer or patient)
+#### 1.2.1-Query appointments by userId (carer or patient)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
 
@@ -160,7 +133,7 @@ variables:
 }
 ```
 
-#### Query appointments by date and userId (for timeline and reallocating)
+#### 1.2.2-Query appointments by date and userId (for timeline and reallocating)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
 
@@ -201,7 +174,7 @@ variables:
 }
 ```
 
-#### Query all past notes from appointments by patientId
+#### 1.2.3-Query all past notes from appointments by patientId
 
 Uses the same appointmentsByUserId query but targets different fields for the response
 
@@ -222,9 +195,9 @@ variables:
 }
 ```
 
-### Query notifications
+### 1.3-Query notifications
 
-#### Query received notifications by userId
+#### 1.3.1-Query received notifications by userId
 
 ```graphql
 query ReceivedNotificationsByUserId($userId: ID!, $mailType: String!) {
@@ -248,7 +221,7 @@ variables:
 }
 ```
 
-#### Query sent notifications by userId
+#### 1.3.2-Query sent notifications by userId
 
 ```graphql
 query SentNotificationsByUserId($userId: ID!, $mailType: String!) {
@@ -272,7 +245,7 @@ variables:
 }
 ```
 
-#### Query all notifications by userId
+#### 1.3.3-Query all notifications by userId
 
 ```graphql
 query AllNotificationsByUserId($userId: ID!, $mailType: String!) {
@@ -296,9 +269,114 @@ variables:
 }
 ```
 
-### Queries for dashboards
+### 1.4-Queries for supervisor account
 
-#### Query for carer dashboard
+#### 1.4.1-Query all carers
+
+```graphql
+query Carers {
+  carers {
+    userId {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+    }
+    postcode
+    gender
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+#### 1.4.2-Query all patients
+
+```graphql
+query Patients {
+  patients {
+    userId {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+    }
+    postcode
+    gender
+    genderPreference
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+#### 1.4.3-Query for matching patients - by carer gender only
+
+```graphql
+query FindPatientsByCarerGender($userId: ID!) {
+  findPatientsByCarerGender(userId: $userId) {
+    userId {
+      id
+      firstName
+      lastName
+      email
+    }
+    gender
+    genderPreference
+    postcode
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+variables
+
+```json
+{
+  "userId": "{{carerId}}"
+}
+```
+
+#### 1.4.4-Query for matching patients - by carer gender and day of week
+
+```graphql
+query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {
+  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {
+    userId {
+      id
+      firstName
+      lastName
+      email
+    }
+    gender
+    postcode
+    days
+    notificationCount
+    appointmentCount
+  }
+}
+```
+
+variables
+
+```json
+{
+  "userId": "{{carerId}}",
+  "dayInput": {
+    "date": "2022-09-21T07:00:00.000+00:00"
+  }
+}
+```
+
+### 1.5-Queries for dashboards
+
+#### 1.5.1-Query for carer dashboard
 
 ```graphql
 query CarerDashboard($userId: ID!) {
@@ -338,7 +416,7 @@ variables
 }
 ```
 
-#### Query for patient dashboard
+#### 1.5.2-Query for patient dashboard
 
 ```graphql
 query PatientDashboard($userId: ID!) {
@@ -378,112 +456,9 @@ variables
 }
 ```
 
-### Queries for supervisor account
+## 2-Mutations
 
-#### Query all carers
-
-```graphql
-query Carers {
-  carers {
-    userId {
-      id
-      firstName
-      lastName
-      email
-      phoneNumber
-    }
-    postcode
-    gender
-    days
-    notificationCount
-    appointmentCount
-  }
-}
-```
-
-#### Query all patients
-
-```graphql
-query Patients {
-  patients {
-    userId {
-      id
-      firstName
-      lastName
-      email
-      phoneNumber
-    }
-    postcode
-    gender
-    genderPreference
-    days
-    notificationCount
-    appointmentCount
-  }
-}
-```
-
-#### Query for matching patients - by carer gender only, or by carer gender and day of week
-
-```graphql
-query FindPatientsByCarerGender($userId: ID!) {
-  findPatientsByCarerGender(userId: $userId) {
-    userId {
-      id
-      firstName
-      lastName
-      email
-    }
-    gender
-    genderPreference
-    postcode
-    days
-    notificationCount
-    appointmentCount
-  }
-}
-```
-
-variables
-
-```json
-{
-  "userId": "{{carerId}}"
-}
-```
-
-```graphql
-query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {
-  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {
-    userId {
-      id
-      firstName
-      lastName
-      email
-    }
-    gender
-    postcode
-    days
-    notificationCount
-    appointmentCount
-  }
-}
-```
-
-variables
-
-```json
-{
-  "userId": "{{carerId}}",
-  "dayInput": {
-    "date": "2022-09-21T07:00:00.000+00:00"
-  }
-}
-```
-
-## Mutations
-
-### Mutation for signing up as a new user (patient account type)
+### 2.1-Mutation for signing up as a new user (patient account type)
 
 ```graphql
 mutation PatientSignup(
@@ -518,8 +493,7 @@ variables:
   "signupInput": {
     "firstName": "{{$randomFirstName}}",
     "lastName": "{{$randomLastName}}",
-    // change the email every attempt/test for user signup as cannot duplicate
-    "email": "test@gmail.com",
+    "email": "{{randomExampleEmail}}",
     "password": "Password123!",
     "phoneNumber": "07777777777"
   },
@@ -541,11 +515,7 @@ variables:
 }
 ```
 
-### Mutation for signing up as a new user (carer account type)
-
-<!-- to do later -->
-
-### Mutation for logging in (any account type):
+### 2.2-Mutation for logging in (any account type):
 
 ```graphql
 mutation Mutation($loginInput: LoginInput!) {
@@ -574,9 +544,9 @@ variables:
 }
 ```
 
-### Mutation for updating profile info
+### 2.3-Mutation for updating profile info
 
-#### Mutation for updating carer profile info
+#### 2.3.1-Mutation for updating carer profile info
 
 ```graphql
 mutation UpdateCarerInfo($userId: ID!, $updateInput: CarerInfoInput) {
@@ -599,7 +569,7 @@ variables (example):
 }
 ```
 
-#### Mutation for updating patient profile info
+#### 2.3.2-Mutation for updating patient profile info
 
 ```graphql
 mutation UpdatePatientInfo($userId: ID!, $updateInput: PatientInfoInput) {
@@ -622,9 +592,9 @@ variables (example):
 }
 ```
 
-### Mutations for creating and updating a Care Plan for Patient
+### 2.4-Mutations for creating and updating a Care Plan for Patient
 
-Create/update the Care Plan when the Patient submit the Care Plan form
+Create/update the Care Plan when the Patient submits the Care Plan form
 
 ```graphql
 mutation CreateCarePlan($userId: ID!, $carePlanInput: CarePlanInput!) {
@@ -647,9 +617,9 @@ variables:
 }
 ```
 
-### Mutations for supervisor account
+### 2.5-Mutations for supervisor account (admin tasks only done by the supervisor)
 
-#### Mutation for creating a new carer (done by supervisor)
+#### 2.5.1-Mutation for creating a new carer (done by supervisor)
 
 ```graphql
 mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {
@@ -683,7 +653,7 @@ variables:
 }
 ```
 
-#### Mutation for approving a new patient (update user field approvedStatus)
+#### 2.5.2-Mutation for approving a new patient (update user field approvedStatus)
 
 ```graphql
 mutation UpdateApprovedStatus($userId: ID!) {
@@ -702,7 +672,7 @@ variables:
 }
 ```
 
-#### Mutation for creating an appointment
+#### 2.5.3-Mutation for creating an appointment
 
 ```graphql
 mutation CreateAppointment($appointmentInput: AppointmentInput!) {
@@ -728,7 +698,7 @@ variables:
 }
 ```
 
-#### Mutation for deleting an appointment
+#### 2.5.4-Mutation for deleting an appointment
 
 ```graphql
 mutation DeleteAppointment($appointmentId: ID!) {
@@ -748,7 +718,7 @@ variables:
 }
 ```
 
-#### Mutation for reallocating an appointment by appointmentId (update carerId)
+#### 2.5.5-Mutation for reallocating an appointment by appointmentId (update carerId)
 
 Uses the `updateAppointment` resolver function with switch case trigger = "carerChange"
 
@@ -785,9 +755,9 @@ variables:
 }
 ```
 
-### Mutations for appointments
+### 2.6-Mutations for appointments
 
-#### Mutation for checking in (carer - actual start time of an appointment)
+#### 2.6.1-Mutation for checking in (carer - actual start time of an appointment)
 
 Uses the `updateAppointment` resolver function with switch case trigger = "checkin"
 
@@ -829,7 +799,7 @@ variables:
 }
 ```
 
-#### Mutation for checking out (carer - actual end time of an appointment)
+#### 2.6.2-Mutation for checking out (carer - actual end time of an appointment)
 
 Uses the `updateAppointment` resolver function with switch case trigger = "checkout"
 
@@ -872,7 +842,7 @@ variables:
 }
 ```
 
-#### Mutation for adding a patient note to appointment
+#### 2.6.3-Mutation for adding a patient note to appointment
 
 Uses the `updateAppointment` resolver function with switch case trigger = "patientNote"
 
@@ -908,7 +878,7 @@ variables:
 }
 ```
 
-#### Mutation for adding a carer note to appointment
+#### 2.6.4-Mutation for adding a carer note to appointment
 
 Uses the `updateAppointment` resolver function with switch case trigger = "carerNote"
 
@@ -944,7 +914,7 @@ variables:
 }
 ```
 
-#### Mutation for adding a review in an appointment (patient review of their appointment)
+#### 2.6.5-Mutation for adding a review in an appointment (patient review of their appointment)
 
 ```graphql
 mutation UpdateAppointmentReview(
@@ -973,7 +943,7 @@ variables
 }
 ```
 
-### Mutation for adding carer review
+### 2.7-Mutation for adding carer review
 
 ```graphql
 mutation UpdateCarerReviews($userId: ID!, $reviewInput: ReviewInput) {
@@ -996,9 +966,9 @@ variables:
 }
 ```
 
-### Mutations for notifications
+### 2.8-Mutations for notifications
 
-#### Mutations for creating a notification
+#### 2.8.1-Mutations for creating a notification
 
 To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver).
 It requires 2 steps:
@@ -1016,7 +986,7 @@ Notifications are triggered by calling the `sendNotification` function in the fo
 - **appointments** > `updateAppointment` > reallocation of appointment > notifications to each carer
 - **appointments** > `updateAppointment` > check out of appointment > notification to next appointment's patient
 
-#### Mutation for updating notification status by notification id
+#### 2.8.2-Mutation for updating notification status by notification id
 
 Updates the `isRead` status when the receiver opens the notification
 
