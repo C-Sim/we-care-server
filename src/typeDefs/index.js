@@ -31,8 +31,8 @@ const typeDefs = gql`
   type Appointment {
     id: ID!
     appointmentDate: String
-    patientId: String!
-    carerId: String
+    patientId: User
+    carerId: User
     start: String!
     end: String!
     status: String
@@ -53,11 +53,13 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     email: String!
     accountType: String!
     phoneNumber: String
+    carerProfileId: Carer
+    patientProfileId: Patient
   }
 
   type Carer {

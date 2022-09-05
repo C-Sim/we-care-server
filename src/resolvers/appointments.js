@@ -10,7 +10,12 @@ const allAppointments = async () => {
 const appointmentsByUserId = async (_, { userId }) => {
   const appointments = await Appointment.find({
     $or: [{ carerId: userId }, { patientId: userId }],
-  });
+  })
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
   return appointments;
 };
 
@@ -25,7 +30,13 @@ const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
         },
       },
     ],
-  }).sort("start");
+  })
+    .sort("start")
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
   //sort({start: -1}) to have it in descending order - latest appointment first
   return appointments;
 };
