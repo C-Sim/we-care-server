@@ -153,7 +153,7 @@ const typeDefs = gql`
     title: String
   }
 
-  input carePlanInput {
+  input CarePlanInput {
     disabilities: String
     mobility: String
     communication: String
@@ -253,7 +253,7 @@ const typeDefs = gql`
       signupInput: SignupInput!
       carerInput: CarerInput!
     ): CarerSignupSuccess
-    createCarePlan(userId: ID!, carePlanInput: carePlanInput!): CreateSuccess
+    createCarePlan(userId: ID!, carePlanInput: CarePlanInput!): CreateSuccess
   }
 `;
 
