@@ -11,48 +11,40 @@ const carePlanSchema = {
   designatedPerson: {
     type: String,
   },
-  disabilities: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  mobility: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  communication: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  allergies: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  personalCare: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  mentalHealth: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
-  dietaryRequirements: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
+  disabilities: {
+    type: String,
+    default: "None",
+  },
+
+  mobility: {
+    type: String,
+    default: "None",
+  },
+
+  communication: {
+    type: String,
+    default: "None",
+  },
+
+  allergies: {
+    type: String,
+    default: "None",
+  },
+
+  personalCare: {
+    type: String,
+    default: "None",
+  },
+
+  mentalHealth: {
+    type: String,
+    default: "None",
+  },
+
+  dietaryRequirements: {
+    type: String,
+    default: "None",
+  },
 };
 
 const schema = new Schema(carePlanSchema, {
