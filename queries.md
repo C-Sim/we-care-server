@@ -483,7 +483,7 @@ variables
 
 ## Mutations
 
-### Mutation for signing up as a new patient
+### Mutation for signing up as a new user (patient account type)
 
 ```graphql
 mutation PatientSignup(
@@ -492,8 +492,18 @@ mutation PatientSignup(
 ) {
   patientSignup(signupInput: $signupInput, patientInput: $patientInput) {
     success
+    user {
+      firstName
+      lastName
+      email
+      accountType
+    }
     patient {
       username
+      postcode
+      days
+      notificationCount
+      appointmentCount
       gender
     }
     userId
@@ -508,7 +518,8 @@ variables:
   "signupInput": {
     "firstName": "{{$randomFirstName}}",
     "lastName": "{{$randomLastName}}",
-    "email": "{{$randomExampleEmail}}",
+    // change the email every attempt/test for user signup as cannot duplicate
+    "email": "test@gmail.com",
     "password": "Password123!",
     "phoneNumber": "07777777777"
   },
@@ -524,10 +535,15 @@ variables:
       "friday",
       "saturday",
       "sunday"
-    ]
+    ],
+    "address": null
   }
 }
 ```
+
+### Mutation for signing up as a new user (carer account type)
+
+<!-- to do later -->
 
 ### Mutation for logging in (any account type):
 
@@ -602,6 +618,31 @@ variables (example):
   "updateInput": {
     "postcode": "B12 4RT",
     "genderPreference": "female"
+  }
+}
+```
+
+### Mutations for creating and updating a Care Plan for Patient
+
+Create/update the Care Plan when the Patient submit the Care Plan form
+
+```graphql
+mutation CreateCarePlan($userId: ID!, $carePlanInput: CarePlanInput!) {
+  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
+    success
+    id
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "6310bb9a290a5d43c53e1797",
+  "carePlanInput": {
+    "disabilities": "random",
+    "mobility": "test"
   }
 }
 ```

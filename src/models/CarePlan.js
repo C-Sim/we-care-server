@@ -11,17 +11,39 @@ const carePlanSchema = {
   designatedPerson: {
     type: String,
   },
-  disabilities: [
-    {
-      type: String,
-      trim: true,
-    },
-  ],
-  carePlanText: {
+  disabilities: {
     type: String,
+    default: "None",
   },
-  additionalInfo: {
+
+  mobility: {
     type: String,
+    default: "None",
+  },
+
+  communication: {
+    type: String,
+    default: "None",
+  },
+
+  allergies: {
+    type: String,
+    default: "None",
+  },
+
+  personalCare: {
+    type: String,
+    default: "None",
+  },
+
+  mentalHealth: {
+    type: String,
+    default: "None",
+  },
+
+  dietaryRequirements: {
+    type: String,
+    default: "None",
   },
 };
 
