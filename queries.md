@@ -125,12 +125,26 @@ query Appointments {
 
 #### Query appointments by userId (carer or patient)
 
+Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
+
 ```graphql
 query AppointmentsByUserId($userId: ID!) {
   appointmentsByUserId(userId: $userId) {
     id
-    patientId
-    carerId
+    appointmentDate
+    patientId {
+      id
+      firstName
+      lastName
+      patientProfileId {
+        postcode
+      }
+    }
+    carerId {
+      id
+      firstName
+      lastName
+    }
     start
     end
     status
@@ -148,13 +162,26 @@ variables:
 
 #### Query appointments by date and userId (for timeline and reallocating)
 
+Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
+
 ```graphql
 query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
   appointmentsByDateAndUserId(userId: $userId, dateInput: $dateInput) {
     id
     appointmentDate
-    patientId
-    carerId
+    patientId {
+      id
+      firstName
+      lastName
+      patientProfileId {
+        postcode
+      }
+    }
+    carerId {
+      id
+      firstName
+      lastName
+    }
     start
     end
     status
