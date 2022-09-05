@@ -14,43 +14,43 @@ const carePlanSchema = {
   disabilities: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   mobility: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   communication: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   allergies: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   personalCare: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   mentalHealth: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
   dietaryRequirements: [
     {
       type: String,
-      require: true,
+      default: "None",
     },
   ],
 };

@@ -253,7 +253,7 @@ const typeDefs = gql`
       signupInput: SignupInput!
       carerInput: CarerInput!
     ): CarerSignupSuccess
-    createCarePlan(carePlanInput: carePlanInput!): CreateSuccess
+    createCarePlan(userId: ID!, carePlanInput: carePlanInput!): CreateSuccess
   }
 `;
 
