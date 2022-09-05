@@ -855,3 +855,28 @@ variables:
 ```
 
 Note: in frontend: on success, using the userId to recall the notifications (update state and re-render components)
+
+### Mutations for creating and updating a Care Plan for Patient
+
+Create/update the Care Plan when the Patient submit the Care Plan form
+
+```graphql
+mutation Mutation($userId: ID!, $carePlanInput: CarePlanInput!) {
+  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
+    success
+    id
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "6310bb9a290a5d43c53e1797",
+  "carePlanInput": {
+    "disabilities": "random",
+    "mobility": "test"
+  }
+}
+```
