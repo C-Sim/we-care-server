@@ -9,9 +9,17 @@ const notificationSchema = {
     default: new Date(),
     get: (val) => format(new Date(val), "yyyy-MM-dd"),
   },
-  type: {
+  notificationType: {
     type: String,
-    enum: ["Schedule change", "New patient review", "New care requirement"],
+    enum: [
+      "Schedule change",
+      "Carer change",
+      "New patient review",
+      "New care requirement",
+      "Update",
+      "New review",
+    ],
+    default: "Update",
   },
   isRead: {
     type: Boolean,
@@ -21,7 +29,6 @@ const notificationSchema = {
   senderId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   receiverId: {
     type: Schema.Types.ObjectId,

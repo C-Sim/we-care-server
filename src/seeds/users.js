@@ -130,6 +130,12 @@ const createSecondProfile = async () => {
         notifications,
       };
       const newCarer = await Carer.create(newCarerData);
+      const carerProfileId = newCarer._id;
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: { carerProfileId } },
+        { new: true }
+      );
     } else if (accountType === "patient") {
       const days = [
         "monday",
@@ -151,6 +157,12 @@ const createSecondProfile = async () => {
         notifications,
       };
       const newPatient = await Patient.create(newPatientData);
+      const patientProfileId = newPatient._id;
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: { patientProfileId } },
+        { new: true }
+      );
     } else {
       const assignedCarers = [];
       const newSupervisorData = {
@@ -160,6 +172,12 @@ const createSecondProfile = async () => {
         notifications,
       };
       const newSupervisor = await Supervisor.create(newSupervisorData);
+      const supervisorProfileId = newSupervisor.id;
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: { supervisorProfileId } },
+        { new: true }
+      );
     }
   }
 };

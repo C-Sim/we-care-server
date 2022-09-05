@@ -7,7 +7,7 @@ const appointmentSchema = {
     type: Date,
     required: true,
     trim: true,
-    get: (val) => format(new Date(val), "yyyy-MM-dd"),
+    get: (val) => format(new Date(val), "yyyy-MM-dd'T'HH:mm:ss"),
   },
   title: {
     type: String,

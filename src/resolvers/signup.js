@@ -3,19 +3,35 @@ const { User, Patient, Carer, Supervisor, Notification } = require("../models");
 
 const patientSignup = async (_, { signupInput, patientInput }) => {
   try {
-    //   //create user
-    //   //check if we get the user id back after creation
+    //add account type to signup input
+    signupInput.accountType = "patient";
+
+    //create user
     const user = await User.create(signupInput);
-
+    //retrieve relevant info and add to patientInput
     patientInput.userId = user._id;
+    patientInput.username = `${user.firstName} ${user.lastName}`;
 
-    //create new patient (and making sure to pass userId in the patientInput)
+    //create new patient
     const patient = await Patient.create(patientInput);
 
-    //create notification to supervisor so they can approve them as a new patient
-    const supervisor = await Supervisor.findOne({});
-    const supervisorId = supervisor.id;
+    //assign patient profile id to user field
+    const patientProfileId = patient.id;
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: { patientProfileId },
+      },
+      {
+        new: true,
+      }
+    );
 
+    //retrieve supervisor info
+    const supervisor = await Supervisor.findOne({});
+    const supervisorId = supervisor.userId;
+
+    //create notification
     const notificationData = {
       receiverId: supervisorId,
       senderId: patient.userId,
@@ -23,8 +39,19 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
         "New patient signup - Your action: review and approve profile",
     };
 
-    //check how we pass supervisor id and patient id
-    await Notification.create(notificationData);
+    const newNotification = await Notification.create(notificationData);
+
+    //add notification into the supervisor's notifications array
+    const notificationId = newNotification._id;
+
+    const notificationArrayUpdate = await Supervisor.findOneAndUpdate(
+      { userId: supervisorId },
+      {
+        $push: {
+          notifications: notificationId,
+        },
+      }
+    );
 
     return {
       success: true,
@@ -40,14 +67,30 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
 
 const carerSignup = async (_, { signupInput, carerInput }) => {
   try {
-    //   //create user
-    //   //check if we get the user id back after creation
+    //add account type to signup input
+    signupInput.accountType = "carer";
+
+    //create user
     const user = await User.create(signupInput);
 
+    //retrieve relevant info and add to carerInput
     carerInput.userId = user._id;
+    carerInput.username = `${user.firstName} ${user.lastName}`;
 
-    //create new patient (and making sure to pass userId in the patientInput)
+    //create new patient
     const carer = await Carer.create(carerInput);
+
+    //assign carer profile id to user field
+    const carerProfileId = carer.id;
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: { carerProfileId },
+      },
+      {
+        new: true,
+      }
+    );
 
     return {
       success: true,
@@ -55,9 +98,9 @@ const carerSignup = async (_, { signupInput, carerInput }) => {
       userId: carer.userId,
     };
   } catch (error) {
-    console.log(`[ERROR]: Failed to create patient | ${error.message}`);
+    console.log(`[ERROR]: Failed to create carer | ${error.message}`);
 
-    throw new ApolloError("Failed to create patient");
+    throw new ApolloError("Failed to create carer");
   }
 };
 

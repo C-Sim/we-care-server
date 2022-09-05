@@ -34,6 +34,18 @@ const userSchema = {
     enum: ["supervisor", "carer", "patient"],
     required: true,
   },
+  carerProfileId: {
+    type: Schema.Types.ObjectId,
+    ref: "Carer",
+  },
+  patientProfileId: {
+    type: Schema.Types.ObjectId,
+    ref: "Patient",
+  },
+  supervisorProfileId: {
+    type: Schema.Types.ObjectId,
+    ref: "Supervisor",
+  },
   password: {
     type: String,
     required: true,

@@ -1,5 +1,6 @@
 const { ApolloError } = require("apollo-server");
 const { Appointment, Supervisor, Carer, Patient } = require("../models");
+const sendNotification = require("./sendNotification");
 
 const allAppointments = async () => {
   const appointments = await Appointment.find({});
@@ -9,7 +10,34 @@ const allAppointments = async () => {
 const appointmentsByUserId = async (_, { userId }) => {
   const appointments = await Appointment.find({
     $or: [{ carerId: userId }, { patientId: userId }],
-  });
+  })
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
+  return appointments;
+};
+
+const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
+  const appointments = await Appointment.find({
+    $and: [
+      { $or: [{ carerId: userId }, { patientId: userId }] },
+      {
+        appointmentDate: {
+          $gte: new Date(dateInput.dayStart),
+          $lte: new Date(dateInput.dayEnd),
+        },
+      },
+    ],
+  })
+    .sort("start")
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
+  //sort({start: -1}) to have it in descending order - latest appointment first
   return appointments;
 };
 
@@ -119,19 +147,61 @@ const updateAppointment = async (
           {
             new: true,
           }
-        );
+        )
+          .populate("patientId")
+          .populate("carerId");
         break;
       case "checkout":
+        //create the actual end time
         const actualEnd = new Date();
-        updatedAppointment = await Appointment.findOneAndUpdate(
-          { _id: appointmentId },
-          {
-            $set: { actualEnd, status: "completed" },
-          },
-          {
-            new: true,
-          }
+        //update the actualEnd field and the status in the Appointment document
+        appointment.actualEnd = actualEnd;
+        appointment.status = "completed";
+        updatedEnd = await appointment.save();
+
+        //get the fields we need for the notification prep
+        const userId = appointment.carerId;
+        const filterTime = appointment.end;
+        const selectedDate = new Date(filterTime);
+        const dayStart = selectedDate.setUTCHours(0, 0, 0, 0);
+        const dayEnd = selectedDate.setUTCHours(23, 59, 59, 999);
+
+        //get all appointments for that day
+        const appointments = await Appointment.find({
+          $and: [
+            { carerId: userId },
+            {
+              appointmentDate: {
+                $gte: new Date(dayStart),
+                $lte: new Date(dayEnd),
+              },
+            },
+          ],
+        }).sort("start");
+
+        //find this appointment's position in the array
+        const followingAppointments = appointments.filter(
+          (i) => new Date(i.start) > new Date(filterTime)
         );
+
+        //if not the last one, find the next appointment and get the patient id
+        if (followingAppointments.length) {
+          const nextAppointmentId = followingAppointments[0].id;
+          const receiverId = followingAppointments[0].patientId;
+          //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
+          const patientNotified = await sendNotification({
+            receiverType: "patient",
+            receiverId,
+            notificationType: "Update",
+            notificationText: "Your carer is on their way to you!",
+            appointmentId: nextAppointmentId,
+          });
+        }
+        //recall the complete appointment document for frontend rendering
+        updatedAppointment = await Appointment.findById(appointmentId)
+          .populate("patientId")
+          .populate("carerId");
+
         break;
       case "carerNote":
         const carerNote = appointmentUpdateInput.note;
@@ -160,6 +230,17 @@ const updateAppointment = async (
             new: true,
           }
         );
+        //find carer for this appointment
+        const receiverId = updatedAppointment.carerId;
+        //notify previous carer
+        const carerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId,
+          notificationType: "New care requirement",
+          notificationText:
+            "The patient has added a note for their upcoming appointment",
+          appointmentId,
+        });
         break;
       case "carerChange":
         const previousCarerId = appointment.carerId;
@@ -174,6 +255,8 @@ const updateAppointment = async (
             new: true,
           }
         );
+
+        //update previous carer's appointments
         const previousCarerToUpdate = await Carer.findOneAndUpdate(
           { userId: previousCarerId },
           {
@@ -182,6 +265,18 @@ const updateAppointment = async (
             },
           }
         );
+
+        //notify previous carer
+        const previousCarerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId: previousCarerId,
+          notificationType: "Schedule change",
+          notificationText:
+            "Your request has been approved and the appointment has been removed from your schedule",
+          appointmentId,
+        });
+
+        //update new carer's appointments
         const newCarerToUpdate = await Carer.findOneAndUpdate(
           { userId: newCarerId },
           {
@@ -190,6 +285,26 @@ const updateAppointment = async (
             },
           }
         );
+
+        ///notify new carer
+        const newCarerNotified = await sendNotification({
+          receiverType: "carer",
+          receiverId: newCarerId,
+          notificationType: "Schedule change",
+          notificationText:
+            "You have been assigned a new appointment in your schedule",
+          appointmentId,
+        });
+
+        //notify patient of the update
+        const patientNotified = await sendNotification({
+          receiverType: "patient",
+          receiverId: appointment.patientId,
+          notificationType: "Carer change",
+          notificationText: "Your carer for that appointment has changed.",
+          appointmentId,
+        });
+
         break;
     }
 
@@ -204,10 +319,34 @@ const updateAppointment = async (
   }
 };
 
+const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
+  try {
+    //find the appointment data
+    const appointment = await Appointment.findById(appointmentId);
+    //add fields to the review input
+    reviewInput.appointmentId = appointmentId;
+    reviewInput.patientId = appointment.patientId;
+    reviewInput.carerId = appointment.carerId;
+
+    //update the "patientReview" subdocument in the appointment document
+    appointment.patientReview = reviewInput;
+    const updatedAppointment = await appointment.save();
+
+    return {
+      success: true,
+      userId: appointment.patientId,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to update review | ${error.message}`);
+  }
+};
+
 module.exports = {
   allAppointments,
   appointmentsByUserId,
+  appointmentsByDateAndUserId,
   createAppointment,
   deleteAppointment,
   updateAppointment,
+  updateAppointmentReview,
 };

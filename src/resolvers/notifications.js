@@ -25,10 +25,11 @@ const updateIsReadStatus = async (_, { notificationId, userId }) => {
       }
     );
 
-    return {
-      success: true,
-      userId,
-    };
+    const updatedReceivedNotifications = await Notification.find({
+      receiverId: userId,
+    });
+
+    return updatedReceivedNotifications;
   } catch (error) {
     console.log(
       `[ERROR]: Failed to update notification status | ${error.message}`

@@ -119,34 +119,85 @@ query Appointments {
     start
     end
     status
-    actualStart
-    actualEnd
   }
 }
 ```
 
 #### Query appointments by userId (carer or patient)
 
+Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
+
 ```graphql
 query AppointmentsByUserId($userId: ID!) {
   appointmentsByUserId(userId: $userId) {
     id
-    patientId
-    carerId
+    appointmentDate
+    patientId {
+      id
+      firstName
+      lastName
+      patientProfileId {
+        postcode
+      }
+    }
+    carerId {
+      id
+      firstName
+      lastName
+    }
     start
     end
     status
-    actualStart
-    actualEnd
   }
 }
 ```
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}"
+}
+```
+
+#### Query appointments by date and userId (for timeline and reallocating)
+
+Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
+
+```graphql
+query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
+  appointmentsByDateAndUserId(userId: $userId, dateInput: $dateInput) {
+    id
+    appointmentDate
+    patientId {
+      id
+      firstName
+      lastName
+      patientProfileId {
+        postcode
+      }
+    }
+    carerId {
+      id
+      firstName
+      lastName
+    }
+    start
+    end
+    status
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{patientId}}",
+  "dateInput": {
+    "dayStart": "2022-09-02T00:00:00",
+    "dayEnd": "2022-09-03T00:00:00"
+  }
 }
 ```
 
@@ -165,9 +216,9 @@ query AppointmentNotesByUserId($userId: ID!) {
 
 variables:
 
-```
+```json
 {
-    "userId": "{{patientId}}"
+  "userId": "{{patientId}}"
 }
 ```
 
@@ -435,7 +486,10 @@ variables
 ### Mutation for signing up as a new user (patient account type)
 
 ```graphql
-mutation Mutation($signupInput: SignupInput!, $patientInput: PatientInput!) {
+mutation PatientSignup(
+  $signupInput: SignupInput!
+  $patientInput: PatientInput!
+) {
   patientSignup(signupInput: $signupInput, patientInput: $patientInput) {
     success
     user {
@@ -467,13 +521,11 @@ variables:
     // change the email every attempt/test for user signup as cannot duplicate
     "email": "test@gmail.com",
     "password": "Password123!",
-    "accountType": "carer",
     "phoneNumber": "07777777777"
   },
   "patientInput": {
     "gender": "female",
-    "genderPreference": "female",
-    "username": "bob smith",
+    "genderPreference": "none",
     "postcode": "B29 5PZ",
     "days": [
       "monday",
@@ -570,12 +622,66 @@ variables (example):
 }
 ```
 
+### Mutations for creating and updating a Care Plan for Patient
+
+Create/update the Care Plan when the Patient submit the Care Plan form
+
+```graphql
+mutation CreateCarePlan($userId: ID!, $carePlanInput: CarePlanInput!) {
+  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
+    success
+    id
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "6310bb9a290a5d43c53e1797",
+  "carePlanInput": {
+    "disabilities": "random",
+    "mobility": "test"
+  }
+}
+```
+
 ### Mutations for supervisor account
 
-#### Mutation for adding a new carer: new user (account type carer) + new carer profile
+#### Mutation for creating a new carer (done by supervisor)
 
-Hoping to use the signup mutation (passing it accountType: carer)
-Need to confirm if it works after signup mutation is updated
+```graphql
+mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {
+  carerSignup(signupInput: $signupInput, carerInput: $carerInput) {
+    success
+    carer {
+      username
+      gender
+    }
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "signupInput": {
+    "firstName": "{{$randomFirstName}}",
+    "lastName": "{{$randomLastName}}",
+    "email": "{{$randomExampleEmail}}",
+    "password": "Password123!",
+    "phoneNumber": "07777777777"
+  },
+  "carerInput": {
+    "gender": "female",
+    "postcode": "B29 5PZ",
+    "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  }
+}
+```
 
 #### Mutation for approving a new patient (update user field approvedStatus)
 
@@ -660,7 +766,6 @@ mutation UpdateAppointmentCarer(
     success
     appointment {
       id
-      carerId
     }
   }
 }
@@ -700,7 +805,14 @@ mutation UpdateAppointmentCheckin(
     success
     appointment {
       id
+      appointmentDate
+      patientId {
+        id
+        firstName
+        lastName
+      }
       start
+      end
       actualStart
       status
     }
@@ -735,7 +847,15 @@ mutation UpdateAppointmentCheckout(
     success
     appointment {
       id
+      appointmentDate
+      patientId {
+        id
+        firstName
+        lastName
+      }
+      start
       end
+      actualStart
       actualEnd
       status
     }
@@ -824,13 +944,77 @@ variables:
 }
 ```
 
+#### Mutation for adding a review in an appointment (patient review of their appointment)
+
+```graphql
+mutation UpdateAppointmentReview(
+  $reviewInput: ReviewInput
+  $appointmentId: ID!
+) {
+  updateAppointmentReview(
+    reviewInput: $reviewInput
+    appointmentId: $appointmentId
+  ) {
+    success
+    userId
+  }
+}
+```
+
+variables
+
+```json
+{
+  "appointmentId": "{{appointmentId}}",
+  "reviewInput": {
+    "comment": "I had a very nice carer and he was on time!",
+    "score": 5
+  }
+}
+```
+
 ### Mutation for adding carer review
+
+```graphql
+mutation UpdateCarerReviews($userId: ID!, $reviewInput: ReviewInput) {
+  updateCarerReviews(userId: $userId, reviewInput: $reviewInput) {
+    success
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{carerId}}",
+  "reviewInput": {
+    "comment": "nice carer with good manners!",
+    "score": 4
+  }
+}
+```
 
 ### Mutations for notifications
 
 #### Mutations for creating a notification
 
-To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver)
+To be added as part of each action that triggers a notification (for clarity of who is the sender/receiver).
+It requires 2 steps:
+
+- 1: create the notification
+- 2: update the receiver's notifications array
+
+These steps are built into the `sendNotification` function in the **sendNotification.js** file in the resolvers folder.
+
+Notifications are triggered by calling the `sendNotification` function in the following resolvers: (and passing it the relevant fields)
+
+- **signup** > `patientSignup` > notification to supervisor
+- **user** > `updateCarerReview` > notification to carer
+- **appointments** > `updateAppointment` > new patientNote > notifications to the carer
+- **appointments** > `updateAppointment` > reallocation of appointment > notifications to each carer
+- **appointments** > `updateAppointment` > check out of appointment > notification to next appointment's patient
 
 #### Mutation for updating notification status by notification id
 
@@ -839,8 +1023,12 @@ Updates the `isRead` status when the receiver opens the notification
 ```graphql
 mutation UpdateIsReadStatus($notificationId: ID!, $userId: ID) {
   updateIsReadStatus(notificationId: $notificationId, userId: $userId) {
-    success
-    userId
+    id
+    notificationDate
+    senderId
+    receiverId
+    notificationText
+    isRead
   }
 }
 ```
@@ -854,29 +1042,4 @@ variables:
 }
 ```
 
-Note: in frontend: on success, using the userId to recall the notifications (update state and re-render components)
-
-### Mutations for creating and updating a Care Plan for Patient
-
-Create/update the Care Plan when the Patient submit the Care Plan form
-
-```graphql
-mutation Mutation($userId: ID!, $carePlanInput: CarePlanInput!) {
-  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
-    success
-    id
-  }
-}
-```
-
-variables:
-
-```json
-{
-  "userId": "6310bb9a290a5d43c53e1797",
-  "carePlanInput": {
-    "disabilities": "random",
-    "mobility": "test"
-  }
-}
-```
+Note: in frontend: this mutation returns the array of received notifications after the update has been made, so this data can be assigned to the relevant state variable, and it will update the list of notifications displayed on state change

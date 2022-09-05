@@ -30,8 +30,9 @@ const typeDefs = gql`
 
   type Appointment {
     id: ID!
-    patientId: String!
-    carerId: String
+    appointmentDate: String
+    patientId: User
+    carerId: User
     start: String!
     end: String!
     status: String
@@ -45,17 +46,20 @@ const typeDefs = gql`
     notificationDate: String!
     senderId: String
     receiverId: String
+    notificationType: String
     notificationText: String
     isRead: Boolean
   }
 
   type User {
     id: ID!
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     email: String!
     accountType: String!
     phoneNumber: String
+    carerProfileId: Carer
+    patientProfileId: Patient
   }
 
   type Carer {
@@ -153,6 +157,14 @@ const typeDefs = gql`
     title: String
   }
 
+  input ReviewInput {
+    score: Float
+    comment: String
+    patientId: ID
+    appointmentId: ID
+    carerId: ID
+  }
+
   input CarePlanInput {
     disabilities: String
     mobility: String
@@ -184,8 +196,8 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     password: String!
-    accountType: String!
     phoneNumber: String
+    accountType: String
   }
 
   input PatientInput {
@@ -214,6 +226,11 @@ const typeDefs = gql`
     date: String
   }
 
+  input DateInput {
+    dayStart: String
+    dayEnd: String
+  }
+
   type Query {
     addressLookup(postcode: String!): AddressLookup
     users: [User]
@@ -221,6 +238,10 @@ const typeDefs = gql`
     patients: [Patient]
     allAppointments: [Appointment]
     appointmentsByUserId(userId: ID!): [Appointment]
+    appointmentsByDateAndUserId(
+      userId: ID!
+      dateInput: DateInput
+    ): [Appointment]
     notificationsByUserId(userId: ID!, mailType: String!): [Notification]
     carerInfo(userId: ID!): Carer
     patientInfo(userId: ID!): Patient
@@ -235,7 +256,7 @@ const typeDefs = gql`
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
     updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
-
+    updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
     updateAppointment(
@@ -243,7 +264,11 @@ const typeDefs = gql`
       trigger: String!
       appointmentUpdateInput: AppointmentUpdateInput
     ): UpdateAppointmentSuccess
-    updateIsReadStatus(notificationId: ID!, userId: ID): UpdateSuccess
+    updateAppointmentReview(
+      reviewInput: ReviewInput
+      appointmentId: ID!
+    ): UpdateSuccess
+    updateIsReadStatus(notificationId: ID!, userId: ID): [Notification]
 
     patientSignup(
       signupInput: SignupInput!

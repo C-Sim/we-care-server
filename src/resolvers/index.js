@@ -3,9 +3,11 @@ const { users, carers, patients } = require("./users");
 const {
   allAppointments,
   appointmentsByUserId,
+  appointmentsByDateAndUserId,
   createAppointment,
   deleteAppointment,
   updateAppointment,
+  updateAppointmentReview,
 } = require("./appointments");
 const {
   notificationsByUserId,
@@ -17,6 +19,7 @@ const {
   updateCarerInfo,
   updatePatientInfo,
   updateApprovedStatus,
+  updateCarerReviews,
 } = require("./user");
 const supervisor = require("./supervisor");
 const patientDashboard = require("./patientDashboard");
@@ -37,6 +40,7 @@ const resolvers = {
     patients,
     allAppointments,
     appointmentsByUserId,
+    appointmentsByDateAndUserId,
     notificationsByUserId,
     carerInfo,
     patientInfo,
@@ -53,9 +57,11 @@ const resolvers = {
     updateCarerInfo,
     updatePatientInfo,
     updateApprovedStatus,
+    updateCarerReviews,
     createAppointment,
     deleteAppointment,
     updateAppointment,
+    updateAppointmentReview,
     updateIsReadStatus,
     createCarePlan,
   },
