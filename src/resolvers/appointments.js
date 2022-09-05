@@ -147,16 +147,17 @@ const updateAppointment = async (
           {
             new: true,
           }
-        );
+        )
+          .populate("patientId")
+          .populate("carerId");
         break;
       case "checkout":
         //create the actual end time
         const actualEnd = new Date();
         //update the actualEnd field and the status in the Appointment document
-        const appointment = await Appointment.findById(appointmentId);
         appointment.actualEnd = actualEnd;
         appointment.status = "completed";
-        updatedAppointment = await appointment.save();
+        updatedEnd = await appointment.save();
 
         //get the fields we need for the notification prep
         const userId = appointment.carerId;
@@ -196,6 +197,11 @@ const updateAppointment = async (
             appointmentId: nextAppointmentId,
           });
         }
+        //recall the complete appointment document for frontend rendering
+        updatedAppointment = await Appointment.findById(appointmentId)
+          .populate("patientId")
+          .populate("carerId");
+
         break;
       case "carerNote":
         const carerNote = appointmentUpdateInput.note;
