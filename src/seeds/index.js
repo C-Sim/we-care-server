@@ -1,8 +1,16 @@
 const connectToDatabase = require("../config/connection");
 
-const { User, Carer, Patient, Supervisor, Appointment } = require("../models");
+const {
+  User,
+  Carer,
+  Patient,
+  Supervisor,
+  Appointment,
+  AddressLookup,
+} = require("../models");
 const { seedAppointments } = require("./appointments");
 const { seedUsers } = require("./users");
+const { seedAddressLookup } = require("./addressLookup");
 
 const clearCollections = async () => {
   await User.deleteMany({});
@@ -10,6 +18,7 @@ const clearCollections = async () => {
   await Patient.deleteMany({});
   await Supervisor.deleteMany({});
   await Appointment.deleteMany({});
+  await AddressLookup.deleteMany({});
 };
 
 const init = async () => {
@@ -24,6 +33,9 @@ const init = async () => {
 
     // seed appointments - and associated reviews and notifications
     await seedAppointments();
+
+    //seed address lookup
+    await seedAddressLookup();
   } catch (error) {
     console.log(`[ERROR]: Failed to seed DB | ${error.message}`);
   }

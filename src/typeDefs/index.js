@@ -200,20 +200,19 @@ const typeDefs = gql`
     phoneNumber: String
     accountType: String
     address: ID
+    postcode: String!
   }
 
   input PatientInput {
     gender: String!
     genderPreference: String!
     username: String
-    postcode: String!
     days: [String]
   }
 
   input CarerInput {
     gender: String!
     username: String
-    postcode: String!
     days: [String]
   }
 

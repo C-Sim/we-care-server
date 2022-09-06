@@ -3,8 +3,8 @@ const { faker } = require("@faker-js/faker");
 
 const prepareUsersData = () => {
   const users = [];
-  const postcode = "B295PZ"
-  const userAddress = {
+  const postcode = "B295PZ";
+  const address = {
     formatted_address: [
       "30 Weoley Castle Road",
       "",
@@ -105,7 +105,6 @@ const prepareUsersData = () => {
 
 const createSecondProfile = async () => {
   const users = await User.find({});
-  const postcode = "B295PZ";
 
   const daysArray = [
     ["monday", "tuesday", "wednesday", "thursday", "friday"],
@@ -119,7 +118,6 @@ const createSecondProfile = async () => {
     const { _id: userId } = users[i];
     const { accountType } = users[i];
     const username = `${users[i].firstName} ${users[i].lastName}`;
-    const address = userAddress;
     const appointments = [];
     const notifications = [];
     const gender = genderArray[Math.floor(Math.random() * genderArray.length)];

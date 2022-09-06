@@ -9,97 +9,92 @@ const {
 } = require("../models");
 
 const patientSignup = async (_, { signupInput, patientInput }) => {
-  try {
-    //add account type to signup input
-    signupInput.accountType = "patient";
+  //add account type to signup input
+  signupInput.accountType = "patient";
 
-    // **START** - Part of signup as per PET_BNB_SERVER
-    //check if user exists
-    const userExists = await User.findOne({ email: signupInput.email });
+  // **START** - Part of signup as per PET_BNB_SERVER
+  const email = signupInput.email;
+  //check if user exists
+  const userExists = await User.findOne({ email: email });
 
-    if (userExists) {
-      console.log(
-        `[ERROR]: Failed to signup | ${signupInput.email} already exists`
-      );
-
-      throw new ApolloError("Failed to signup");
-    }
-
-    const address = await AddressLookup.findOne({
-      addresses: {
-        $elemMatch: {
-          _id: signupInput.address,
-        },
-      },
-    });
-
-    const yourAddress = address
-      .get("addresses")
-      .find((address) => address.get("_id").toString() === signupInput.address);
-
-    //create user
-    const user = await User.create({
-      ...signupInput,
-      address: yourAddress,
-    });
-
-    // **END** - Part of signup as per PET_BNB_SERVER
-
-    //retrieve relevant info and add to patientInput
-    patientInput.userId = user._id;
-    patientInput.username = `${user.firstName} ${user.lastName}`;
-
-    //create new patient
-    const patient = await Patient.create(patientInput);
-
-    //assign patient profile id to user field
-    const patientProfileId = patient.id;
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: user._id },
-      {
-        $set: { patientProfileId },
-      },
-      {
-        new: true,
-      }
+  if (userExists) {
+    console.log(
+      `[ERROR]: Failed to signup | ${signupInput.email} already exists`
     );
 
-    //retrieve supervisor info
-    const supervisor = await Supervisor.findOne({});
-    const supervisorId = supervisor.userId;
-
-    //create notification
-    const notificationData = {
-      receiverId: supervisorId,
-      senderId: patient.userId,
-      notificationText:
-        "New patient signup - Your action: review and approve profile",
-    };
-
-    const newNotification = await Notification.create(notificationData);
-
-    //add notification into the supervisor's notifications array
-    const notificationId = newNotification._id;
-
-    const notificationArrayUpdate = await Supervisor.findOneAndUpdate(
-      { userId: supervisorId },
-      {
-        $push: {
-          notifications: notificationId,
-        },
-      }
-    );
-
-    return {
-      success: true,
-      patient: patient,
-      userId: patient.userId,
-    };
-  } catch (error) {
-    console.log(`[ERROR]: Failed to create patient | ${error.message}`);
-
-    throw new ApolloError("Failed to create patient");
+    throw new ApolloError("Failed to signup");
   }
+
+  const address = await AddressLookup.findOne({
+    addresses: {
+      $elemMatch: {
+        _id: signupInput.address,
+      },
+    },
+  });
+
+  const yourAddress = address
+    .get("addresses")
+    .find((address) => address.get("_id")?.toString() === signupInput.address);
+
+  //create user
+  const user = await User.create({
+    ...signupInput,
+    address: yourAddress,
+  });
+
+  // **END** - Part of signup as per PET_BNB_SERVER
+
+  //retrieve relevant info and add to patientInput
+  patientInput.userId = user._id;
+  patientInput.username = `${user.firstName} ${user.lastName}`;
+
+  //create new patient
+  const patient = await Patient.create(patientInput);
+
+  //assign patient profile id to user field
+  const patientProfileId = patient.id;
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: user._id },
+    {
+      $set: { patientProfileId },
+    },
+    {
+      new: true,
+    }
+  );
+
+  //retrieve supervisor info
+  const supervisor = await Supervisor.findOne({});
+  const supervisorId = supervisor.userId;
+
+  //create notification
+  const notificationData = {
+    receiverId: supervisorId,
+    senderId: patient.userId,
+    notificationText:
+      "New patient signup - Your action: review and approve profile",
+  };
+
+  const newNotification = await Notification.create(notificationData);
+
+  //add notification into the supervisor's notifications array
+  const notificationId = newNotification._id;
+
+  const notificationArrayUpdate = await Supervisor.findOneAndUpdate(
+    { userId: supervisorId },
+    {
+      $push: {
+        notifications: notificationId,
+      },
+    }
+  );
+
+  return {
+    success: true,
+    patient: patient,
+    userId: patient.userId,
+  };
 };
 
 const carerSignup = async (_, { signupInput, carerInput }) => {
