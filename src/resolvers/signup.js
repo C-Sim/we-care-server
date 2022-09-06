@@ -1,13 +1,50 @@
 const { ApolloError } = require("apollo-server");
-const { User, Patient, Carer, Supervisor, Notification } = require("../models");
+const {
+  User,
+  Patient,
+  Carer,
+  Supervisor,
+  Notification,
+  AddressLookup,
+} = require("../models");
 
 const patientSignup = async (_, { signupInput, patientInput }) => {
   try {
     //add account type to signup input
     signupInput.accountType = "patient";
 
+    // **START** - Part of signup as per PET_BNB_SERVER
+    //check if user exists
+    const userExists = await User.findOne({ email: signupInput.email });
+
+    if (userExists) {
+      console.log(
+        `[ERROR]: Failed to signup | ${signupInput.email} already exists`
+      );
+
+      throw new ApolloError("Failed to signup");
+    }
+
+    const address = await AddressLookup.findOne({
+      addresses: {
+        $elemMatch: {
+          _id: signupInput.address,
+        },
+      },
+    });
+
+    const yourAddress = address
+      .get("addresses")
+      .find((address) => address.get("_id").toString() === signupInput.address);
+
     //create user
-    const user = await User.create(signupInput);
+    const user = await User.create({
+      ...signupInput,
+      address: yourAddress,
+    });
+
+    // **END** - Part of signup as per PET_BNB_SERVER
+
     //retrieve relevant info and add to patientInput
     patientInput.userId = user._id;
     patientInput.username = `${user.firstName} ${user.lastName}`;
@@ -70,8 +107,37 @@ const carerSignup = async (_, { signupInput, carerInput }) => {
     //add account type to signup input
     signupInput.accountType = "carer";
 
+    // **START** - Part of signup as per PET_BNB_SERVER
+    //check if user exists
+    const userExists = await User.findOne({ email: signupInput.email });
+
+    if (userExists) {
+      console.log(
+        `[ERROR]: Failed to signup | ${signupInput.email} already exists`
+      );
+
+      throw new ApolloError("Failed to signup");
+    }
+
+    const address = await AddressLookup.findOne({
+      addresses: {
+        $elemMatch: {
+          _id: signupInput.address,
+        },
+      },
+    });
+
+    const yourAddress = address
+      .get("addresses")
+      .find((address) => address.get("_id").toString() === signupInput.address);
+
     //create user
-    const user = await User.create(signupInput);
+    const user = await User.create({
+      ...signupInput,
+      address: yourAddress,
+    });
+
+    // **END** - Part of signup as per PET_BNB_SERVER
 
     //retrieve relevant info and add to carerInput
     carerInput.userId = user._id;

@@ -3,79 +3,7 @@ const { faker } = require("@faker-js/faker");
 
 const prepareUsersData = () => {
   const users = [];
-
-  //create a small number of supervisors
-  for (let i = 0; i < 1; i += 1) {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
-    const email = faker.internet.exampleEmail();
-    const password = "password123";
-    const accountType = "supervisor";
-    const phoneNumber = "07777777777";
-    const approvedStatus = true;
-
-    const user = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      accountType,
-      password,
-      approvedStatus,
-    };
-    users.push(user);
-  }
-
-  //create a medium number of carers
-  for (let i = 0; i < 20; i += 1) {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
-    const email = faker.internet.exampleEmail();
-    const password = "password123";
-    const accountType = "carer";
-    const phoneNumber = "07777777777";
-    const approvedStatus = true;
-
-    const user = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      accountType,
-      password,
-      approvedStatus,
-    };
-    users.push(user);
-  }
-  //create a large number of patients
-  for (let i = 0; i < 100; i += 1) {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
-    const email = faker.internet.exampleEmail();
-    const password = "password123";
-    const accountType = "patient";
-    const phoneNumber = "07777777777";
-    const approvedStatus = true;
-
-    const user = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      accountType,
-      password,
-      approvedStatus,
-    };
-    users.push(user);
-  }
-
-  // return users array
-  return users;
-};
-
-const createSecondProfile = async () => {
-  const users = await User.find({});
-  const postcode = "B295PZ";
+  const postcode = "B295PZ"
   const userAddress = {
     formatted_address: [
       "30 Weoley Castle Road",
@@ -100,6 +28,85 @@ const createSecondProfile = async () => {
     country: "England",
   };
 
+  //create a small number of supervisors
+  for (let i = 0; i < 1; i += 1) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.exampleEmail();
+    const password = "password123";
+    const accountType = "supervisor";
+    const phoneNumber = "07777777777";
+    const approvedStatus = true;
+
+    const user = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      accountType,
+      password,
+      approvedStatus,
+      postcode,
+      address,
+    };
+    users.push(user);
+  }
+
+  //create a medium number of carers
+  for (let i = 0; i < 20; i += 1) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.exampleEmail();
+    const password = "password123";
+    const accountType = "carer";
+    const phoneNumber = "07777777777";
+    const approvedStatus = true;
+
+    const user = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      accountType,
+      password,
+      approvedStatus,
+      postcode,
+      address,
+    };
+    users.push(user);
+  }
+  //create a large number of patients
+  for (let i = 0; i < 100; i += 1) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.exampleEmail();
+    const password = "password123";
+    const accountType = "patient";
+    const phoneNumber = "07777777777";
+    const approvedStatus = true;
+
+    const user = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      accountType,
+      password,
+      approvedStatus,
+      postcode,
+      address,
+    };
+    users.push(user);
+  }
+
+  // return users array
+  return users;
+};
+
+const createSecondProfile = async () => {
+  const users = await User.find({});
+  const postcode = "B295PZ";
+
   const daysArray = [
     ["monday", "tuesday", "wednesday", "thursday", "friday"],
     ["tuesday", "wednesday", "thursday", "friday", "saturday"],
@@ -122,8 +129,6 @@ const createSecondProfile = async () => {
       const newCarerData = {
         userId,
         username,
-        postcode,
-        address,
         days,
         gender,
         appointments,
@@ -149,8 +154,6 @@ const createSecondProfile = async () => {
       const newPatientData = {
         userId,
         username,
-        postcode,
-        address,
         days,
         gender,
         appointments,

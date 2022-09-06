@@ -13,13 +13,6 @@ const patientSchema = {
     type: String,
     required: true,
   },
-  postcode: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: Address,
-  },
   days: [
     {
       type: String,

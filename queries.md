@@ -472,10 +472,10 @@ mutation PatientSignup(
       lastName
       email
       accountType
+      postcode
     }
     patient {
       username
-      postcode
       days
       notificationCount
       appointmentCount
@@ -495,12 +495,13 @@ variables:
     "lastName": "{{$randomLastName}}",
     "email": "{{randomExampleEmail}}",
     "password": "Password123!",
-    "phoneNumber": "07777777777"
+    "phoneNumber": "07777777777",
+    "postcode": "B29 5PZ",
+    "address": null
   },
   "patientInput": {
     "gender": "female",
     "genderPreference": "none",
-    "postcode": "B29 5PZ",
     "days": [
       "monday",
       "tuesday",
@@ -509,8 +510,7 @@ variables:
       "friday",
       "saturday",
       "sunday"
-    ],
-    "address": null
+    ]
   }
 }
 ```
@@ -643,11 +643,12 @@ variables:
     "lastName": "{{$randomLastName}}",
     "email": "{{$randomExampleEmail}}",
     "password": "Password123!",
-    "phoneNumber": "07777777777"
+    "phoneNumber": "07777777777",
+    "postcode": "B29 5PZ",
+    "address": null
   },
   "carerInput": {
     "gender": "female",
-    "postcode": "B29 5PZ",
     "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
   }
 }

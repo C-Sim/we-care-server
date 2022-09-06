@@ -60,6 +60,7 @@ const typeDefs = gql`
     phoneNumber: String
     carerProfileId: Carer
     patientProfileId: Patient
+    address: Address
   }
 
   type Carer {
@@ -198,6 +199,7 @@ const typeDefs = gql`
     password: String!
     phoneNumber: String
     accountType: String
+    address: ID
   }
 
   input PatientInput {
@@ -206,7 +208,6 @@ const typeDefs = gql`
     username: String
     postcode: String!
     days: [String]
-    address: ID
   }
 
   input CarerInput {
@@ -214,7 +215,6 @@ const typeDefs = gql`
     username: String
     postcode: String!
     days: [String]
-    address: ID
   }
 
   input LoginInput {

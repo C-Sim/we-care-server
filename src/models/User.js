@@ -29,6 +29,13 @@ const userSchema = {
     type: String,
     required: true,
   },
+  postcode: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: Address,
+  },
   accountType: {
     type: String,
     enum: ["supervisor", "carer", "patient"],
