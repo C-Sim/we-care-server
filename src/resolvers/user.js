@@ -14,6 +14,25 @@ const patientInfo = async (_, { userId }) => {
   return patient;
 };
 
+const updateUserInfo = async (_, { updateInput, userId }) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: updateInput },
+      {
+        new: true,
+      }
+    );
+
+    return {
+      success: true,
+      userId: userId,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to update user | ${error.message}`);
+  }
+};
+
 const updateCarerInfo = async (_, { updateInput, userId }) => {
   try {
     const updatedCarer = await Carer.findOneAndUpdate(
@@ -102,6 +121,7 @@ const updateCarerReviews = async (_, { reviewInput, userId }) => {
 module.exports = {
   carerInfo,
   patientInfo,
+  updateUserInfo,
   updateCarerInfo,
   updatePatientInfo,
   updateApprovedStatus,

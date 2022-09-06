@@ -77,7 +77,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query Carers {\r\n  carers {\r\n    userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n      }\r\n      postcode\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n  }\r\n}",
+								"query": "query Carers {\r\n  carers {\r\n    userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n          postcode\r\n      }\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n  }\r\n}",
 								"variables": ""
 							}
 						},
@@ -124,7 +124,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query Patients {\r\n  patients {\r\n    userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n      }\r\n      postcode\r\n      gender\r\n      genderPreference\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n  }\r\n}",
+								"query": "query Patients {\r\n  patients {\r\n    userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n          postcode\r\n      }\r\n      gender\r\n      genderPreference\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n  }\r\n}",
 								"variables": ""
 							}
 						},
@@ -223,7 +223,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query CarerInfo($userId: ID!) {\r\n  carerInfo(userId: $userId) {\r\n    userId{\r\n        id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n    }\r\n    postcode\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n\r\n  }\r\n}",
+								"query": "query CarerInfo($userId: ID!) {\r\n  carerInfo(userId: $userId) {\r\n    userId{\r\n        id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n     postcode\r\n    }\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n\r\n  }\r\n}",
 								"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
 							}
 						},
@@ -246,7 +246,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query PatientInfo($userId: ID!) {\r\n  patientInfo(userId: $userId) {\r\n    userId{\r\n        id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n    }\r\n    postcode\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n\r\n  }\r\n}",
+								"query": "query PatientInfo($userId: ID!) {\r\n  patientInfo(userId: $userId) {\r\n    userId{\r\n        id\r\n    firstName\r\n    lastName\r\n    email\r\n    accountType\r\n     postcode\r\n    }\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n\r\n  }\r\n}",
 								"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
 							}
 						},
@@ -270,7 +270,30 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation UpdateCarerInfo($userId: ID!, $updateInput: CarerInfoInput) {\r\n  updateCarerInfo(userId: $userId, updateInput: $updateInput) {\r\n    success\r\n    userId\r\n}\r\n}",
-								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"updateInput\": {\r\n        \"postcode\": \"B15 4RT\",\r\n        \"gender\": \"female\"\r\n    }\r\n}"
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"updateInput\": {\r\n        \"gender\": \"female\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User info",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateUserInfo($userId: ID!, $updateInput: UserInfoInput) {\r\n  updateUserInfo(userId: $userId, updateInput: $updateInput) {\r\n    success\r\n    userId\r\n}\r\n}",
+								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"updateInput\": {\r\n        \"postcode\": \"B18 8RT\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -293,7 +316,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation UpdatePatientInfo($userId: ID!, $updateInput: PatientInfoInput) {\r\n  updatePatientInfo(userId: $userId, updateInput: $updateInput) {\r\n    success\r\n    userId\r\n}\r\n}",
-								"variables": "{\r\n    \"userId\": \"{{patientId}}\",\r\n    \"updateInput\": {\r\n        \"postcode\": \"B12 4RT\",\r\n        \"genderPreference\": \"female\"\r\n    }\r\n}"
+								"variables": "{\r\n    \"userId\": \"{{patientId}}\",\r\n    \"updateInput\": {\r\n        \"genderPreference\": \"female\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -368,7 +391,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation PatientSignup($signupInput: SignupInput!, $patientInput: PatientInput!) {\r\n  patientSignup(signupInput: $signupInput, patientInput: $patientInput) {\r\n    success\r\n    patient{\r\n        username\r\n        gender\r\n    }\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07788777777\"\r\n  },\r\n  \"patientInput\":{\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"postcode\": \"B11 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}"
+								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07788777777\",\r\n    \"postcode\": \"B11 5PZ\"\r\n  },\r\n  \"patientInput\":{\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -415,30 +438,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {\r\n  carerSignup(signupInput: $signupInput, carerInput: $carerInput) {\r\n    success\r\n    carer{\r\n        username\r\n        gender\r\n    }\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07779857777\"\r\n  },\r\n  \"carerInput\":{\r\n    \"gender\": \"female\",\r\n    \"postcode\": \"B15 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\"\r\n      ]\r\n  }\r\n}"
-							}
-						},
-						"url": {
-							"raw": "http://localhost:4000",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000"
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "CREATE PatientSetup",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation Mutation($patientInput: PatientInput!) {\r\n  patientSetup(patientInput: $patientInput) {\r\n    success\r\n    patient{\r\n        username\r\n    }\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"patientInput\": {\r\n      \"userId\": \"{{newUserId}}\",\r\n    \"gender\": \"female\",\r\n    \"genderPreference\": \"none\",\r\n    \"username\": \"{{username}}\",\r\n    \"postcode\": \"B29 5PZ\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\",\r\n        \"saturday\",\r\n        \"sunday\"\r\n      ]\r\n  }\r\n}\r\n"
+								"variables": "{\r\n  \"signupInput\": {\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"phoneNumber\":\"07779857777\",\r\n    \"postcode\": \"B15 5PZ\"\r\n  },\r\n  \"carerInput\":{\r\n    \"gender\": \"female\",\r\n    \"days\": [\r\n        \"monday\",\r\n        \"tuesday\",\r\n        \"wednesday\",\r\n        \"thursday\",\r\n        \"friday\"\r\n      ]\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -912,7 +912,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query CarerDashboard($userId: ID!) {\r\n  carerDashboard(userId: $userId) {\r\n    carer {\r\n      userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
+								"query": "query CarerDashboard($userId: ID!) {\r\n  carerDashboard(userId: $userId) {\r\n    carer {\r\n      userId{\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n          postcode\r\n      }\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId{\r\n          firstName\r\n      }\r\n      carerId{\r\n          id\r\n      }\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
 								"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
 							}
 						},
@@ -935,7 +935,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query PatientDashboard($userId: ID!) {\r\n  patientDashboard(userId: $userId) {\r\n    patient {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n      }\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId\r\n      carerId\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
+								"query": "query PatientDashboard($userId: ID!) {\r\n  patientDashboard(userId: $userId) {\r\n    patient {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          phoneNumber\r\n          postcode\r\n      }\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n    appointments {\r\n      id\r\n      patientId{\r\n          id\r\n      }\r\n      carerId{\r\n          id\r\n      }\r\n      start\r\n      end\r\n      status\r\n      actualStart\r\n      actualEnd\r\n    }\r\n    notifications {\r\n      notificationDate\r\n      receiverId\r\n      senderId\r\n      isRead\r\n      notificationText\r\n    }\r\n  }\r\n}",
 								"variables": "{\r\n    \"userId\": \"{{patientId}}\"\r\n}"
 							}
 						},
@@ -958,7 +958,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {\r\n  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {\r\n    userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      gender\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n  }\r\n",
+								"query": "query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {\r\n  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {\r\n    userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          postcode\r\n      }\r\n      gender\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n  }\r\n",
 								"variables": "{\r\n    \"userId\": \"{{carerId}}\",\r\n    \"dayInput\": {\r\n        \"date\": \"2022-09-21T07:00:00.000+00:00\"\r\n    }\r\n    \r\n}"
 							}
 						},
@@ -981,7 +981,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query FindPatientsByCarerGender($userId: ID!) {\r\n  findPatientsByCarerGender(userId: $userId) {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n      }\r\n      gender\r\n      genderPreference\r\n      postcode\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n\r\n}",
+								"query": "query FindPatientsByCarerGender($userId: ID!) {\r\n  findPatientsByCarerGender(userId: $userId) {\r\n      userId {\r\n          id\r\n          firstName\r\n          lastName\r\n          email\r\n          postcode\r\n      }\r\n      gender\r\n      genderPreference\r\n      days\r\n      notificationCount\r\n      appointmentCount\r\n    }\r\n\r\n}",
 								"variables": "{\r\n    \"userId\": \"{{carerId}}\"\r\n}"
 							}
 						},

@@ -61,12 +61,12 @@ const typeDefs = gql`
     carerProfileId: Carer
     patientProfileId: Patient
     address: Address
+    postcode: String
   }
 
   type Carer {
     userId: User
     username: String!
-    postcode: String!
     days: [String!]
     notificationCount: String
     appointmentCount: String
@@ -76,7 +76,6 @@ const typeDefs = gql`
   type Patient {
     userId: User
     username: String!
-    postcode: String!
     days: [String!]
     notificationCount: String
     appointmentCount: String
@@ -177,19 +176,20 @@ const typeDefs = gql`
     designatedPerson: String
   }
 
+  input UserInfoInput {
+    postcode: String
+    address: ID
+  }
+
   input CarerInfoInput {
     gender: String
-    postcode: String
     days: [String]
-    address: ID
   }
 
   input PatientInfoInput {
     gender: String
     genderPreference: String
-    postcode: String
     days: [String]
-    address: ID
   }
 
   input SignupInput {
@@ -252,6 +252,7 @@ const typeDefs = gql`
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
+    updateUserInfo(userId: ID!, updateInput: UserInfoInput): UpdateSuccess
     updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
     updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess

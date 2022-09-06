@@ -7,7 +7,9 @@ const patientDashboard = async (_, { userId }) => {
 
   const appointments = await Appointment.find({
     $or: [{ carerId: userId }, { patientId: userId }],
-  });
+  })
+    .populate("carerId")
+    .populate("patientId");
 
   const notifications = await Notification.find({
     $or: [{ senderId: userId }, { receiverId: userId }],

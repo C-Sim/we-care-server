@@ -16,6 +16,7 @@ const {
 const {
   carerInfo,
   patientInfo,
+  updateUserInfo,
   updateCarerInfo,
   updatePatientInfo,
   updateApprovedStatus,
@@ -54,6 +55,7 @@ const resolvers = {
     patientSignup,
     carerSignup,
     login,
+    updateUserInfo,
     updateCarerInfo,
     updatePatientInfo,
     updateApprovedStatus,

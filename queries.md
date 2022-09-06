@@ -47,8 +47,8 @@ query CarerInfo($userId: ID!) {
       lastName
       email
       accountType
+      postcode
     }
-    postcode
     gender
     days
     notificationCount
@@ -76,8 +76,8 @@ query PatientInfo($userId: ID!) {
       lastName
       email
       accountType
+      postcode
     }
-    postcode
     gender
     days
     notificationCount
@@ -109,9 +109,7 @@ query AppointmentsByUserId($userId: ID!) {
       id
       firstName
       lastName
-      patientProfileId {
-        postcode
-      }
+      postcode
     }
     carerId {
       id
@@ -146,9 +144,7 @@ query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
       id
       firstName
       lastName
-      patientProfileId {
-        postcode
-      }
+      postcode
     }
     carerId {
       id
@@ -282,8 +278,8 @@ query Carers {
       lastName
       email
       phoneNumber
+      postcode
     }
-    postcode
     gender
     days
     notificationCount
@@ -303,8 +299,8 @@ query Patients {
       lastName
       email
       phoneNumber
+      postcode
     }
-    postcode
     gender
     genderPreference
     days
@@ -324,10 +320,10 @@ query FindPatientsByCarerGender($userId: ID!) {
       firstName
       lastName
       email
+      postcode
     }
     gender
     genderPreference
-    postcode
     days
     notificationCount
     appointmentCount
@@ -353,9 +349,9 @@ query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {
       firstName
       lastName
       email
+      postcode
     }
     gender
-    postcode
     days
     notificationCount
     appointmentCount
@@ -382,15 +378,26 @@ variables
 query CarerDashboard($userId: ID!) {
   carerDashboard(userId: $userId) {
     carer {
-      userId
-      postcode
+      userId {
+        id
+        firstName
+        lastName
+        email
+        phoneNumber
+        postcode
+      }
       days
       notificationCount
+      appointmentCount
     }
     appointments {
       id
-      patientId
-      carerId
+      patientId {
+        firstName
+      }
+      carerId {
+        id
+      }
       start
       end
       status
@@ -422,15 +429,26 @@ variables
 query PatientDashboard($userId: ID!) {
   patientDashboard(userId: $userId) {
     patient {
-      userId
-      postcode
+      userId {
+        id
+        firstName
+        lastName
+        email
+        phoneNumber
+        postcode
+      }
       days
       notificationCount
+      appointmentCount
     }
     appointments {
       id
-      patientId
-      carerId
+      patientId {
+        id
+      }
+      carerId {
+        id
+      }
       start
       end
       status
@@ -459,6 +477,8 @@ variables
 ## 2-Mutations
 
 ### 2.1-Mutation for signing up as a new user (patient account type)
+
+Note: address to be passed at user signup (signupInput) and not in carer/patient profile
 
 ```graphql
 mutation PatientSignup(
@@ -497,7 +517,7 @@ variables:
     "password": "Password123!",
     "phoneNumber": "07777777777",
     "postcode": "B29 5PZ",
-    "address": null
+    "address": "????????"
   },
   "patientInput": {
     "gender": "female",
@@ -563,7 +583,6 @@ variables (example):
 {
   "userId": "{{carerId}}",
   "updateInput": {
-    "postcode": "B15 4RT",
     "gender": "female"
   }
 }
@@ -586,8 +605,29 @@ variables (example):
 {
   "userId": "{{patientId}}",
   "updateInput": {
-    "postcode": "B12 4RT",
     "genderPreference": "female"
+  }
+}
+```
+
+#### 2.3.3-Mutation for updating user info (address/postcode/phone number)
+
+```graphql
+mutation UpdateUserInfo($userId: ID!, $updateInput: UserInfoInput) {
+  updateUserInfo(userId: $userId, updateInput: $updateInput) {
+    success
+    userId
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{_id}}",
+  "updateInput": {
+    "postcode": "B18 8RT"
   }
 }
 ```
@@ -645,7 +685,7 @@ variables:
     "password": "Password123!",
     "phoneNumber": "07777777777",
     "postcode": "B29 5PZ",
-    "address": null
+    "address": "????????"
   },
   "carerInput": {
     "gender": "female",
