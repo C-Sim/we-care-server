@@ -7,6 +7,7 @@ const {
   Supervisor,
   Appointment,
   AddressLookup,
+  Notification,
 } = require("../models");
 const { seedAppointments } = require("./appointments");
 const { seedUsers } = require("./users");
@@ -19,6 +20,7 @@ const clearCollections = async () => {
   await Supervisor.deleteMany({});
   await Appointment.deleteMany({});
   await AddressLookup.deleteMany({});
+  await Notification.deleteMany({});
 };
 
 const init = async () => {

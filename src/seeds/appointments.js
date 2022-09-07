@@ -14,7 +14,10 @@ const prepareFemaleAppointmentsData = async () => {
 
   //assigning female carers and patients
   const femaleCarers = carers.filter((item) => item.gender === "female");
-  const femalePatients = patients.filter((item) => item.gender === "female");
+  const femalePatients = patients.filter(
+    (item) =>
+      item.genderPreference === "female" || item.genderPreference === "none"
+  );
   let f = 0;
   for (let i = 0; i < 3; i += 1) {
     const carerId = femaleCarers[i].userId;
@@ -121,7 +124,10 @@ const prepareMaleAppointmentsData = async () => {
 
   //assigning male carers and patients
   const maleCarers = carers.filter((item) => item.gender === "male");
-  const malePatients = patients.filter((item) => item.gender === "male");
+  const malePatients = patients.filter(
+    (item) =>
+      item.genderPreference === "male" || item.genderPreference === "none"
+  );
   let m = 0;
   for (let i = 0; i < 3; i += 1) {
     const carerId = maleCarers[i].userId;
