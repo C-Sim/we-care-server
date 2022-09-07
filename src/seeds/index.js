@@ -28,14 +28,14 @@ const init = async () => {
     // clear all collections
     await clearCollections();
 
+    //seed address lookup
+    await seedAddressLookup();
+
     // seed users - and supervisors, carers, patients
     await seedUsers();
 
     // seed appointments - and associated reviews and notifications
     await seedAppointments();
-
-    //seed address lookup
-    await seedAddressLookup();
   } catch (error) {
     console.log(`[ERROR]: Failed to seed DB | ${error.message}`);
   }

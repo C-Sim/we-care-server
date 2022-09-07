@@ -1,32 +1,20 @@
-const { User, Carer, Patient, Supervisor, Address } = require("../models");
+const {
+  User,
+  Carer,
+  Patient,
+  Supervisor,
+  Address,
+  AddressLookup,
+} = require("../models");
 const { faker } = require("@faker-js/faker");
 
-const prepareUsersData = () => {
+const prepareUsersData = async () => {
+  const addressesFromDB = await AddressLookup.findOne({
+    postcode: "B12 9LP",
+  });
   const users = [];
-  const postcode = "B295PZ";
-  const address = {
-    formatted_address: [
-      "30 Weoley Castle Road",
-      "",
-      "",
-      "Birmingham",
-      "West Midlands",
-    ],
-    thoroughfare: "Weoley Castle Road",
-    building_name: "",
-    sub_building_name: "",
-    sub_building_number: "",
-    building_number: "30",
-    line_1: "30 Weoley Castle Road",
-    line_2: "",
-    line_3: "",
-    line_4: "",
-    locality: "",
-    town_or_city: "Birmingham",
-    county: "West Midlands",
-    district: "Birmingham",
-    country: "England",
-  };
+  const postcode = "B12 9LP";
+  const address = addressesFromDB.addresses[0];
 
   //create a small number of supervisors
   for (let i = 0; i < 1; i += 1) {
