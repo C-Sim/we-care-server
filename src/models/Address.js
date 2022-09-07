@@ -23,7 +23,6 @@ const schema = new Schema(addressSchema, {
     virtuals: true,
     getters: true,
   },
-  _id: false,
 });
 
 schema.virtual("fullAddress").get(function () {

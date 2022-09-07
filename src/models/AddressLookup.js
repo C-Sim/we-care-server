@@ -28,7 +28,6 @@ const options = {
     virtuals: true,
     getters: true,
   },
-  id: false,
 };
 
 const schema = new Schema(addressLookupSchema, options);

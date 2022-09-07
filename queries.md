@@ -538,7 +538,7 @@ variables:
 ### 2.2-Mutation for logging in (any account type):
 
 ```graphql
-mutation Mutation($loginInput: LoginInput!) {
+mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
     success
     token
