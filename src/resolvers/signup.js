@@ -90,11 +90,7 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
     }
   );
 
-  return {
-    success: true,
-    patient: patient,
-    userId: patient.userId,
-  };
+  return { success: true };
 };
 
 const carerSignup = async (_, { signupInput, carerInput }) => {

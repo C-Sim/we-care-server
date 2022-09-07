@@ -122,16 +122,10 @@ const typeDefs = gql`
 
   type PatientSignupSuccess {
     success: Boolean!
-    user: User
-    patient: Patient
-    userId: String
   }
 
   type CarerSignupSuccess {
     success: Boolean!
-    user: User
-    carer: Carer
-    userId: String
   }
 
   type LoginSuccess {
