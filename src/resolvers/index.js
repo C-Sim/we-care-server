@@ -27,7 +27,7 @@ const patientDashboard = require("./patientDashboard");
 const carerDashboard = require("./carerDashboard");
 const {
   findPatientsByCarerGender,
-  findPatientsByCarerGenderAndDay,
+  availablePatientsByCarerGenderAndDay,
 } = require("./matchingPatient");
 const { patientSignup, carerSignup } = require("./signup");
 const login = require("./login");
@@ -50,7 +50,7 @@ const resolvers = {
     patientDashboard,
     carerDashboard,
     findPatientsByCarerGender,
-    findPatientsByCarerGenderAndDay,
+    availablePatientsByCarerGenderAndDay,
   },
   Mutation: {
     patientSignup,

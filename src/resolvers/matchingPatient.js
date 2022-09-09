@@ -11,7 +11,10 @@ const findPatientsByCarerGender = async (_, { userId }) => {
   return patients;
 };
 
-const findPatientsByCarerGenderAndDay = async (_, { userId, selectedDate }) => {
+const availablePatientsByCarerGenderAndDay = async (
+  _,
+  { userId, selectedDate }
+) => {
   const daysList = [
     "sunday",
     "monday",
@@ -21,27 +24,67 @@ const findPatientsByCarerGenderAndDay = async (_, { userId, selectedDate }) => {
     "friday",
     "saturday",
   ];
-  const date = parseISO(selectedDate);
 
+  //getting day of the week for the selected date
+  const date = parseISO(selectedDate);
+  const day = daysList[getDay(date)];
+
+  //getting carer gender
   const carer = await Carer.findOne({ userId: userId });
   const { gender } = carer;
 
-  if (!date) {
-    return await Patient.find({
-      genderPreference: { $in: [gender, "none"] },
-    }).populate("userId");
-  } else {
-    const day = daysList[getDay(date)];
-    const patients = await Patient.find({
-      $and: [
-        {
-          genderPreference: { $in: [gender, "none"] },
+  //getting start and end of the day for check on availability (appointment already assigned or not)
+  const rangeStart = new Date(selectedDate).setUTCHours(0, 0, 0);
+  const rangeEnd = new Date(selectedDate).setUTCHours(23, 59, 0);
+
+  const allPatients = await Patient.aggregate([
+    {
+      $match: {
+        $and: [
+          {
+            genderPreference: { $in: [gender, "none"] },
+          },
+          { days: { $all: [day] } },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "appointments",
+        let: {
+          patientId: "$userId",
         },
-        { days: { $all: [day] } },
-      ],
-    }).populate("userId");
-    return patients;
-  }
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $gt: ["$start", new Date(rangeStart)],
+                  },
+                  {
+                    $lt: ["$end", new Date(rangeEnd)],
+                  },
+                  {
+                    $eq: ["$$patientId", "$patientId"],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        as: "appointments",
+      },
+    },
+  ]);
+
+  const availablePatients = allPatients.filter(
+    (i) => i.appointments.length === 0
+  );
+  return availablePatients;
 };
 
-module.exports = { findPatientsByCarerGender, findPatientsByCarerGenderAndDay };
+module.exports = {
+  findPatientsByCarerGender,
+  availablePatientsByCarerGenderAndDay,
+};

@@ -97,30 +97,6 @@ variables:
 }
 ```
 
-#### 1.1.4-Query Carer by date and if has assigned appointments
-
-```graphql
-query AvailableCarers($selectedDate: String!) {
-  availableCarersByDate(selectedDate: $selectedDate) {
-    userId
-    username
-    gender
-    appointments {
-      appointmentDate
-      title
-    }
-  }
-}
-```
-
-variables:
-
-```json
-{
-  "selectedDate": "2022-09-02T16:00:00"
-}
-```
-
 ### 1.2-Query appointments
 
 #### 1.2.1-Query appointments by userId (carer or patient)
@@ -337,54 +313,45 @@ query Patients {
 }
 ```
 
-#### 1.4.3-Query for matching patients - by carer gender only
+#### 1.4.3-Query available carers by date (if has assigned appointments)
 
 ```graphql
-query FindPatientsByCarerGender($userId: ID!) {
-  findPatientsByCarerGender(userId: $userId) {
-    userId {
-      id
-      firstName
-      lastName
-      email
-      postcode
-    }
+query AvailableCarers($selectedDate: String!) {
+  availableCarersByDate(selectedDate: $selectedDate) {
+    userId
+    username
     gender
-    genderPreference
-    days
-    notificationCount
-    appointmentCount
+    appointments {
+      appointmentDate
+      title
+    }
   }
 }
 ```
 
-variables
+variables:
 
 ```json
 {
-  "userId": "{{carerId}}"
+  "selectedDate": "2022-09-02T16:00:00"
 }
 ```
 
-#### 1.4.4-Query for matching patients - by carer gender and day of week
+#### 1.4.4-Query for matching available patients - by carer gender and day
 
 ```graphql
-query FindPatientsByCarerGenderAndDay($userId: ID!, $selectedDate: String!) {
-  findPatientsByCarerGenderAndDay(
+query AvailablePatients($userId: ID!, $selectedDate: String!) {
+  availablePatientsByCarerGenderAndDay(
     userId: $userId
     selectedDate: $selectedDate
   ) {
-    userId {
-      id
-      firstName
-      lastName
-      email
-      postcode
-    }
+    userId
+    username
     gender
-    days
-    notificationCount
-    appointmentCount
+    appointments {
+      appointmentDate
+      title
+    }
   }
 }
 ```

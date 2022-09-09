@@ -8,24 +8,25 @@ const {
 const { faker } = require("@faker-js/faker");
 const { addHours, subMinutes } = require("date-fns");
 
+const usedPatients = [];
+
 const prepareFemaleAppointmentsData = async () => {
-  const patients = await Patient.find({});
-  const carers = await Carer.find({});
+  const femalePatients = await Patient.find({
+    genderPreference: { $in: ["male", "none"] },
+  });
+  const femaleCarers = await Carer.find({ gender: "female" });
 
   //assigning female carers and patients
-  const femaleCarers = carers.filter((item) => item.gender === "female");
-  const femalePatients = patients.filter(
-    (item) =>
-      item.genderPreference === "female" || item.genderPreference === "none"
-  );
+
   let f = 0;
-  for (let i = 0; i < 3; i += 1) {
+  for (let i = 0; i < 5; i += 1) {
     const carerId = femaleCarers[i].userId;
     const carerUsername = femaleCarers[i].username;
-    const chosenPatients = [];
+    let chosenPatients = [];
     for (let j = f; j < f + 5; j += 1) {
-      const patient = femalePatients[f];
+      const patient = femalePatients[j];
       chosenPatients.push(patient);
+      usedPatients.push(patient);
 
       const patientId = patient.userId;
       const review = {
@@ -46,13 +47,15 @@ const prepareFemaleAppointmentsData = async () => {
     }
 
     //create a number of appointments
-    for (let ii = 1; ii < 6; ii += 1) {
-      const dayStart = new Date(2022, 8, ii, 8, 0);
+    for (let ii = 1; ii < 11; ii += 1) {
+      const d = new Date("2022-09-01T07:00:00.000+00:00");
+
+      const dayStart = d.setDate(d.getDate() + ii);
 
       for (let iii = 0; iii < chosenPatients.length; iii += 1) {
-        const appointmentDate = dayStart;
         const start = addHours(dayStart, iii * 2);
         const end = addHours(start, 1);
+        const appointmentDate = start;
         const status = "completed";
         const actualStart = start;
         const actualEnd = end;
@@ -114,27 +117,32 @@ const prepareFemaleAppointmentsData = async () => {
         );
       }
     }
+    chosenPatients = [];
     f += 5;
   }
 };
 
 const prepareMaleAppointmentsData = async () => {
-  const patients = await Patient.find({});
-  const carers = await Carer.find({});
+  const patients = await Patient.find({
+    genderPreference: { $in: ["male", "none"] },
+  });
+
+  const maleCarers = await Carer.find({ gender: "male" });
 
   //assigning male carers and patients
-  const maleCarers = carers.filter((item) => item.gender === "male");
-  const malePatients = patients.filter(
-    (item) =>
-      item.genderPreference === "male" || item.genderPreference === "none"
-  );
+  const malePatients = patients.filter((el) => {
+    return usedPatients.every((f) => {
+      return f.username !== el.username;
+    });
+  });
+
   let m = 0;
-  for (let i = 0; i < 3; i += 1) {
+  for (let i = 0; i < 5; i += 1) {
     const carerId = maleCarers[i].userId;
     const carerUsername = maleCarers[i].username;
-    const chosenPatients = [];
+    let chosenPatients = [];
     for (let j = m; j < m + 5; j += 1) {
-      const patient = malePatients[m];
+      const patient = malePatients[j];
       chosenPatients.push(patient);
 
       const patientId = patient.userId;
@@ -156,13 +164,15 @@ const prepareMaleAppointmentsData = async () => {
     }
 
     //create a number of appointments
-    for (let ii = 1; ii < 6; ii += 1) {
-      const dayStart = new Date(2022, 8, ii, 8, 0);
+    for (let ii = 1; ii < 11; ii += 1) {
+      const d = new Date("2022-09-01T07:00:00.000+00:00");
+
+      const dayStart = d.setDate(d.getDate() + ii);
 
       for (let iii = 0; iii < chosenPatients.length; iii += 1) {
-        const appointmentDate = dayStart;
         const start = addHours(dayStart, iii * 2);
         const end = addHours(start, 1);
+        const appointmentDate = start;
         const status = "completed";
         const actualStart = start;
         const actualEnd = end;
@@ -224,6 +234,7 @@ const prepareMaleAppointmentsData = async () => {
         );
       }
     }
+    chosenPatients = [];
     m += 5;
   }
 };
