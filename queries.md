@@ -597,8 +597,8 @@ variables:
 #### 2.3.1-Mutation for updating carer profile info
 
 ```graphql
-mutation UpdateCarerInfo($userId: ID!, $updateInput: CarerInfoInput) {
-  updateCarerInfo(userId: $userId, updateInput: $updateInput) {
+mutation UpdateCarerInfo($userId: ID!, $updateCarerInput: CarerInfoInput) {
+  updateCarerInfo(userId: $userId, updateCarerInput: $updateCarerInput) {
     success
     userId
   }
@@ -610,7 +610,7 @@ variables (example):
 ```json
 {
   "userId": "{{carerId}}",
-  "updateInput": {
+  "updateCarerInput": {
     "gender": "female"
   }
 }
@@ -619,8 +619,11 @@ variables (example):
 #### 2.3.2-Mutation for updating patient profile info
 
 ```graphql
-mutation UpdatePatientInfo($userId: ID!, $updateInput: PatientInfoInput) {
-  updatePatientInfo(userId: $userId, updateInput: $updateInput) {
+mutation UpdatePatientInfo(
+  $userId: ID!
+  $updatePatientInput: PatientInfoInput
+) {
+  updatePatientInfo(userId: $userId, updatePatientInput: $updatePatientInput) {
     success
     userId
   }
@@ -632,13 +635,13 @@ variables (example):
 ```json
 {
   "userId": "{{patientId}}",
-  "updateInput": {
+  "updatePatientInput": {
     "genderPreference": "female"
   }
 }
 ```
 
-#### 2.3.3-Mutation for updating user info (address/postcode/phone number)
+#### 2.3.3-Mutation for updating user info (firstName/lastName/email/address/postcode/phone number)
 
 ```graphql
 mutation UpdateUserInfo($userId: ID!, $updateInput: UserInfoInput) {
@@ -653,9 +656,9 @@ variables:
 
 ```json
 {
-  "userId": "{{_id}}",
+  "userId": "{{userId}}",
   "updateInput": {
-    "postcode": "B18 8RT"
+    "phoneNumber": "07945863547"
   }
 }
 ```

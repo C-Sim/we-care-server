@@ -258,8 +258,14 @@ const typeDefs = gql`
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
     updateUserInfo(userId: ID!, updateInput: UserInfoInput): UpdateSuccess
-    updateCarerInfo(userId: ID!, updateInput: CarerInfoInput): UpdateSuccess
-    updatePatientInfo(userId: ID!, updateInput: PatientInfoInput): UpdateSuccess
+    updateCarerInfo(
+      userId: ID!
+      updateCarerInput: CarerInfoInput
+    ): UpdateSuccess
+    updatePatientInfo(
+      userId: ID!
+      updatePatientInput: PatientInfoInput
+    ): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
     updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess

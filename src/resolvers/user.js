@@ -33,11 +33,11 @@ const updateUserInfo = async (_, { updateInput, userId }) => {
   }
 };
 
-const updateCarerInfo = async (_, { updateInput, userId }) => {
+const updateCarerInfo = async (_, { updateCarerInput, userId }) => {
   try {
     const updatedCarer = await Carer.findOneAndUpdate(
       { userId: userId },
-      { $set: updateInput },
+      { $set: updateCarerInput },
       {
         new: true,
       }
@@ -52,11 +52,11 @@ const updateCarerInfo = async (_, { updateInput, userId }) => {
   }
 };
 
-const updatePatientInfo = async (_, { updateInput, userId }) => {
+const updatePatientInfo = async (_, { updatePatientInput, userId }) => {
   try {
     const updatedPatient = await Patient.findOneAndUpdate(
       { userId: userId },
-      { $set: updateInput },
+      { $set: updatePatientInput },
       {
         new: true,
       }
