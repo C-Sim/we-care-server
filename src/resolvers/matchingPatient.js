@@ -11,7 +11,7 @@ const findPatientsByCarerGender = async (_, { userId }) => {
   return patients;
 };
 
-const findPatientsByCarerGenderAndDay = async (_, { userId, dayInput }) => {
+const findPatientsByCarerGenderAndDay = async (_, { userId, selectedDate }) => {
   const daysList = [
     "sunday",
     "monday",
@@ -21,7 +21,7 @@ const findPatientsByCarerGenderAndDay = async (_, { userId, dayInput }) => {
     "friday",
     "saturday",
   ];
-  const date = parseISO(dayInput.date);
+  const date = parseISO(selectedDate);
 
   const carer = await Carer.findOne({ userId: userId });
   const { gender } = carer;

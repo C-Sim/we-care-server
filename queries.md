@@ -24,6 +24,9 @@ query UserInfo($userId: ID!) {
     lastName
     email
     accountType
+    address {
+      fullAddress
+    }
   }
 }
 ```
@@ -91,6 +94,30 @@ variables:
 ```
 {
     "userId": "{{patientId}}"
+}
+```
+
+#### 1.1.4-Query Carer by date and if has assigned appointments
+
+```graphql
+query AvailableCarers($selectedDate: String!) {
+  availableCarersByDate(selectedDate: $selectedDate) {
+    userId
+    username
+    gender
+    appointments {
+      appointmentDate
+      title
+    }
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "selectedDate": "2022-09-02T16:00:00"
 }
 ```
 
@@ -342,8 +369,11 @@ variables
 #### 1.4.4-Query for matching patients - by carer gender and day of week
 
 ```graphql
-query FindPatientsByCarerGenderAndDay($userId: ID!, $dayInput: DayInput) {
-  findPatientsByCarerGenderAndDay(userId: $userId, dayInput: $dayInput) {
+query FindPatientsByCarerGenderAndDay($userId: ID!, $selectedDate: String!) {
+  findPatientsByCarerGenderAndDay(
+    userId: $userId
+    selectedDate: $selectedDate
+  ) {
     userId {
       id
       firstName
@@ -364,9 +394,7 @@ variables
 ```json
 {
   "userId": "{{carerId}}",
-  "dayInput": {
-    "date": "2022-09-21T07:00:00.000+00:00"
-  }
+  "selectedDate": "2022-09-21T07:00:00.000+00:00"
 }
 ```
 
@@ -665,11 +693,6 @@ variables:
 mutation CarerSignup($signupInput: SignupInput!, $carerInput: CarerInput!) {
   carerSignup(signupInput: $signupInput, carerInput: $carerInput) {
     success
-    carer {
-      username
-      gender
-    }
-    userId
   }
 }
 ```

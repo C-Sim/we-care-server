@@ -17,6 +17,10 @@ const userSchema = {
     maxLength: 50,
     trim: true,
   },
+  imageUrl: {
+    type: String,
+    trim: true,
+  },
   email: {
     type: String,
     required: true,

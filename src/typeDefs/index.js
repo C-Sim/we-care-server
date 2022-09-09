@@ -31,6 +31,7 @@ const typeDefs = gql`
   type Appointment {
     id: ID!
     appointmentDate: String
+    title: String
     patientId: User
     carerId: User
     start: String!
@@ -55,6 +56,7 @@ const typeDefs = gql`
     id: ID!
     firstName: String
     lastName: String
+    imageUrl: String
     email: String!
     accountType: String!
     phoneNumber: String
@@ -68,9 +70,18 @@ const typeDefs = gql`
     userId: User
     username: String!
     days: [String!]
+    appointments: [Appointment]
     notificationCount: String
     appointmentCount: String
     gender: String!
+  }
+
+  type AvailableCarer {
+    userId: String
+    username: String!
+    days: [String]
+    appointments: [Appointment]
+    gender: String
   }
 
   type Patient {
@@ -215,10 +226,6 @@ const typeDefs = gql`
     password: String!
   }
 
-  input DayInput {
-    date: String
-  }
-
   input DateInput {
     dayStart: String
     dayEnd: String
@@ -229,6 +236,7 @@ const typeDefs = gql`
     users: [User]
     carers: [Carer]
     patients: [Patient]
+    availableCarersByDate(selectedDate: String!): [AvailableCarer]
     allAppointments: [Appointment]
     appointmentsByUserId(userId: ID!): [Appointment]
     appointmentsByDateAndUserId(
@@ -241,7 +249,10 @@ const typeDefs = gql`
     supervisor(accountType: String!): User
     carerDashboard(userId: ID!): carerDashboard
     patientDashboard(userId: ID!): patientDashboard
-    findPatientsByCarerGenderAndDay(userId: ID!, dayInput: DayInput): [Patient]
+    findPatientsByCarerGenderAndDay(
+      userId: ID!
+      selectedDate: String!
+    ): [Patient]
     findPatientsByCarerGender(userId: ID!): [Patient]
   }
   type Mutation {
