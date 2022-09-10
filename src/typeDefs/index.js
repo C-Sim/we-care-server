@@ -186,6 +186,10 @@ const typeDefs = gql`
   input UserInfoInput {
     postcode: String
     address: ID
+    phoneNumber: String
+    firstName: String
+    lastName: String
+    email: String
   }
 
   input CarerInfoInput {
@@ -260,15 +264,9 @@ const typeDefs = gql`
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
-    updateUserInfo(userId: ID!, updateInput: UserInfoInput): UpdateSuccess
-    updateCarerInfo(
-      userId: ID!
-      updateCarerInput: CarerInfoInput
-    ): UpdateSuccess
-    updatePatientInfo(
-      userId: ID!
-      updatePatientInput: PatientInfoInput
-    ): UpdateSuccess
+    updateUserInfo(updateInput: UserInfoInput): UpdateSuccess
+    updateCarerInfo(updateCarerInput: CarerInfoInput): UpdateSuccess
+    updatePatientInfo(updatePatientInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
     updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess

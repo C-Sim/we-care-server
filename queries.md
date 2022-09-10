@@ -24,6 +24,8 @@ query UserInfo($userId: ID!) {
     lastName
     email
     accountType
+    postcode
+    phoneNumber
     address {
       fullAddress
     }
