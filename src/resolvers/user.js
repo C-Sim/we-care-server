@@ -1,6 +1,12 @@
-const { User, Carer, Patient } = require("../models");
+const { User, Carer, Patient, AddressLookup } = require("../models");
 const mongoose = require("mongoose");
 const sendNotification = require("./sendNotification");
+
+const userInfo = async (_, { userId }) => {
+  const carer = await User.findById(userId);
+
+  return carer;
+};
 
 const carerInfo = async (_, { userId }) => {
   const carer = await Carer.findOne({ userId }).populate("userId");
@@ -16,6 +22,24 @@ const patientInfo = async (_, { userId }) => {
 
 const updateUserInfo = async (_, { updateInput, userId }) => {
   try {
+    if (updateInput.address) {
+      const address = await AddressLookup.findOne({
+        addresses: {
+          $elemMatch: {
+            _id: updateInput.address,
+          },
+        },
+      });
+
+      const yourAddress = address
+        .get("addresses")
+        .find(
+          (address) => address.get("_id")?.toString() === updateInput.address
+        );
+
+      updateInput.address = yourAddress;
+    }
+
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
       { $set: updateInput },
@@ -26,7 +50,7 @@ const updateUserInfo = async (_, { updateInput, userId }) => {
 
     return {
       success: true,
-      userId: userId,
+      user: updatedUser,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update user | ${error.message}`);
@@ -119,6 +143,7 @@ const updateCarerReviews = async (_, { reviewInput, userId }) => {
 };
 
 module.exports = {
+  userInfo,
   carerInfo,
   patientInfo,
   updateUserInfo,

@@ -15,6 +15,7 @@ const {
   allNotifications,
 } = require("./notifications");
 const {
+  userInfo,
   carerInfo,
   patientInfo,
   updateUserInfo,
@@ -37,6 +38,7 @@ const { createCarePlan } = require("./carePlan");
 const resolvers = {
   Query: {
     addressLookup,
+    userInfo,
     users,
     carers,
     patients,

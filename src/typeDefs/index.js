@@ -127,6 +127,10 @@ const typeDefs = gql`
     success: Boolean!
     userId: String
   }
+  type UpdateUserSuccess {
+    success: Boolean!
+    user: User
+  }
 
   type UpdateAppointmentSuccess {
     success: Boolean!
@@ -250,6 +254,7 @@ const typeDefs = gql`
       dateInput: DateInput
     ): [Appointment]
     notificationsByUserId(userId: ID!, mailType: String!): [Notification]
+    userInfo(userId: ID!): User
     carerInfo(userId: ID!): Carer
     patientInfo(userId: ID!): Patient
     supervisor(accountType: String!): User
@@ -264,9 +269,15 @@ const typeDefs = gql`
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
-    updateUserInfo(updateInput: UserInfoInput): UpdateSuccess
-    updateCarerInfo(updateCarerInput: CarerInfoInput): UpdateSuccess
-    updatePatientInfo(updatePatientInput: PatientInfoInput): UpdateSuccess
+    updateUserInfo(userId: ID!, updateInput: UserInfoInput): UpdateUserSuccess
+    updateCarerInfo(
+      userId: ID!
+      updateCarerInput: CarerInfoInput
+    ): UpdateSuccess
+    updatePatientInfo(
+      userId: ID!
+      updatePatientInput: PatientInfoInput
+    ): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
     updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
