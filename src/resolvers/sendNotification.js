@@ -1,5 +1,11 @@
 const { ApolloError } = require("apollo-server");
-const { Patient, Carer, Supervisor, Notification } = require("../models");
+const {
+  Patient,
+  Carer,
+  Supervisor,
+  Notification,
+  Appointment,
+} = require("../models");
 
 const sendNotification = async ({
   receiverType,
@@ -9,12 +15,24 @@ const sendNotification = async ({
   appointmentId,
 }) => {
   try {
+    let reviewedAppointmentId;
+    let reviewedAppointmentDate;
+    if (!appointmentId) {
+      reviewedAppointmentId = "null";
+      reviewedAppointmentDate = "null";
+    } else {
+      const appointment = await Appointment.findById(appointmentId);
+      reviewedAppointmentId = appointmentId;
+      reviewedAppointmentDate = appointment.appointmentDate;
+    }
+
     //create notification data
     const notificationData = {
       receiverId,
       notificationType,
       notificationText,
-      appointmentId,
+      appointmentId: reviewedAppointmentId,
+      appointmentDate: reviewedAppointmentDate,
     };
 
     //create notification

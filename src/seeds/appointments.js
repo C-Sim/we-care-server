@@ -93,6 +93,7 @@ const prepareFemaleAppointmentsData = async () => {
           senderId: carerId,
           receiverId: patientId,
           appointmentId: _id,
+          appointmentDate: appointmentDate,
           notificationText: "Your carer is on their way to you!",
         };
         const newNotification = await Notification.create(notification);
@@ -210,6 +211,7 @@ const prepareMaleAppointmentsData = async () => {
           senderId: carerId,
           receiverId: patientId,
           appointmentId: _id,
+          appointmentDate: appointmentDate,
           notificationText: "Your carer is on their way to you!",
         };
         const newNotification = await Notification.create(notification);

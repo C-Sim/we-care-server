@@ -36,8 +36,10 @@ const notificationSchema = {
     required: true,
   },
   appointmentId: {
-    type: Schema.Types.ObjectId,
-    ref: "Appointment",
+    type: String,
+  },
+  appointmentDate: {
+    type: String,
   },
   notificationText: {
     type: String,

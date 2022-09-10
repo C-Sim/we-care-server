@@ -1,5 +1,9 @@
 const { Notification } = require("../models");
 
+const allNotifications = async () => {
+  return await Notification.find();
+};
+
 const notificationsByUserId = async (_, { userId, mailType }) => {
   switch (mailType) {
     case "sent":
@@ -40,4 +44,5 @@ const updateIsReadStatus = async (_, { notificationId, userId }) => {
 module.exports = {
   notificationsByUserId,
   updateIsReadStatus,
+  allNotifications,
 };

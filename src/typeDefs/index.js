@@ -50,6 +50,7 @@ const typeDefs = gql`
     notificationType: String
     notificationText: String
     isRead: Boolean
+    appointmentId: String
   }
 
   type User {
@@ -255,6 +256,7 @@ const typeDefs = gql`
       selectedDate: String!
     ): [AvailablePerson]
     findPatientsByCarerGender(userId: ID!): [Patient]
+    allNotifications: [Notification]
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
