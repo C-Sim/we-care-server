@@ -121,7 +121,6 @@ const typeDefs = gql`
   }
   type CreateSuccess {
     success: Boolean!
-    id: String
   }
   type UpdateSuccess {
     success: Boolean!
@@ -281,6 +280,7 @@ const typeDefs = gql`
     updateApprovedStatus(userId: ID!): UpdateSuccess
     updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
+    createAppointments(appointments: [AppointmentInput]!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
     updateAppointment(
       appointmentId: ID!

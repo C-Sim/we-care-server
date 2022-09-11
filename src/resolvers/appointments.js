@@ -77,6 +77,53 @@ const createAppointment = async (_, { appointmentInput }) => {
   }
 };
 
+const createAppointments = async (_, { appointments }) => {
+  //function to run every time
+  const createOneAppointment = async (appointmentInput) => {
+    try {
+      const createdAppointment = await Appointment.create(appointmentInput);
+      const { _id } = createdAppointment;
+
+      //update carer's appointments array
+      const carerToUpdate = await Carer.findOneAndUpdate(
+        { userId: appointmentInput.carerId },
+        {
+          $push: {
+            appointments: _id,
+          },
+        }
+      );
+
+      //update patient's appointments array
+      const patientToUpdate = await Patient.findOneAndUpdate(
+        { userId: appointmentInput.patientId },
+        {
+          $push: {
+            appointments: _id,
+          },
+        }
+      );
+
+      return {
+        success: true,
+        id: _id,
+      };
+    } catch (error) {
+      console.log(`[ERROR]: Failed to create appointment | ${error.message}`);
+
+      throw new ApolloError("Failed to create appointment");
+    }
+  };
+
+  const promises = appointments.map((a) => {
+    return createOneAppointment(a);
+  });
+
+  await Promise.all(promises);
+
+  return { success: true };
+};
+
 const deleteAppointment = async (_, { appointmentId }) => {
   try {
     const appointment = await Appointment.findById(appointmentId);
@@ -346,6 +393,7 @@ module.exports = {
   appointmentsByUserId,
   appointmentsByDateAndUserId,
   createAppointment,
+  createAppointments,
   deleteAppointment,
   updateAppointment,
   updateAppointmentReview,
