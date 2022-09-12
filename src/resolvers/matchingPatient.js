@@ -1,8 +1,8 @@
 const { Carer, Patient } = require("../models");
 const { getDay, parseISO } = require("date-fns");
 
-const findPatientsByCarerGender = async (_, { userId }) => {
-  const carer = await Carer.findOne({ userId: userId });
+const findPatientsByCarerGender = async (_, __, { user }) => {
+  const carer = await Carer.findOne({ userId: user.id });
   const { gender } = carer;
 
   const patients = await Patient.find({
@@ -13,7 +13,8 @@ const findPatientsByCarerGender = async (_, { userId }) => {
 
 const availablePatientsByCarerGenderAndDay = async (
   _,
-  { userId, selectedDate }
+  { selectedDate },
+  { user }
 ) => {
   const daysList = [
     "sunday",
@@ -30,7 +31,7 @@ const availablePatientsByCarerGenderAndDay = async (
   const day = daysList[getDay(date)];
 
   //getting carer gender
-  const carer = await Carer.findOne({ userId: userId });
+  const carer = await Carer.findOne({ userId: user.id });
   const { gender } = carer;
 
   //getting start and end of the day for check on availability (appointment already assigned or not)

@@ -1,18 +1,18 @@
 const { User, Appointment, Notification, Carer } = require("../models");
 
-const carerDashboard = async (_, { userId }) => {
+const carerDashboard = async (_, __, { user }) => {
   const carer = await (
-    await Carer.findOne({ userId: { _id: userId } })
+    await Carer.findOne({ userId: { _id: user.id } })
   ).populate("userId");
 
   const appointments = await Appointment.find({
-    $or: [{ carerId: userId }, { patientId: userId }],
+    $or: [{ carerId: user.id }, { patientId: user.id }],
   })
     .populate("carerId")
     .populate("patientId");
 
   const notifications = await Notification.find({
-    $or: [{ senderId: userId }, { receiverId: userId }],
+    $or: [{ senderId: user.id }, { receiverId: user.id }],
   });
 
   return { carer, appointments, notifications };

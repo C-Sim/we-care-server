@@ -247,38 +247,32 @@ const typeDefs = gql`
     patients: [Patient]
     availableCarersByDate(selectedDate: String!): [AvailablePerson]
     allAppointments: [Appointment]
-    appointmentsByUserId(userId: ID!): [Appointment]
+    appointmentsByUserId: [Appointment]
     appointmentsByDateAndUserId(
       userId: ID!
       dateInput: DateInput
     ): [Appointment]
     notificationsByUserId: [Notification]
-    userInfo(userId: ID!): User
-    carerInfo(userId: ID!): Carer
-    patientInfo(userId: ID!): Patient
+    userInfo: User
+    carerInfo: Carer
+    patientInfo: Patient
     supervisor(accountType: String!): User
-    carerDashboard(userId: ID!): carerDashboard
-    patientDashboard(userId: ID!): patientDashboard
+    carerDashboard: carerDashboard
+    patientDashboard: patientDashboard
     availablePatientsByCarerGenderAndDay(
       userId: ID!
       selectedDate: String!
     ): [AvailablePerson]
-    findPatientsByCarerGender(userId: ID!): [Patient]
+    findPatientsByCarerGender: [Patient]
     allNotifications: [Notification]
   }
   type Mutation {
     login(loginInput: LoginInput!): LoginSuccess
-    updateUserInfo(userId: ID!, updateInput: UserInfoInput): UpdateUserSuccess
-    updateCarerInfo(
-      userId: ID!
-      updateCarerInput: CarerInfoInput
-    ): UpdateSuccess
-    updatePatientInfo(
-      userId: ID!
-      updatePatientInput: PatientInfoInput
-    ): UpdateSuccess
+    updateUserInfo(updateInput: UserInfoInput): UpdateUserSuccess
+    updateCarerInfo(updateCarerInput: CarerInfoInput): UpdateSuccess
+    updatePatientInfo(updatePatientInput: PatientInfoInput): UpdateSuccess
     updateApprovedStatus(userId: ID!): UpdateSuccess
-    updateCarerReviews(userId: ID!, reviewInput: ReviewInput): UpdateSuccess
+    updateCarerReviews(reviewInput: ReviewInput): UpdateSuccess
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     createAppointments(appointments: [AppointmentInput]!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
@@ -291,7 +285,7 @@ const typeDefs = gql`
       reviewInput: ReviewInput
       appointmentId: ID!
     ): UpdateSuccess
-    updateIsReadStatus(notificationId: ID!, userId: ID): [Notification]
+    updateIsReadStatus(notificationId: ID!): [Notification]
 
     patientSignup(
       signupInput: SignupInput!
@@ -301,7 +295,7 @@ const typeDefs = gql`
       signupInput: SignupInput!
       carerInput: CarerInput!
     ): CarerSignupSuccess
-    createCarePlan(userId: ID!, carePlanInput: CarePlanInput!): CreateSuccess
+    createCarePlan(carePlanInput: CarePlanInput!): CreateSuccess
   }
 `;
 

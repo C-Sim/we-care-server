@@ -8,7 +8,7 @@ const notificationsByUserId = async (_, __, { user }) => {
   return await Notification.find({ receiverId: user.id });
 };
 
-const updateIsReadStatus = async (_, { notificationId, userId }) => {
+const updateIsReadStatus = async (_, { notificationId }, { user }) => {
   try {
     const notification = await Notification.findById(notificationId);
 
@@ -21,7 +21,7 @@ const updateIsReadStatus = async (_, { notificationId, userId }) => {
     );
 
     const updatedReceivedNotifications = await Notification.find({
-      receiverId: userId,
+      receiverId: user.id,
     });
 
     return updatedReceivedNotifications;

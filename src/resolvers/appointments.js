@@ -7,9 +7,9 @@ const allAppointments = async () => {
   return appointments;
 };
 
-const appointmentsByUserId = async (_, { userId }) => {
+const appointmentsByUserId = async (_, __, { user }) => {
   const appointments = await Appointment.find({
-    $or: [{ carerId: userId }, { patientId: userId }],
+    $or: [{ carerId: user.id }, { patientId: user.id }],
   })
     .populate({
       path: "patientId",
@@ -19,7 +19,7 @@ const appointmentsByUserId = async (_, { userId }) => {
   return appointments;
 };
 
-const appointmentsByDateAndUserId = async (_, { userId, dateInput }) => {
+const appointmentsByDateAndUserId = async (_, { dateInput }, { user }) => {
   const appointments = await Appointment.find({
     $and: [
       { $or: [{ carerId: userId }, { patientId: userId }] },
@@ -106,7 +106,6 @@ const createAppointments = async (_, { appointments }) => {
 
       return {
         success: true,
-        id: _id,
       };
     } catch (error) {
       console.log(`[ERROR]: Failed to create appointment | ${error.message}`);

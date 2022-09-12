@@ -2,25 +2,25 @@ const { User, Carer, Patient, AddressLookup } = require("../models");
 const mongoose = require("mongoose");
 const sendNotification = require("./sendNotification");
 
-const userInfo = async (_, { userId }) => {
-  const carer = await User.findById(userId);
+const userInfo = async (_, __, { user }) => {
+  const carer = await User.findById(user.id);
 
   return carer;
 };
 
-const carerInfo = async (_, { userId }) => {
-  const carer = await Carer.findOne({ userId }).populate("userId");
+const carerInfo = async (_, __, { user }) => {
+  const carer = await Carer.findOne({ userId: user.id }).populate("userId");
 
   return carer;
 };
 
-const patientInfo = async (_, { userId }) => {
-  const patient = await Patient.findOne({ userId }).populate("userId");
+const patientInfo = async (_, __, { user }) => {
+  const patient = await Patient.findOne({ userId: user.id }).populate("userId");
 
   return patient;
 };
 
-const updateUserInfo = async (_, { updateInput, userId }) => {
+const updateUserInfo = async (_, { updateInput }, { user }) => {
   try {
     if (updateInput.address) {
       const address = await AddressLookup.findOne({
@@ -41,7 +41,7 @@ const updateUserInfo = async (_, { updateInput, userId }) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { _id: userId },
+      { _id: user.id },
       { $set: updateInput },
       {
         new: true,
@@ -57,10 +57,10 @@ const updateUserInfo = async (_, { updateInput, userId }) => {
   }
 };
 
-const updateCarerInfo = async (_, { updateCarerInput, userId }) => {
+const updateCarerInfo = async (_, { updateCarerInput }, { user }) => {
   try {
     const updatedCarer = await Carer.findOneAndUpdate(
-      { userId: userId },
+      { userId: user.id },
       { $set: updateCarerInput },
       {
         new: true,
@@ -69,17 +69,17 @@ const updateCarerInfo = async (_, { updateCarerInput, userId }) => {
 
     return {
       success: true,
-      userId: userId,
+      userId: user.id,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update carer | ${error.message}`);
   }
 };
 
-const updatePatientInfo = async (_, { updatePatientInput, userId }) => {
+const updatePatientInfo = async (_, { updatePatientInput }, { user }) => {
   try {
     const updatedPatient = await Patient.findOneAndUpdate(
-      { userId: userId },
+      { userId: user.id },
       { $set: updatePatientInput },
       {
         new: true,
@@ -88,7 +88,7 @@ const updatePatientInfo = async (_, { updatePatientInput, userId }) => {
 
     return {
       success: true,
-      userId: userId,
+      userId: user.id,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update patient | ${error.message}`);
@@ -114,12 +114,12 @@ const updateApprovedStatus = async (_, { userId }) => {
   }
 };
 
-const updateCarerReviews = async (_, { reviewInput, userId }) => {
+const updateCarerReviews = async (_, { reviewInput }, { user }) => {
   try {
-    reviewInput.patientId = userId;
+    reviewInput.patientId = user.id;
 
-    const carer = await Carer.findOne({ userId: userId });
-    const receiverId = carer.userId;
+    const carer = await Carer.findOne({ userId: user.id });
+    const receiverId = carer.user.id;
 
     //push the review in the carer's reviews array
     carer.reviews.push(reviewInput);
@@ -135,7 +135,7 @@ const updateCarerReviews = async (_, { reviewInput, userId }) => {
 
     return {
       success: true,
-      userId: userId,
+      userId: user.id,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update patient | ${error.message}`);

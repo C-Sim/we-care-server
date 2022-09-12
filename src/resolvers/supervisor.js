@@ -1,7 +1,7 @@
 const { User } = require("../models");
 
-const supervisor = async (_, { accountType }) => {
-  const supervisor = await User.findOne({ accountType: accountType });
+const supervisor = async (_, __, { user }) => {
+  const supervisor = await User.findOne({ accountType: user.accountType });
 
   return supervisor;
 };
