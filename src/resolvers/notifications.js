@@ -4,18 +4,8 @@ const allNotifications = async () => {
   return await Notification.find();
 };
 
-const notificationsByUserId = async (_, { userId, mailType }, { user }) => {
-  console.log(user);
-  switch (mailType) {
-    case "sent":
-      return await Notification.find({ senderId: userId });
-    case "received":
-      return await Notification.find({ receiverId: userId });
-    case "all":
-      return await Notification.find({
-        $or: [{ senderId: userId }, { receiverId: userId }],
-      });
-  }
+const notificationsByUserId = async (_, __, { user }) => {
+  return await Notification.find({ receiverId: user.Id });
 };
 
 const updateIsReadStatus = async (_, { notificationId, userId }) => {

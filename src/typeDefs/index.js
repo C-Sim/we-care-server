@@ -252,7 +252,7 @@ const typeDefs = gql`
       userId: ID!
       dateInput: DateInput
     ): [Appointment]
-    notificationsByUserId(userId: ID!, mailType: String!): [Notification]
+    notificationsByUserId: [Notification]
     userInfo(userId: ID!): User
     carerInfo(userId: ID!): Carer
     patientInfo(userId: ID!): Patient
