@@ -4,7 +4,8 @@ const allNotifications = async () => {
   return await Notification.find();
 };
 
-const notificationsByUserId = async (_, { userId, mailType }) => {
+const notificationsByUserId = async (_, { userId, mailType }, { user }) => {
+  console.log(user);
   switch (mailType) {
     case "sent":
       return await Notification.find({ senderId: userId });

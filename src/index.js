@@ -5,6 +5,7 @@ const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
 
 const connectToDatabase = require("./config/connection");
+const { authMiddleware } = require("./utils/auth");
 
 const PORT = process.env.PORT || 4000;
 
@@ -16,6 +17,7 @@ const init = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      context: authMiddleware,
     });
 
     const { url } = await server.listen(PORT);
