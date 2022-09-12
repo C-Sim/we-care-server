@@ -21,6 +21,7 @@ const prepareUsersData = async () => {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const email = faker.internet.exampleEmail();
+    const imageUrl = faker.image.people(640, 480, true);
     const password = "password123";
     const accountType = "supervisor";
     const phoneNumber = "07777777777";
@@ -30,6 +31,7 @@ const prepareUsersData = async () => {
       firstName,
       lastName,
       email,
+      imageUrl,
       phoneNumber,
       accountType,
       password,
@@ -45,6 +47,7 @@ const prepareUsersData = async () => {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const email = faker.internet.exampleEmail();
+    const imageUrl = faker.image.people(640, 480, true);
     const password = "password123";
     const accountType = "carer";
     const phoneNumber = "07777777777";
@@ -54,6 +57,7 @@ const prepareUsersData = async () => {
       firstName,
       lastName,
       email,
+      imageUrl,
       phoneNumber,
       accountType,
       password,
@@ -68,6 +72,7 @@ const prepareUsersData = async () => {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const email = faker.internet.exampleEmail();
+    const imageUrl = faker.image.people(640, 480, true);
     const password = "password123";
     const accountType = "patient";
     const phoneNumber = "07777777777";
@@ -77,6 +82,7 @@ const prepareUsersData = async () => {
       firstName,
       lastName,
       email,
+      imageUrl,
       phoneNumber,
       accountType,
       password,
