@@ -48,7 +48,7 @@ const appointmentsByUserId = async (_, __, { user }) => {
 //the appointments for the next working day for the logged in carer
 const appointmentsForNextWorkingDay = async (_, __, { user }) => {
   const allAppointments = await Appointment.find({
-    carerId: userId,
+    carerId: user.id,
   })
     .sort("start")
     .populate({
