@@ -133,7 +133,6 @@ const typeDefs = gql`
 
   type UpdateAppointmentSuccess {
     success: Boolean!
-    appointment: Appointment
   }
 
   type PatientSignupSuccess {

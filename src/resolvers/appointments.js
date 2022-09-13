@@ -41,7 +41,10 @@ const appointmentsByUserId = async (_, __, { user }) => {
         { path: "address" },
       ],
     })
-    .populate("carerId");
+    .populate({
+      path: "carerId",
+      populate: { path: "carerProfileId", model: "Carer" },
+    });
   return appointments;
 };
 
@@ -430,7 +433,6 @@ const updateAppointment = async (
 
     return {
       success: true,
-      appointment: updatedAppointment,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to update appointment | ${error.message}`);
