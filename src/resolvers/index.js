@@ -1,7 +1,7 @@
 const addressLookup = require("./addressLookup");
 const { users, carers, patients, availableCarersByDate } = require("./users");
 const {
-  allAppointments,
+  appointmentById,
   appointmentsByUserId,
   appointmentsByDateAndUserId,
   createAppointment,
@@ -44,7 +44,7 @@ const resolvers = {
     carers,
     patients,
     availableCarersByDate,
-    allAppointments,
+    appointmentById,
     appointmentsByUserId,
     appointmentsByDateAndUserId,
     notificationsByUserId,

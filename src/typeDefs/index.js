@@ -246,8 +246,8 @@ const typeDefs = gql`
     carers: [Carer]
     patients: [Patient]
     availableCarersByDate(selectedDate: String!): [AvailablePerson]
-    allAppointments: [Appointment]
-    appointmentsByUserId: [Appointment]
+    appointmentById(appointmentId: ID!): Appointment
+    appointmentsByUserId(userId: ID!): [Appointment]
     appointmentsByDateAndUserId(
       userId: ID!
       dateInput: DateInput
@@ -255,7 +255,7 @@ const typeDefs = gql`
     notificationsByUserId: [Notification]
     userInfo: User
     carerInfo: Carer
-    patientInfo: Patient
+    patientInfo(userId: ID!): Patient
     supervisor(accountType: String!): User
     carerDashboard: carerDashboard
     patientDashboard: patientDashboard

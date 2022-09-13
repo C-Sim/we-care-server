@@ -2,14 +2,32 @@ const { ApolloError } = require("apollo-server");
 const { Appointment, Supervisor, Carer, Patient } = require("../models");
 const sendNotification = require("./sendNotification");
 
-const allAppointments = async () => {
-  const appointments = await Appointment.find({});
+const appointmentById = async (_, { appointmentId }, { user }) => {
+  const appointment = await Appointment.findById(appointmentId)
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
+  return appointment;
+};
+
+//the carer will pass the userId and get the notes for that patient
+const appointmentsByCarer = async (_, __, { user }) => {
+  const appointments = await Appointment.find({
+    $or: [{ carerId: user.id }, { patientId: user.id }],
+  })
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
   return appointments;
 };
 
-const appointmentsByUserId = async (_, __, { user }) => {
+const appointmentsByUserId = async (_, { userId }) => {
   const appointments = await Appointment.find({
-    $or: [{ carerId: user.id }, { patientId: user.id }],
+    $or: [{ carerId: userId }, { patientId: userId }],
   })
     .populate({
       path: "patientId",
@@ -22,7 +40,7 @@ const appointmentsByUserId = async (_, __, { user }) => {
 const appointmentsByDateAndUserId = async (_, { dateInput }, { user }) => {
   const appointments = await Appointment.find({
     $and: [
-      { $or: [{ carerId: userId }, { patientId: userId }] },
+      { $or: [{ carerId: user.id }, { patientId: user.id }] },
       {
         appointmentDate: {
           $gte: new Date(dateInput.dayStart),
@@ -388,7 +406,7 @@ const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
 };
 
 module.exports = {
-  allAppointments,
+  appointmentById,
   appointmentsByUserId,
   appointmentsByDateAndUserId,
   createAppointment,

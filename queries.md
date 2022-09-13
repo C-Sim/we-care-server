@@ -101,6 +101,44 @@ variables:
 
 ### 1.2-Query appointments
 
+#### 1.2.1-Query appointments by appointmentId
+
+Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
+
+```graphql
+query AppointmentById($appointmentId: ID!) {
+  appointmentsByUserId(appointmentId: $appointmentId) {
+    id
+    appointmentDate
+    patientId {
+      id
+      firstName
+      lastName
+      postcode
+      patientProfileId {
+        gender
+      }
+    }
+    carerId {
+      id
+      firstName
+      lastName
+    }
+    start
+    end
+    status
+  }
+}
+```
+
+variables:
+
+```json
+{
+  "userId": "{{patientId}}"
+}
+```
+
 #### 1.2.1-Query appointments by userId (carer or patient)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins

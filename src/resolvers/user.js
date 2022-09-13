@@ -14,8 +14,9 @@ const carerInfo = async (_, __, { user }) => {
   return carer;
 };
 
-const patientInfo = async (_, __, { user }) => {
-  const patient = await Patient.findOne({ userId: user.id }).populate("userId");
+//the carer will query for patient info here
+const patientInfo = async (_, { userId }) => {
+  const patient = await Patient.findOne({ userId: userId }).populate("userId");
 
   return patient;
 };
