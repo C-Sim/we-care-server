@@ -20,7 +20,7 @@ const prepareUsersData = async () => {
   for (let i = 0; i < 1; i += 1) {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
-    const email = faker.internet.exampleEmail();
+    const email = "supervisor@example.org";
     const imageUrl = faker.image.people(640, 480, true);
     const password = "password123";
     const accountType = "supervisor";
