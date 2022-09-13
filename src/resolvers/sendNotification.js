@@ -8,6 +8,7 @@ const {
 } = require("../models");
 
 const sendNotification = async ({
+  senderId,
   receiverType,
   receiverId,
   notificationType,
@@ -21,18 +22,23 @@ const sendNotification = async ({
       reviewedAppointmentId = "null";
       reviewedAppointmentDate = "null";
     } else {
-      const appointment = await Appointment.findById(appointmentId);
+      const appointment = await Appointment.findById(appointmentId).populate(
+        "patientId"
+      );
       reviewedAppointmentId = appointmentId;
       reviewedAppointmentDate = appointment.appointmentDate;
+      reviewedPatientUsername = ` ${appointment.patientId.firstName} ${appointment.patientId.lastName}`;
     }
 
     //create notification data
     const notificationData = {
+      senderId,
       receiverId,
       notificationType,
       notificationText,
       appointmentId: reviewedAppointmentId,
       appointmentDate: reviewedAppointmentDate,
+      patientUsername: reviewedPatientUsername,
     };
 
     //create notification

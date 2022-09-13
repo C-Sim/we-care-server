@@ -1,5 +1,5 @@
 const { ApolloError } = require("apollo-server");
-const { Appointment, Supervisor, Carer, Patient } = require("../models");
+const { Appointment, Supervisor, Carer, Patient, User } = require("../models");
 const sendNotification = require("./sendNotification");
 const { addDays } = require("date-fns");
 
@@ -247,7 +247,8 @@ const deleteAppointment = async (_, { appointmentId }) => {
 //used by carer and patient to update certain fields of the targeted appointment
 const updateAppointment = async (
   _,
-  { appointmentId, trigger, appointmentUpdateInput }
+  { appointmentId, trigger, appointmentUpdateInput },
+  { user }
 ) => {
   try {
     const appointment = await Appointment.findById(appointmentId);
@@ -313,6 +314,7 @@ const updateAppointment = async (
           const receiverId = followingAppointments[0].patientId;
           //send notification to patient "Your carer is on their way to you" (patientId = receiverId)
           const patientNotified = await sendNotification({
+            senderId: userId,
             receiverType: "patient",
             receiverId,
             notificationType: "Update",
@@ -353,12 +355,12 @@ const updateAppointment = async (
             new: true,
           }
         );
-        //find carer for this appointment
-        const receiverId = updatedAppointment.carerId;
+
         //notify previous carer
         const carerNotified = await sendNotification({
+          senderId: updatedAppointment.senderId,
           receiverType: "carer",
-          receiverId,
+          receiverId: updatedAppointment.carerId,
           notificationType: "New care requirement",
           notificationText:
             "The patient has added a note for their upcoming appointment",
@@ -389,8 +391,10 @@ const updateAppointment = async (
           }
         );
 
+        const supervisorId = user.id;
         //notify previous carer
         const previousCarerNotified = await sendNotification({
+          senderId: supervisorId,
           receiverType: "carer",
           receiverId: previousCarerId,
           notificationType: "Schedule change",
@@ -411,6 +415,7 @@ const updateAppointment = async (
 
         ///notify new carer
         const newCarerNotified = await sendNotification({
+          senderId: supervisorId,
           receiverType: "carer",
           receiverId: newCarerId,
           notificationType: "Schedule change",
@@ -421,6 +426,7 @@ const updateAppointment = async (
 
         //notify patient of the update
         const patientNotified = await sendNotification({
+          senderId: supervisorId,
           receiverType: "patient",
           receiverId: appointment.patientId,
           notificationType: "Carer change",

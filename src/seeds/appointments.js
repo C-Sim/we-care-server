@@ -60,7 +60,8 @@ const prepareFemaleAppointmentsData = async () => {
         const actualStart = start;
         const actualEnd = end;
         const patientId = chosenPatients[iii].userId;
-        const title = `Visit to ${chosenPatients[iii].username} by ${carerUsername}`;
+        const patientUsername = chosenPatients[iii].username;
+        const title = `Visit to ${patientUsername} by ${carerUsername}`;
         const carerNotes = [];
         const firstNote = faker.lorem.sentences(3);
         carerNotes.push(firstNote);
@@ -94,6 +95,7 @@ const prepareFemaleAppointmentsData = async () => {
           receiverId: patientId,
           appointmentId: _id,
           appointmentDate: appointmentDate,
+          patientUsername: patientUsername,
           notificationText: "Your carer is on their way to you!",
         };
         const newNotification = await Notification.create(notification);
@@ -178,6 +180,7 @@ const prepareMaleAppointmentsData = async () => {
         const actualStart = start;
         const actualEnd = end;
         const patientId = chosenPatients[iii].userId;
+        const patientUsername = chosenPatients[iii].username;
         const title = `Visit to ${chosenPatients[iii].username} by ${carerUsername}`;
         const carerNotes = [];
         const firstNote = faker.lorem.sentences(3);
@@ -212,6 +215,7 @@ const prepareMaleAppointmentsData = async () => {
           receiverId: patientId,
           appointmentId: _id,
           appointmentDate: appointmentDate,
+          patientUsername: patientUsername,
           notificationText: "Your carer is on their way to you!",
         };
         const newNotification = await Notification.create(notification);

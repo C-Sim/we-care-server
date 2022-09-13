@@ -50,7 +50,9 @@ const typeDefs = gql`
     notificationType: String
     notificationText: String
     isRead: Boolean
-    appointmentId: Appointment
+    appointmentId: String
+    appointmentDate: String
+    patientUsername: String
   }
 
   type User {

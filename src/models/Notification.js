@@ -41,6 +41,9 @@ const notificationSchema = {
   appointmentDate: {
     type: String,
   },
+  patientUsername: {
+    type: String,
+  },
   notificationText: {
     type: String,
   },
