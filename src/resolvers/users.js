@@ -1,9 +1,6 @@
 const { User, Patient, Carer } = require("../models");
 
-const users = async () => {
-  const users = await User.find({});
-  return users;
-};
+
 
 const carers = async () => {
   const carers = await Carer.find({}).populate("userId");
@@ -54,4 +51,4 @@ const availableCarersByDate = async (_, { selectedDate }) => {
   return availableCarers;
 };
 
-module.exports = { users, carers, patients, availableCarersByDate };
+module.exports = { carers, patients, availableCarersByDate };

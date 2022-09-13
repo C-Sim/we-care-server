@@ -242,12 +242,13 @@ const typeDefs = gql`
 
   type Query {
     addressLookup(postcode: String!): AddressLookup
-    users: [User]
     carers: [Carer]
     patients: [Patient]
     availableCarersByDate(selectedDate: String!): [AvailablePerson]
-    appointmentById(appointmentId: ID!): Appointment
-    appointmentsByUserId(userId: ID!): [Appointment]
+    appointmentsById(userId: ID!): [Appointment]
+    appointmentsByUserId: [Appointment]
+    appointmentNotesByUserId(userId: ID!): [Appointment]
+    appointmentsForNextWorkingDay: [Appointment]
     appointmentsByDateAndUserId(
       userId: ID!
       dateInput: DateInput
@@ -256,14 +257,14 @@ const typeDefs = gql`
     userInfo: User
     carerInfo: Carer
     patientInfo(userId: ID!): Patient
-    supervisor(accountType: String!): User
+    supervisor: User
     carerDashboard: carerDashboard
     patientDashboard: patientDashboard
     availablePatientsByCarerGenderAndDay(
       userId: ID!
       selectedDate: String!
     ): [AvailablePerson]
-    findPatientsByCarerGender: [Patient]
+    findPatientsByCarerGender(userId: ID!): [Patient]
     allNotifications: [Notification]
   }
   type Mutation {

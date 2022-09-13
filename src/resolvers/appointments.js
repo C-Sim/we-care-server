@@ -1,42 +1,94 @@
 const { ApolloError } = require("apollo-server");
 const { Appointment, Supervisor, Carer, Patient } = require("../models");
 const sendNotification = require("./sendNotification");
+const { addDays } = require("date-fns");
 
-const appointmentById = async (_, { appointmentId }, { user }) => {
-  const appointment = await Appointment.findById(appointmentId)
+const appointmentsById = async (_, { userId }) => {
+  const appointment = await Appointment.find({ userId })
     .populate({
       path: "patientId",
-      populate: { path: "patientProfileId", model: "Patient" },
+      populate: [
+        { path: "patientProfileId", model: "Patient" },
+        { path: "address" },
+      ],
     })
     .populate("carerId");
   return appointment;
 };
 
 //the carer will pass the userId and get the notes for that patient
-const appointmentsByCarer = async (_, __, { user }) => {
+const appointmentNotesByUserId = async (_, { userId }) => {
+  const appointments = await Appointment.find({
+    patientId: userId,
+  })
+    .populate({
+      path: "patientId",
+      populate: { path: "patientProfileId", model: "Patient" },
+    })
+    .populate("carerId");
+  return appointments;
+};
+
+//all the appointments are retrieved for the logged in user
+const appointmentsByUserId = async (_, __, { user }) => {
   const appointments = await Appointment.find({
     $or: [{ carerId: user.id }, { patientId: user.id }],
   })
     .populate({
       path: "patientId",
-      populate: { path: "patientProfileId", model: "Patient" },
+      populate: [
+        { path: "patientProfileId", model: "Patient" },
+        { path: "address" },
+      ],
     })
     .populate("carerId");
   return appointments;
 };
 
-const appointmentsByUserId = async (_, { userId }) => {
-  const appointments = await Appointment.find({
-    $or: [{ carerId: userId }, { patientId: userId }],
+//the appointments for the next working day for the logged in carer
+const appointmentsForNextWorkingDay = async (_, __, { user }) => {
+  const allAppointments = await Appointment.find({
+    carerId: userId,
   })
+    .sort("start")
     .populate({
       path: "patientId",
-      populate: { path: "patientProfileId", model: "Patient" },
+      populate: [
+        { path: "patientProfileId", model: "Patient" },
+        { path: "address" },
+      ],
     })
     .populate("carerId");
+
+  //check from today which date has appointments and stop of the first one that returns appointments
+
+  //set variables starting on today's date
+  let date = new Date();
+  let limitDate = addDays(date, 7);
+  const appointments = [];
+  //filter appointments on that date
+  while (appointments.length === 0 && date !== limitDate) {
+    const dayStart = new Date(date.setUTCHours(1, 0, 0));
+    const dayEnd = new Date(date.setUTCHours(23, 0, 0));
+
+    const appointmentsThisDay = allAppointments.filter(
+      (i) =>
+        new Date(i.start) > new Date(dayStart) &&
+        new Date(i.end) < new Date(dayEnd)
+    );
+    if (appointmentsThisDay.length !== 0) {
+      appointments.push(...appointmentsThisDay);
+    } else {
+      date = addDays(dayStart, 1);
+    }
+  }
+  //if array returned is empty, then filter on next day
+  //stop on limit date or when array contains appointments
+
   return appointments;
 };
 
+//the appointments for a specific date are retrieved for the logged in user
 const appointmentsByDateAndUserId = async (_, { dateInput }, { user }) => {
   const appointments = await Appointment.find({
     $and: [
@@ -59,6 +111,7 @@ const appointmentsByDateAndUserId = async (_, { dateInput }, { user }) => {
   return appointments;
 };
 
+//not needed??
 const createAppointment = async (_, { appointmentInput }) => {
   try {
     const createdAppointment = await Appointment.create(appointmentInput);
@@ -95,6 +148,7 @@ const createAppointment = async (_, { appointmentInput }) => {
   }
 };
 
+//for supervisor assign page
 const createAppointments = async (_, { appointments }) => {
   //function to run every time
   const createOneAppointment = async (appointmentInput) => {
@@ -141,6 +195,7 @@ const createAppointments = async (_, { appointments }) => {
   return { success: true };
 };
 
+//not needed??
 const deleteAppointment = async (_, { appointmentId }) => {
   try {
     const appointment = await Appointment.findById(appointmentId);
@@ -186,6 +241,7 @@ const deleteAppointment = async (_, { appointmentId }) => {
   }
 };
 
+//used by carer and patient to update certain fields of the targeted appointment
 const updateAppointment = async (
   _,
   { appointmentId, trigger, appointmentUpdateInput }
@@ -383,6 +439,7 @@ const updateAppointment = async (
   }
 };
 
+//used by patients to leave a review on one of their appointments
 const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
   try {
     //find the appointment data
@@ -406,9 +463,11 @@ const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
 };
 
 module.exports = {
-  appointmentById,
+  appointmentsById,
   appointmentsByUserId,
+  appointmentNotesByUserId,
   appointmentsByDateAndUserId,
+  appointmentsForNextWorkingDay,
   createAppointment,
   createAppointments,
   deleteAppointment,
