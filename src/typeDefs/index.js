@@ -45,12 +45,12 @@ const typeDefs = gql`
   type Notification {
     id: ID!
     notificationDate: String!
-    senderId: String
+    senderId: User
     receiverId: String
     notificationType: String
     notificationText: String
     isRead: Boolean
-    appointmentId: String
+    appointmentId: Appointment
   }
 
   type User {
