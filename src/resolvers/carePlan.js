@@ -9,7 +9,7 @@ const createCarePlan = async (_, { carePlanInput }, { user }) => {
     const updatedPatient = await patient.save();
     return {
       success: true,
-      id: userId,
+      id: user.id,
     };
   } catch (error) {
     console.log(`[ERROR]: Failed to Create Care Plan | ${error.message}`);
