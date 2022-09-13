@@ -7,11 +7,7 @@ const allNotifications = async () => {
 const notificationsByUserId = async (_, __, { user }) => {
   return await Notification.find({ receiverId: user.id })
     .sort({ start: -1 })
-    .populate("senderId")
-    .populate({
-      path: "appointmentId",
-      populate: { path: "patientId", model: "Patient" },
-    });
+    .populate("senderId");
 };
 
 const updateIsReadStatus = async (_, { notificationId }, { user }) => {
