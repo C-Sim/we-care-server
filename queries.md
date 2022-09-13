@@ -239,72 +239,25 @@ variables:
 #### 1.3.1-Query received notifications by userId
 
 ```graphql
-query ReceivedNotificationsByUserId($userId: ID!, $mailType: String!) {
-  notificationsByUserId(userId: $userId, mailType: $mailType) {
+query ReceivedNotificationsByUserId {
+  notificationsByUserId {
     id
     notificationDate
-    senderId
-    receiverId
+    notificationType
     notificationText
-    isRead
-  }
-}
-```
-
-variables:
-
-```json
-{
-  "userId": "{{patientId}}",
-  "mailType": "received"
-}
-```
-
-#### 1.3.2-Query sent notifications by userId
-
-```graphql
-query SentNotificationsByUserId($userId: ID!, $mailType: String!) {
-  notificationsByUserId(userId: $userId, mailType: $mailType) {
-    id
-    notificationDate
-    senderId
+    senderId {
+      id
+      firstName
+      lastName
+      accountType
+      email
+    }
     receiverId
-    notificationText
     isRead
+    appointmentId
+    appointmentDate
+    patientUsername
   }
-}
-```
-
-variables:
-
-```json
-{
-  "userId": "{{carerId}}",
-  "mailType": "sent"
-}
-```
-
-#### 1.3.3-Query all notifications by userId
-
-```graphql
-query AllNotificationsByUserId($userId: ID!, $mailType: String!) {
-  notificationsByUserId(userId: $userId, mailType: $mailType) {
-    id
-    notificationDate
-    senderId
-    receiverId
-    notificationText
-    isRead
-  }
-}
-```
-
-variables:
-
-```json
-{
-  "userId": "{{carerId}}",
-  "mailType": "all"
 }
 ```
 
