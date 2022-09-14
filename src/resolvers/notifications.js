@@ -13,8 +13,6 @@ const notificationsByUserId = async (_, __, { user }) => {
 
 const updateIsReadStatus = async (_, { notificationId }, { user }) => {
   try {
-    const notification = await Notification.findById(notificationId);
-
     const updatedNotification = await Notification.findOneAndUpdate(
       { _id: notificationId },
       { $set: { isRead: true } },
@@ -25,7 +23,7 @@ const updateIsReadStatus = async (_, { notificationId }, { user }) => {
 
     const updatedReceivedNotifications = await Notification.find({
       receiverId: user.id,
-    });
+    }).populate("senderId");
 
     return updatedReceivedNotifications;
   } catch (error) {
@@ -42,9 +40,25 @@ const processNotification = async (
 ) => {
   try {
     if (user) {
-      if (processNotificationInput.notificationType === "New patient review") {
-        console.log("YO YO");
-        return [];
+      if (processNotificationInput.notificationType === "Update") {
+        if (processNotificationInput.action === "APPROVE") {
+          await Notification.findOneAndUpdate(
+            { _id: processNotificationInput.notificationId },
+            { $set: { isProcessed: true } },
+            {
+              new: true,
+            }
+          );
+        }
+
+        const updatedReceivedNotifications = await Notification.find({
+          receiverId: user.id,
+          // isProcessed: false,
+        })
+          .sort({ start: -1 })
+          .populate("senderId");
+
+        return updatedReceivedNotifications;
       }
     } else {
       return new AuthenticationError(

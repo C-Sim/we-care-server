@@ -53,6 +53,7 @@ const typeDefs = gql`
     appointmentId: String
     appointmentDate: String
     patientUsername: String
+    isProcessed: Boolean
   }
 
   type User {
