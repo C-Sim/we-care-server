@@ -75,6 +75,21 @@ const sendNotification = async ({
         success: true,
       };
     }
+
+    if (receiverType === "supervisor") {
+      //add notification into the supervisor's notifications array
+      const notificationArrayUpdate = await Supervisor.findOneAndUpdate(
+        { userId: receiverId },
+        {
+          $push: {
+            notifications: notificationId,
+          },
+        }
+      );
+      return {
+        success: true,
+      };
+    }
   } catch (error) {
     console.log(`[ERROR]: Failed to send notification | ${error.message}`);
 

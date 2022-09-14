@@ -470,12 +470,39 @@ const updateAppointmentReview = async (_, { reviewInput, appointmentId }) => {
   }
 };
 
+//used by patients to leave a review on one of their appointments
+const askForReallocation = async (_, { appointmentId }, { user }) => {
+  try {
+    //find the appointment data
+    const appointment = await Appointment.findById(appointmentId);
+
+    const supervisor = await User.findOne({ accountType: "supervisor" });
+    //create notification
+    const supervisorNotified = await sendNotification({
+      senderId: user.id,
+      receiverType: "supervisor",
+      receiverId: supervisor.id,
+      notificationType: "Schedule change",
+      notificationText:
+        "A carer has asked for one of their appointment to be rescheduled.",
+      appointmentId,
+    });
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.log(`[ERROR]: Failed to create Notification | ${error.message}`);
+  }
+};
+
 module.exports = {
   appointmentsById,
   appointmentsByUserId,
   appointmentNotesByUserId,
   appointmentsByDateAndUserId,
   appointmentsForNextWorkingDay,
+  askForReallocation,
   createAppointment,
   createAppointments,
   deleteAppointment,

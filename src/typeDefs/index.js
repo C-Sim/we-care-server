@@ -278,6 +278,7 @@ const typeDefs = gql`
     createAppointment(appointmentInput: AppointmentInput!): CreateSuccess
     createAppointments(appointments: [AppointmentInput]!): CreateSuccess
     deleteAppointment(appointmentId: ID!): DeleteSuccess
+    askForReallocation(appointmentId: ID!): CreateSuccess
     updateAppointment(
       appointmentId: ID!
       trigger: String!
