@@ -14,7 +14,7 @@ const notificationSchema = {
     enum: [
       "Schedule change",
       "Carer change",
-      "New patient review",
+      "New patient",
       "New care requirement",
       "Update",
       "New review",

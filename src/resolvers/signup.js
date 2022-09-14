@@ -76,6 +76,7 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
       "New patient signup - Your action: review and approve profile",
     apppointmentId: "null",
     apppointmentDate: "null",
+    notificationType: "New patient",
   };
 
   const newNotification = await Notification.create(notificationData);

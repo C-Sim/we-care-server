@@ -6,7 +6,7 @@ const allNotifications = async () => {
 };
 
 const notificationsByUserId = async (_, __, { user }) => {
-  return await Notification.find({ receiverId: user.id })
+  return await Notification.find({ receiverId: user.id, isProcessed: false })
     .sort({ start: -1 })
     .populate("senderId");
 };
@@ -40,8 +40,20 @@ const processNotification = async (
 ) => {
   try {
     if (user) {
-      if (processNotificationInput.notificationType === "Update") {
-        if (processNotificationInput.action === "APPROVE") {
+      // // if notificationType === "Carer change"
+      // const trigger = "carerChange";
+
+      // try {
+      //   await updateAppointment({
+      //     variables: {
+      //       appointmentId,
+      //       trigger,
+      //       //   appointmentUpdateInput: { carerId, start, end },
+      //     },
+      //   });
+
+      if (processNotificationInput.action === "APPROVE") {
+        if (processNotificationInput.notificationType === "New patient") {
           await Notification.findOneAndUpdate(
             { _id: processNotificationInput.notificationId },
             { $set: { isProcessed: true } },
@@ -53,7 +65,7 @@ const processNotification = async (
 
         const updatedReceivedNotifications = await Notification.find({
           receiverId: user.id,
-          // isProcessed: false,
+          isProcessed: false,
         })
           .sort({ start: -1 })
           .populate("senderId");
