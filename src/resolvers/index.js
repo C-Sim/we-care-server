@@ -38,6 +38,7 @@ const {
 const { patientSignup, carerSignup } = require("./signup");
 const login = require("./login");
 const { createCarePlan } = require("./carePlan");
+const { processNotification } = require("./notifications");
 
 const resolvers = {
   Query: {
@@ -78,6 +79,7 @@ const resolvers = {
     updateAppointmentReview,
     updateIsReadStatus,
     createCarePlan,
+    processNotification,
   },
 };
 
