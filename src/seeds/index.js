@@ -41,6 +41,8 @@ const init = async () => {
   } catch (error) {
     console.log(`[ERROR]: Failed to seed DB | ${error.message}`);
   }
+
+  process.exit(0);
 };
 
 init();
