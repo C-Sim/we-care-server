@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "seed": "node src/seeds/index.js",
+    "seed:remote": "node src/seeds/remote-seed.js",
     "start": "node src/index.js"
   },
   "repository": {
