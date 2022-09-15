@@ -254,6 +254,7 @@ const addNewPatients = async () => {
       appointmentId: "null",
       appointmentDate: "null",
       patientUsername: newPatient.username,
+      notificationType: "New patient review",
       notificationText:
         "New patient signup - Please review their profile and approve or decline the request.",
     };
