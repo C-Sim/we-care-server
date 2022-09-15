@@ -241,12 +241,6 @@ const typeDefs = gql`
     dayEnd: String
   }
 
-  input ProcessNotificationInput {
-    notificationId: ID!
-    notificationType: String!
-    action: String!
-  }
-
   type Query {
     addressLookup(postcode: String!): AddressLookup
     carers: [Carer]
@@ -295,9 +289,6 @@ const typeDefs = gql`
       appointmentId: ID!
     ): UpdateSuccess
     updateIsReadStatus(notificationId: ID!): [Notification]
-    processNotification(
-      processNotificationInput: ProcessNotificationInput!
-    ): [Notification]
     patientSignup(
       signupInput: SignupInput!
       patientInput: PatientInput!

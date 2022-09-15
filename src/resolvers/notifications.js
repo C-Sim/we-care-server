@@ -61,5 +61,4 @@ module.exports = {
   notificationsByUserId,
   updateIsReadStatus,
   allNotifications,
-  processNotification,
 };
