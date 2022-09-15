@@ -5,6 +5,7 @@ const {
   Supervisor,
   Address,
   AddressLookup,
+  Notification,
 } = require("../models");
 const { faker } = require("@faker-js/faker");
 
@@ -177,6 +178,99 @@ const createSecondProfile = async () => {
   }
 };
 
+const addNewPatients = async () => {
+  const addressesFromDB = await AddressLookup.findOne({
+    postcode: "B12 9LP",
+  });
+  const users = [];
+  const postcode = "B12 9LP";
+  const address = addressesFromDB.addresses[0];
+  //create a large number of patients
+  for (let i = 0; i < 5; i += 1) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.exampleEmail();
+    const imageUrl = faker.image.people(640, 480, true);
+    const password = "password123";
+    const accountType = "patient";
+    const phoneNumber = "07777778887";
+    const approvedStatus = false;
+
+    const user = {
+      firstName,
+      lastName,
+      email,
+      imageUrl,
+      phoneNumber,
+      accountType,
+      password,
+      approvedStatus,
+      postcode,
+      address,
+    };
+    users.push(user);
+  }
+
+  const supervisor = await User.findOne({ accountType: "supervisor" });
+  const supervisorId = supervisor.id;
+
+  for (let i = 0; i < users.length; i += 1) {
+    const userData = users[i];
+    const user = await User.create(userData);
+
+    const days = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ];
+    const newPatientData = {
+      userId: user.id,
+      username: `${user.firstName} ${user.lastName}`,
+      days,
+      gender: "male",
+      genderPreference: "none",
+      appointments: [],
+      notifications: [],
+    };
+    const newPatient = await Patient.create(newPatientData);
+    const patientProfileId = newPatient._id;
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      { $set: { patientProfileId } },
+      { new: true }
+    );
+
+    //create notification to supervisor
+    const notification = {
+      notificationDate: new Date(),
+      isRead: false,
+      isProcessed: false,
+      senderId: user.id,
+      receiverId: supervisorId,
+      appointmentId: "null",
+      appointmentDate: "null",
+      patientUsername: newPatient.username,
+      notificationText:
+        "New patient signup - Please review their profile and approve or decline the request.",
+    };
+    const newNotification = await Notification.create(notification);
+    const notificationId = newNotification._id;
+
+    const supervisorToUpdate = await Supervisor.findOneAndUpdate(
+      { userId: supervisorId },
+      {
+        $push: {
+          notifications: notificationId,
+        },
+      }
+    );
+  }
+};
+
 const seedUsers = async () => {
   const users = await prepareUsersData();
   const promises = users.map((user) => User.create(user));
@@ -184,6 +278,8 @@ const seedUsers = async () => {
   await Promise.all(promises);
 
   const profiles = await createSecondProfile();
+
+  const newPatients = await addNewPatients();
 
   console.log("[INFO]: Successfully seeded users");
 };

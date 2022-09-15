@@ -26,6 +26,11 @@ const notificationSchema = {
     required: true,
     default: false,
   },
+  isProcessed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   senderId: {
     type: Schema.Types.ObjectId,
     ref: "User",

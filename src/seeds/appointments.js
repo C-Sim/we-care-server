@@ -91,6 +91,7 @@ const prepareFemaleAppointmentsData = async () => {
         const notification = {
           notificationDate: subMinutes(start, 30),
           isRead: true,
+          isProcessed: true,
           senderId: carerId,
           receiverId: patientId,
           appointmentId: _id,
@@ -211,6 +212,7 @@ const prepareMaleAppointmentsData = async () => {
         const notification = {
           notificationDate: subMinutes(start, 30),
           isRead: true,
+          isProcessed: true,
           senderId: carerId,
           receiverId: patientId,
           appointmentId: _id,

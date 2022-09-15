@@ -35,6 +35,30 @@ const updateIsReadStatus = async (_, { notificationId }, { user }) => {
   }
 };
 
+const updateIsProcessedStatus = async (_, { notificationId }, { user }) => {
+  try {
+    const notification = await Notification.findById(notificationId);
+
+    const updatedNotification = await Notification.findOneAndUpdate(
+      { _id: notificationId },
+      { $set: { isProcessed: true } },
+      {
+        new: true,
+      }
+    );
+
+    const updatedReceivedNotifications = await Notification.find({
+      receiverId: user.id,
+    });
+
+    return updatedReceivedNotifications;
+  } catch (error) {
+    console.log(
+      `[ERROR]: Failed to update notification processed status | ${error.message}`
+    );
+  }
+};
+
 const processNotification = async (
   _,
   { processNotificationInput },
@@ -60,5 +84,6 @@ const processNotification = async (
 module.exports = {
   notificationsByUserId,
   updateIsReadStatus,
+  updateIsProcessedStatus,
   allNotifications,
 };
