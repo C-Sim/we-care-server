@@ -72,8 +72,9 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
   const notificationData = {
     receiverId: supervisorId,
     senderId: patient.userId,
+    notificationType: "New patient review",
     notificationText:
-      "New patient signup - Your action: review and approve profile",
+      "New patient signup - Please review their profile and approve or decline the request.",
     apppointmentId: "null",
     apppointmentDate: "null",
   };

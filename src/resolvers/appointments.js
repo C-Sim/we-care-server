@@ -86,6 +86,42 @@ const appointmentsForNextWorkingDay = async (_, __, { user }) => {
   return appointments;
 };
 
+//the appointments for the next week for the logged in patient
+const appointmentsForNextWeek = async (_, __, { user }) => {
+  const allAppointments = await Appointment.find({
+    patientId: user.id,
+  })
+    .sort("start")
+    .populate({
+      path: "carerId",
+      populate: [
+        { path: "carerProfileId", model: "Carer" },
+        { path: "address" },
+      ],
+    })
+    .populate("patientId");
+
+  //check from today which date has appointments and stop of the first one that returns appointments
+
+  //set variables starting on today's date
+  const date = new Date();
+  const weekStart = new Date(date.setUTCHours(1, 0, 0));
+  const weekEnd = new Date(addDays(date, 7).setUTCHours(23, 0, 0));
+  const appointments = [];
+  //filter appointments for that period
+
+  const appointmentsThisWeek = allAppointments.filter(
+    (i) =>
+      new Date(i.start) > new Date(weekStart) &&
+      new Date(i.end) < new Date(weekEnd)
+  );
+  if (appointmentsThisWeek.length !== 0) {
+    appointments.push(...appointmentsThisWeek);
+  }
+
+  return appointments;
+};
+
 //the appointments for a specific date are retrieved for the logged in user
 const appointmentsByDateAndUserId = async (_, { dateInput }, { user }) => {
   const appointments = await Appointment.find({
@@ -497,6 +533,7 @@ module.exports = {
   appointmentNotesByUserId,
   appointmentsByDateAndUserId,
   appointmentsForNextWorkingDay,
+  appointmentsForNextWeek,
   askForReallocation,
   createAppointment,
   createAppointments,

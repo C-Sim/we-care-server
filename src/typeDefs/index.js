@@ -250,6 +250,7 @@ const typeDefs = gql`
     appointmentsByUserId: [Appointment]
     appointmentNotesByUserId(userId: ID!): [Appointment]
     appointmentsForNextWorkingDay: [Appointment]
+    appointmentsForNextWeek: [Appointment]
     appointmentsByDateAndUserId(
       userId: ID!
       dateInput: DateInput
