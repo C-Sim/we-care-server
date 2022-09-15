@@ -484,7 +484,7 @@ const askForReallocation = async (_, { appointmentId }, { user }) => {
       receiverId: supervisor.id,
       notificationType: "Schedule change",
       notificationText:
-        "A carer has asked for one of their appointment to be rescheduled.",
+        "A carer has asked for one of their appointments to be rescheduled. Please review and reassign, or contact the carer to explain if not possible.",
       appointmentId,
     });
 

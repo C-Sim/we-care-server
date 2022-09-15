@@ -40,18 +40,6 @@ const processNotification = async (
 ) => {
   try {
     if (user) {
-      // // if notificationType === "Carer change"
-      // const trigger = "carerChange";
-
-      // try {
-      //   await updateAppointment({
-      //     variables: {
-      //       appointmentId,
-      //       trigger,
-      //       //   appointmentUpdateInput: { carerId, start, end },
-      //     },
-      //   });
-
       if (processNotificationInput.action === "APPROVE") {
         if (processNotificationInput.notificationType === "New patient") {
           await Notification.findOneAndUpdate(
