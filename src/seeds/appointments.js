@@ -48,7 +48,7 @@ const prepareFemaleAppointmentsData = async () => {
 
     //create a number of appointments
     for (let ii = 1; ii < 11; ii += 1) {
-      const d = new Date("2022-09-04T07:00:00.000+00:00");
+      const d = new Date("2022-09-11T07:00:00.000+00:00");
 
       const dayStart = d.setDate(d.getDate() + ii);
 
@@ -168,7 +168,7 @@ const prepareMaleAppointmentsData = async () => {
 
     //create a number of appointments
     for (let ii = 1; ii < 11; ii += 1) {
-      const d = new Date("2022-09-04T07:00:00.000+00:00");
+      const d = new Date("2022-09-11T07:00:00.000+00:00");
 
       const dayStart = d.setDate(d.getDate() + ii);
 

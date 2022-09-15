@@ -20,12 +20,7 @@ const appointmentsById = async (_, { userId }) => {
 const appointmentNotesByUserId = async (_, { userId }) => {
   const appointments = await Appointment.find({
     patientId: userId,
-  })
-    .populate({
-      path: "patientId",
-      populate: { path: "patientProfileId", model: "Patient" },
-    })
-    .populate("carerId");
+  }).sort({ start: -1 });
   return appointments;
 };
 

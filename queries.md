@@ -219,7 +219,7 @@ Uses the same appointmentsByUserId query but targets different fields for the re
 
 ```graphql
 query AppointmentNotesByUserId($userId: ID!) {
-  appointmentsByUserId(userId: $userId) {
+  appointmentNotesByUserId(userId: $userId) {
     start
     notes
   }
