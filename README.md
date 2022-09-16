@@ -1,5 +1,7 @@
 # WeCare - Backend server
 
+![WeCare](./wecare.png)
+
 Back end for app allowing efficient collaboration between carers and care users.
 
 ![MIT](https://img.shields.io/badge/License-MIT-blue)
