@@ -17,8 +17,8 @@ These variables are recalled by using the {{}} notation. For these variables to 
 #### 1.1.1-Query users by ID
 
 ```graphql
-query UserInfo($userId: ID!) {
-  userInfo(userId: $userId) {
+query UserInfo {
+  userInfo {
     id
     firstName
     lastName
@@ -33,19 +33,14 @@ query UserInfo($userId: ID!) {
 }
 ```
 
-variables
-
-```json
-{
-  "userId": "{{patientId}}"
-}
-```
+no variables
+user id from context
 
 #### 1.1.2-Query Carer info by userId
 
 ```graphql
-query CarerInfo($userId: ID!) {
-  carerInfo(userId: $userId) {
+query CarerInfo {
+  carerInfo {
     userId {
       id
       firstName
@@ -62,13 +57,8 @@ query CarerInfo($userId: ID!) {
 }
 ```
 
-variables:
-
-```
-{
-    "userId": "{{carerId}}"
-}
-```
+no variables
+user id from context
 
 #### 1.1.3-Query Patient info by userId
 
@@ -101,13 +91,13 @@ variables:
 
 ### 1.2-Query appointments
 
-#### 1.2.1-Query appointments by appointmentId
+#### 1.2.1-Query appointments by userId (their own appointment)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
 
 ```graphql
-query AppointmentById($appointmentId: ID!) {
-  appointmentsByUserId(appointmentId: $appointmentId) {
+query AppointmentsByUserId {
+  appointmentsByUserId {
     id
     appointmentDate
     patientId {
@@ -131,21 +121,16 @@ query AppointmentById($appointmentId: ID!) {
 }
 ```
 
-variables:
-
-```json
-{
-  "userId": "{{patientId}}"
-}
-```
+no variables
+user id from context
 
 #### 1.2.1-Query appointments by userId (carer or patient)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
 
 ```graphql
-query AppointmentsByUserId($userId: ID!) {
-  appointmentsByUserId(userId: $userId) {
+query AppointmentsByGivenUserId($userId: ID!) {
+  appointmentsById(userId: $userId) {
     id
     appointmentDate
     patientId {
@@ -166,28 +151,29 @@ query AppointmentsByUserId($userId: ID!) {
 }
 ```
 
-variables:
-
-```json
-{
-  "userId": "{{patientId}}"
-}
-```
-
-#### 1.2.2-Query appointments by date and userId (for timeline and reallocating)
+#### 1.2.2-Query appointments by date range (for carer to build timeline and carer functions)
 
 Returns the appointment data including the patient's details (user details and patient details as needed) including their address/postcode for map pins
 
 ```graphql
-query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
-  appointmentsByDateAndUserId(userId: $userId, dateInput: $dateInput) {
+query AppointmentsForNextWorkingDay {
+  appointmentsForNextWorkingDay {
     id
     appointmentDate
     patientId {
       id
       firstName
       lastName
+      email
       postcode
+      phoneNumber
+      address {
+        fullAddress
+      }
+      patientProfileId {
+        gender
+        genderPreference
+      }
     }
     carerId {
       id
@@ -201,21 +187,41 @@ query AppointmentsByDateAndUserId($userId: ID!, $dateInput: DateInput) {
 }
 ```
 
-variables:
+#### 1.2.3-Query appointments by date range (for patient to build timeline and note function)
 
-```json
-{
-  "userId": "{{patientId}}",
-  "dateInput": {
-    "dayStart": "2022-09-02T00:00:00",
-    "dayEnd": "2022-09-03T00:00:00"
+Returns the appointment data including the carer's details (user details and carer details as needed)
+
+```graphql
+query AppointmentsForNextWeek {
+  appointmentsForNextWeek {
+    id
+    appointmentDate
+    carerId {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+      carerProfileId {
+        gender
+        genderPreference
+      }
+    }
+    patientId {
+      id
+      firstName
+      lastName
+    }
+    start
+    end
+    status
   }
 }
 ```
 
-#### 1.2.3-Query all past notes from appointments by patientId
+#### 1.2.4-Query all past notes from appointments by patientId
 
-Uses the same appointmentsByUserId query but targets different fields for the response
+Uses an appointment query but targets different fields for the response
 
 ```graphql
 query AppointmentNotesByUserId($userId: ID!) {
@@ -363,8 +369,8 @@ variables
 #### 1.5.1-Query for carer dashboard
 
 ```graphql
-query CarerDashboard($userId: ID!) {
-  carerDashboard(userId: $userId) {
+query CarerDashboard {
+  carerDashboard {
     carer {
       userId {
         id
@@ -403,19 +409,11 @@ query CarerDashboard($userId: ID!) {
 }
 ```
 
-variables
-
-```json
-{
-  "userId": "{{carerId}}"
-}
-```
-
 #### 1.5.2-Query for patient dashboard
 
 ```graphql
-query PatientDashboard($userId: ID!) {
-  patientDashboard(userId: $userId) {
+query PatientDashboard {
+  patientDashboard {
     patient {
       userId {
         id
@@ -451,14 +449,6 @@ query PatientDashboard($userId: ID!) {
       notificationText
     }
   }
-}
-```
-
-variables
-
-```json
-{
-  "userId": "{{patientId}}"
 }
 ```
 
@@ -557,8 +547,8 @@ variables:
 #### 2.3.1-Mutation for updating carer profile info
 
 ```graphql
-mutation UpdateCarerInfo($userId: ID!, $updateCarerInput: CarerInfoInput) {
-  updateCarerInfo(userId: $userId, updateCarerInput: $updateCarerInput) {
+mutation UpdateCarerInfo($updateCarerInput: CarerInfoInput) {
+  updateCarerInfo(updateCarerInput: $updateCarerInput) {
     success
     userId
   }
@@ -569,7 +559,6 @@ variables (example):
 
 ```json
 {
-  "userId": "{{carerId}}",
   "updateCarerInput": {
     "gender": "female"
   }
@@ -579,11 +568,8 @@ variables (example):
 #### 2.3.2-Mutation for updating patient profile info
 
 ```graphql
-mutation UpdatePatientInfo(
-  $userId: ID!
-  $updatePatientInput: PatientInfoInput
-) {
-  updatePatientInfo(userId: $userId, updatePatientInput: $updatePatientInput) {
+mutation UpdatePatientInfo($updatePatientInput: PatientInfoInput) {
+  updatePatientInfo(updatePatientInput: $updatePatientInput) {
     success
     userId
   }
@@ -594,7 +580,6 @@ variables (example):
 
 ```json
 {
-  "userId": "{{patientId}}",
   "updatePatientInput": {
     "genderPreference": "female"
   }
@@ -604,8 +589,8 @@ variables (example):
 #### 2.3.3-Mutation for updating user info (firstName/lastName/email/address/postcode/phone number)
 
 ```graphql
-mutation UpdateUserInfo($userId: ID!, $updateInput: UserInfoInput) {
-  updateUserInfo(userId: $userId, updateInput: $updateInput) {
+mutation UpdateUserInfo($updateInput: UserInfoInput) {
+  updateUserInfo(updateInput: $updateInput) {
     success
     userId
   }
@@ -616,7 +601,6 @@ variables:
 
 ```json
 {
-  "userId": "{{userId}}",
   "updateInput": {
     "phoneNumber": "07945863547"
   }
@@ -628,8 +612,8 @@ variables:
 Create/update the Care Plan when the Patient submits the Care Plan form
 
 ```graphql
-mutation CreateCarePlan($userId: ID!, $carePlanInput: CarePlanInput!) {
-  createCarePlan(userId: $userId, carePlanInput: $carePlanInput) {
+mutation CreateCarePlan($carePlanInput: CarePlanInput!) {
+  createCarePlan(carePlanInput: $carePlanInput) {
     success
     id
   }
@@ -640,7 +624,6 @@ variables:
 
 ```json
 {
-  "userId": "6310bb9a290a5d43c53e1797",
   "carePlanInput": {
     "disabilities": "random",
     "mobility": "test"
@@ -800,19 +783,6 @@ mutation UpdateAppointmentCheckin(
     appointmentUpdateInput: $appointmentUpdateInput
   ) {
     success
-    appointment {
-      id
-      appointmentDate
-      patientId {
-        id
-        firstName
-        lastName
-      }
-      start
-      end
-      actualStart
-      status
-    }
   }
 }
 ```
@@ -842,20 +812,6 @@ mutation UpdateAppointmentCheckout(
     appointmentUpdateInput: $appointmentUpdateInput
   ) {
     success
-    appointment {
-      id
-      appointmentDate
-      patientId {
-        id
-        firstName
-        lastName
-      }
-      start
-      end
-      actualStart
-      actualEnd
-      status
-    }
   }
 }
 ```
@@ -885,10 +841,6 @@ mutation UpdateAppointmentPatientNote(
     appointmentUpdateInput: $appointmentUpdateInput
   ) {
     success
-    appointment {
-      id
-      patientNotes
-    }
   }
 }
 ```
@@ -921,10 +873,6 @@ mutation UpdateAppointmentCarerNote(
     appointmentUpdateInput: $appointmentUpdateInput
   ) {
     success
-    appointment {
-      id
-      carerNotes
-    }
   }
 }
 ```
@@ -973,8 +921,8 @@ variables
 ### 2.7-Mutation for adding carer review
 
 ```graphql
-mutation UpdateCarerReviews($userId: ID!, $reviewInput: ReviewInput) {
-  updateCarerReviews(userId: $userId, reviewInput: $reviewInput) {
+mutation UpdateCarerReviews($reviewInput: ReviewInput) {
+  updateCarerReviews(reviewInput: $reviewInput) {
     success
     userId
   }
@@ -985,7 +933,6 @@ variables:
 
 ```json
 {
-  "userId": "{{carerId}}",
   "reviewInput": {
     "comment": "nice carer with good manners!",
     "score": 4
@@ -1018,8 +965,8 @@ Notifications are triggered by calling the `sendNotification` function in the fo
 Updates the `isRead` status when the receiver opens the notification
 
 ```graphql
-mutation UpdateIsReadStatus($notificationId: ID!, $userId: ID) {
-  updateIsReadStatus(notificationId: $notificationId, userId: $userId) {
+mutation UpdateIsReadStatus($notificationId: ID!) {
+  updateIsReadStatus(notificationId: $notificationId) {
     id
     notificationDate
     senderId
@@ -1034,7 +981,6 @@ variables:
 
 ```json
 {
-  "userId": "6311f2d9c3dd8bb84a9377aa",
   "notificationId": "6311f2dcc3dd8bb84a937b55"
 }
 ```

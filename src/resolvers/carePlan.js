@@ -1,6 +1,7 @@
 const { ApolloError } = require("apollo-server");
 const { Patient } = require("../models");
 
+//used by patients to add care requirements
 const createCarePlan = async (_, { carePlanInput }, { user }) => {
   try {
     // const carePlanId = Patient.userId;

@@ -1,4 +1,4 @@
-const { ApolloError } = require("apollo-server");
+const { AuthenticationError, ApolloError } = require("apollo-server");
 const {
   User,
   Patient,
@@ -96,67 +96,75 @@ const patientSignup = async (_, { signupInput, patientInput }) => {
   return { success: true };
 };
 
-const carerSignup = async (_, { signupInput, carerInput }) => {
+const carerSignup = async (_, { signupInput, carerInput }, { user }) => {
   try {
-    //add account type to signup input
-    signupInput.accountType = "carer";
+    if (user.accountType === "supervisor") {
+      //add account type to signup input
+      signupInput.accountType = "carer";
 
-    // **START** - Part of signup as per PET_BNB_SERVER
-    //check if user exists
-    const userExists = await User.findOne({ email: signupInput.email });
+      // **START** - Part of signup as per PET_BNB_SERVER
+      //check if user exists
+      const userExists = await User.findOne({ email: signupInput.email });
 
-    if (userExists) {
-      console.log(
-        `[ERROR]: Failed to signup | ${signupInput.email} already exists`
+      if (userExists) {
+        console.log(
+          `[ERROR]: Failed to signup | ${signupInput.email} already exists`
+        );
+
+        throw new ApolloError("Failed to signup");
+      }
+
+      const address = await AddressLookup.findOne({
+        addresses: {
+          $elemMatch: {
+            _id: signupInput.address,
+          },
+        },
+      });
+
+      const yourAddress = address
+        .get("addresses")
+        .find(
+          (address) => address.get("_id").toString() === signupInput.address
+        );
+
+      //create user
+      const user = await User.create({
+        ...signupInput,
+        address: yourAddress,
+      });
+
+      // **END** - Part of signup as per PET_BNB_SERVER
+
+      //retrieve relevant info and add to carerInput
+      carerInput.userId = user._id;
+      carerInput.username = `${user.firstName} ${user.lastName}`;
+
+      //create new patient
+      const carer = await Carer.create(carerInput);
+
+      //assign carer profile id to user field
+      const carerProfileId = carer.id;
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        {
+          $set: { carerProfileId },
+        },
+        {
+          new: true,
+        }
       );
 
-      throw new ApolloError("Failed to signup");
+      return {
+        success: true,
+        carer: carer,
+        userId: carer.userId,
+      };
+    } else {
+      return new AuthenticationError(
+        "You are not authorized to perform this operation"
+      );
     }
-
-    const address = await AddressLookup.findOne({
-      addresses: {
-        $elemMatch: {
-          _id: signupInput.address,
-        },
-      },
-    });
-
-    const yourAddress = address
-      .get("addresses")
-      .find((address) => address.get("_id").toString() === signupInput.address);
-
-    //create user
-    const user = await User.create({
-      ...signupInput,
-      address: yourAddress,
-    });
-
-    // **END** - Part of signup as per PET_BNB_SERVER
-
-    //retrieve relevant info and add to carerInput
-    carerInput.userId = user._id;
-    carerInput.username = `${user.firstName} ${user.lastName}`;
-
-    //create new patient
-    const carer = await Carer.create(carerInput);
-
-    //assign carer profile id to user field
-    const carerProfileId = carer.id;
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: user._id },
-      {
-        $set: { carerProfileId },
-      },
-      {
-        new: true,
-      }
-    );
-
-    return {
-      success: true,
-      carer: carer,
-      userId: carer.userId,
-    };
   } catch (error) {
     console.log(`[ERROR]: Failed to create carer | ${error.message}`);
 

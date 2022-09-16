@@ -1,4 +1,4 @@
-const { ApolloError } = require("apollo-server");
+const { AuthenticationError, ApolloError } = require("apollo-server");
 const {
   Patient,
   Carer,
@@ -7,6 +7,7 @@ const {
   Appointment,
 } = require("../models");
 
+//function to process the creation of a notification and allocation of notification id to the correct parties
 const sendNotification = async ({
   senderId,
   receiverType,
