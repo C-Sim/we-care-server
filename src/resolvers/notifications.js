@@ -96,28 +96,6 @@ const updateIsProcessedStatus = async (_, { notificationId }, { user }) => {
   }
 };
 
-const processNotification = async (
-  _,
-  { processNotificationInput },
-  { user }
-) => {
-  try {
-    if (user) {
-      if (processNotificationInput.notificationType === "New patient review") {
-        console.log("YO YO");
-        return [];
-      }
-    } else {
-      return new AuthenticationError(
-        "You are not authorized to perform this operation"
-      );
-    }
-  } catch (error) {
-    console.log(`[ERROR]: Failed to process notification | ${error.message}`);
-    return new ApolloError("Failed to process notification");
-  }
-};
-
 module.exports = {
   notificationsByUserId,
   updateIsReadStatus,
