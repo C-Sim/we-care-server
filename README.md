@@ -11,7 +11,7 @@ Back end for app allowing efficient collaboration between carers and care users.
 This project is about building the backend of a care management platform.
 
 Github repo: [Go to Repo](https://github.com/C-Sim/we-care-server)
-Deployed heroku link: [Go to Heroku](https://floating-river-62141.herokuapp.com/)
+Deployed heroku link: [Go to Heroku](https://fathomless-bayou-99698.herokuapp.com/)
 
 ## Table of Contents
 
