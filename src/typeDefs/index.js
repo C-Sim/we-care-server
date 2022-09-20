@@ -62,6 +62,7 @@ const typeDefs = gql`
     imageUrl: String
     email: String!
     accountType: String!
+    approvedStatus: Boolean
     phoneNumber: String
     carerProfileId: Carer
     patientProfileId: Patient
