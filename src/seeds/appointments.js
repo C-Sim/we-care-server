@@ -51,7 +51,9 @@ const prepareAppointmentsData = async () => {
     );
   }
 
+  //set a midpoint for seeding - today's date (included in completed period)
   const midpoint = new Date(new Date().setUTCHours(7, 0, 0));
+
   //create a number of completed appointments
   for (let ii = 1; ii < 11; ii += 1) {
     const d = subDays(midpoint, 10);
@@ -142,7 +144,6 @@ const prepareAppointmentsData = async () => {
       const patientId = chosenPatients[iii].userId;
       const patientUsername = chosenPatients[iii].username;
       const title = `Visit to ${patientUsername} by ${carerUsername}`;
-      const carerNotes = [];
 
       const appointment = {
         appointmentDate,
