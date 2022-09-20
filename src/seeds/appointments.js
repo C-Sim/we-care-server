@@ -4,6 +4,7 @@ const {
   Patient,
   Appointment,
   Notification,
+  Supervisor,
 } = require("../models");
 const { faker } = require("@faker-js/faker");
 const { addHours, subMinutes, addDays, subDays } = require("date-fns");
@@ -176,6 +177,37 @@ const prepareAppointmentsData = async () => {
       );
     }
   }
+
+  //ask for reallocation for the last appointment created
+  const appointments = await Appointment.find({});
+  const supervisor = User.findOne({ accountType: "supervisor" });
+  const supervisorId = (await supervisor).id;
+  const appointmentToReallocate = appointments[appointments.length - 1];
+
+  const { _id } = appointmentToReallocate;
+  const notification = {
+    notificationDate: new Date(),
+    isRead: false,
+    isProcessed: false,
+    senderId: appointmentToReallocate.carerId,
+    receiverId: supervisorId,
+    appointmentId: _id,
+    appointmentDate: appointmentToReallocate.appointmentDate,
+    patientUsername: appointmentToReallocate.patientUsername,
+    notificationText:
+      "The carer has asked for this appointment to be rescheduled. Please review and approve or deny the request.",
+  };
+  const newNotification = await Notification.create(notification);
+  const notificationId = newNotification._id;
+
+  const supervisorToUpdate = await Supervisor.findOneAndUpdate(
+    { userId: supervisorId },
+    {
+      $push: {
+        notifications: notificationId,
+      },
+    }
+  );
 };
 
 const seedAppointments = async () => {
