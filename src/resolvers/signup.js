@@ -7,10 +7,14 @@ const {
   Notification,
   AddressLookup,
 } = require("../models");
+const { faker } = require("@faker-js/faker");
 
 const patientSignup = async (_, { signupInput, patientInput }) => {
   //add account type to signup input
   signupInput.accountType = "patient";
+  if (!signupInput.imageUrl) {
+    signupInput.imageUrl = faker.image.people(640, 480, true);
+  }
 
   // **START** - Part of signup as per PET_BNB_SERVER
   const email = signupInput.email;

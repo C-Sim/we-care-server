@@ -216,6 +216,7 @@ const typeDefs = gql`
     accountType: String
     address: ID
     postcode: String!
+    imageUrl: String
   }
 
   input PatientInput {
