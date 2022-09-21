@@ -56,20 +56,20 @@ const prepareAppointmentsData = async () => {
   const midpoint = new Date(new Date().setUTCHours(7, 0, 0));
 
   //create a number of completed appointments
-  for (let ii = 1; ii < 11; ii += 1) {
+  for (let jj = 1; jj < 11; jj += 1) {
     const d = subDays(midpoint, 10);
 
-    const dayStart = d.setDate(d.getDate() + ii);
+    const dayStart = d.setDate(d.getDate() + jj);
 
-    for (let iii = 0; iii < chosenPatients.length; iii += 1) {
-      const start = addHours(dayStart, iii * 2);
+    for (let jjj = 0; jjj < chosenPatients.length; jjj += 1) {
+      const start = addHours(dayStart, jjj * 2);
       const end = addHours(start, 1);
       const appointmentDate = start;
       const status = "completed";
       const actualStart = start;
       const actualEnd = end;
-      const patientId = chosenPatients[iii].userId;
-      const patientUsername = chosenPatients[iii].username;
+      const patientId = chosenPatients[jjj].userId;
+      const patientUsername = chosenPatients[jjj].username;
       const title = `Visit to ${patientUsername} by ${carerUsername}`;
       const carerNotes = [];
       const firstNote = faker.lorem.sentences(3);
@@ -133,9 +133,7 @@ const prepareAppointmentsData = async () => {
 
   //create a number of upcoming appointments
   for (let ii = 1; ii < 11; ii += 1) {
-    const d = midpoint;
-
-    const dayStart = d.setDate(d.getDate() + ii);
+    const dayStart = addDays(midpoint, ii);
 
     for (let iii = 0; iii < chosenPatients.length; iii += 1) {
       const start = addHours(dayStart, iii * 2);
