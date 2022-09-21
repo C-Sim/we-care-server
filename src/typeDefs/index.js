@@ -111,6 +111,9 @@ const typeDefs = gql`
     notifications: [Notification]
   }
 
+  type UnreadCount {
+    unreadCount: Float!
+  }
   type patientDashboard {
     patient: Patient
     appointments: [Appointment]
@@ -255,6 +258,7 @@ const typeDefs = gql`
     appointmentsForNextWeek: [Appointment]
     appointmentsByDateAndUserId(dateInput: DateInput): [Appointment]
     notificationsByUserId: [Notification]
+    unreadNotificationsByUserId: UnreadCount
     userInfo: User
     carerInfo: Carer
     patientInfo(userId: ID!): Patient
