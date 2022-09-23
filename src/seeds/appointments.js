@@ -20,6 +20,14 @@ const reviews = [
 
 const prepareAppointmentsData = async () => {
   const carers = await Carer.find({});
+  //improved seeding for better patient timeline
+  //get week carer
+  //get weekend carer
+  //get patients (done)
+  //when assigning, check which day of the week it is
+  //depending on which day, assign the right carer
+
+  //current seeding - 1 carer everyday for the given period - irrespective of their working days
   const carer = carers[0];
   const carerGender = carer.gender;
 
