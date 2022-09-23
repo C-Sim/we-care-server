@@ -6,7 +6,7 @@ const {
   Notification,
   Supervisor,
 } = require("../models");
-const { getDay, parseISO } = require("date-fns");
+const { getDay } = require("date-fns");
 const { faker } = require("@faker-js/faker");
 const { addHours, subMinutes, addDays, subDays } = require("date-fns");
 
@@ -146,7 +146,7 @@ const prepareAppointmentsData = async () => {
       const newNotification = await Notification.create(notification);
       const notificationId = newNotification._id;
 
-      const carerToUpdate = await Carer.findOneAndUpdate(
+      await Carer.findOneAndUpdate(
         { userId: carerId },
         {
           $push: {
@@ -154,7 +154,8 @@ const prepareAppointmentsData = async () => {
           },
         }
       );
-      const patientToUpdate = await Patient.findOneAndUpdate(
+
+      await Patient.findOneAndUpdate(
         { userId: patientId },
         {
           $push: {
@@ -205,7 +206,7 @@ const prepareAppointmentsData = async () => {
       const createdAppointment = await Appointment.create(appointment);
       const { _id } = createdAppointment;
 
-      const carerToUpdate = await Carer.findOneAndUpdate(
+      await Carer.findOneAndUpdate(
         { userId: carerId },
         {
           $push: {
@@ -213,7 +214,8 @@ const prepareAppointmentsData = async () => {
           },
         }
       );
-      const patientToUpdate = await Patient.findOneAndUpdate(
+
+      await Patient.findOneAndUpdate(
         { userId: patientId },
         {
           $push: {
