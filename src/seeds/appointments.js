@@ -6,6 +6,7 @@ const {
   Notification,
   Supervisor,
 } = require("../models");
+const { getDay, parseISO } = require("date-fns");
 const { faker } = require("@faker-js/faker");
 const { addHours, subMinutes, addDays, subDays } = require("date-fns");
 
@@ -19,42 +20,54 @@ const reviews = [
 ];
 
 const prepareAppointmentsData = async () => {
-  const carers = await Carer.find({});
-  //improved seeding for better patient timeline
   //get week carer
+  const weekCarers = await Carer.find({ days: "monday" });
+  const weekCarer = weekCarers[0];
+
   //get weekend carer
-  //get patients (done)
-  //when assigning, check which day of the week it is
-  //depending on which day, assign the right carer
+  const weekendCarers = await Carer.find({ days: "sunday" });
+  const weekendCarer = weekendCarers[0];
 
-  //current seeding - 1 carer everyday for the given period - irrespective of their working days
-  const carer = carers[0];
-  const carerGender = carer.gender;
-
-  const patients = await Patient.find({
-    genderPreference: { $in: [carerGender, "none"] },
-  });
-
+  //get patients
+  const patients = await Patient.find({});
   //selecting 5 patients
   const chosenPatients = patients.slice(0, 5);
 
-  const carerId = carer.userId;
-  const carerUsername = carer.username;
-
+  //each patient gives each carer a review
   for (let j = 0; j < chosenPatients.length; j += 1) {
     const patientId = chosenPatients[j].userId;
-    const review = {
+    //to weekCarer
+    const weekCarerId = weekCarer.userId;
+    const weekReview = {
       reviewDate: faker.date.recent(),
       score: 5,
       comment: reviews[j],
       patientId: patientId,
-      carerId: carerId,
+      carerId: weekCarerId,
     };
-    const carerToUpdate = await Carer.findOneAndUpdate(
-      { userId: carerId },
+    const weekCarerToUpdate = await Carer.findOneAndUpdate(
+      { userId: weekCarerId },
       {
         $push: {
-          reviews: review,
+          reviews: weekReview,
+        },
+      }
+    );
+
+    //to weekendCarer
+    const weekendCarerId = weekendCarer.userId;
+    const weekendReview = {
+      reviewDate: faker.date.recent(),
+      score: 5,
+      comment: reviews[j],
+      patientId: patientId,
+      carerId: weekendCarerId,
+    };
+    const weekendCarerToUpdate = await Carer.findOneAndUpdate(
+      { userId: weekendCarerId },
+      {
+        $push: {
+          reviews: weekendReview,
         },
       }
     );
@@ -68,6 +81,20 @@ const prepareAppointmentsData = async () => {
     const d = subDays(midpoint, 10);
 
     const dayStart = d.setDate(d.getDate() + jj);
+
+    //set carer info for this date
+    let carerId;
+    let carerUsername;
+    //getting day of the week for the selected date
+    const day = getDay(dayStart);
+
+    if (day > 0 && day < 5) {
+      carerId = weekCarer.id;
+      carerUsername = weekCarer.username;
+    } else {
+      carerId = weekendCarer.id;
+      carerUsername = weekendCarer.username;
+    }
 
     for (let jjj = 0; jjj < chosenPatients.length; jjj += 1) {
       const start = addHours(dayStart, jjj * 2);
@@ -140,8 +167,21 @@ const prepareAppointmentsData = async () => {
   }
 
   //create a number of upcoming appointments
-  for (let ii = 1; ii < 11; ii += 1) {
+  for (let ii = 1; ii < 19; ii += 1) {
     const dayStart = addDays(midpoint, ii);
+
+    //set carer info for this date
+    let carerId;
+    let carerUsername;
+    //getting day of the week for the selected date
+    const day = getDay(dayStart);
+    if (day > 0 && day < 5) {
+      carerId = weekCarer.id;
+      carerUsername = weekCarer.username;
+    } else {
+      carerId = weekendCarer.id;
+      carerUsername = weekendCarer.username;
+    }
 
     for (let iii = 0; iii < chosenPatients.length; iii += 1) {
       const start = addHours(dayStart, iii * 2);
