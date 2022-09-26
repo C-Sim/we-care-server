@@ -267,6 +267,16 @@ query ReceivedNotificationsByUserId {
 }
 ```
 
+#### 1.3.2-Query unread notifications by userId (for navbar badge)
+
+```graphql
+query UnreadNotificationsByUserId {
+  unreadNotificationsByUserId {
+    unreadCount
+  }
+}
+```
+
 ### 1.4-Queries for supervisor account
 
 #### 1.4.1-Query all carers
@@ -312,7 +322,7 @@ query Patients {
 }
 ```
 
-#### 1.4.3-Query available carers by date (if has assigned appointments)
+#### 1.4.3-Query available carers by date (if has no appointments assigned on that date already)
 
 ```graphql
 query AvailableCarers($selectedDate: String!) {

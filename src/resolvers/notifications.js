@@ -34,6 +34,25 @@ const notificationsByUserId = async (_, __, { user }) => {
   }
 };
 
+const unreadNotificationsByUserId = async (_, __, { user }) => {
+  try {
+    if (user) {
+      const unreadNotifications = await Notification.find({
+        $and: [{ receiverId: user.id }, { isRead: false }],
+      });
+      const notifCount = unreadNotifications.length;
+      return { unreadCount: notifCount };
+    } else {
+      return new AuthenticationError(
+        "You are not authorized to perform this operation"
+      );
+    }
+  } catch (error) {
+    console.log(`[ERROR]: Failed to proceed | ${error.message}`);
+    return new ApolloError("Failed to proceed");
+  }
+};
+
 const updateIsReadStatus = async (_, { notificationId }, { user }) => {
   try {
     if (user) {
@@ -101,4 +120,5 @@ module.exports = {
   updateIsReadStatus,
   updateIsProcessedStatus,
   allNotifications,
+  unreadNotificationsByUserId,
 };

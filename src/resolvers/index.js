@@ -18,6 +18,7 @@ const {
   notificationsByUserId,
   updateIsReadStatus,
   allNotifications,
+  unreadNotificationsByUserId,
 } = require("./notifications");
 const {
   userInfo,
@@ -55,6 +56,7 @@ const resolvers = {
     appointmentsForNextWeek,
     notificationsByUserId,
     allNotifications,
+    unreadNotificationsByUserId,
     carerInfo,
     patientInfo,
     supervisor,
