@@ -89,10 +89,10 @@ const prepareAppointmentsData = async () => {
     const day = getDay(dayStart);
 
     if (day > 0 && day < 5) {
-      carerId = weekCarer.id;
+      carerId = weekCarer.userId;
       carerUsername = weekCarer.username;
     } else {
-      carerId = weekendCarer.id;
+      carerId = weekendCarer.userId;
       carerUsername = weekendCarer.username;
     }
 
