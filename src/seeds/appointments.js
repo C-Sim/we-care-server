@@ -177,10 +177,10 @@ const prepareAppointmentsData = async () => {
     //getting day of the week for the selected date
     const day = getDay(dayStart);
     if (day > 0 && day < 5) {
-      carerId = weekCarer.id;
+      carerId = weekCarer.userId;
       carerUsername = weekCarer.username;
     } else {
-      carerId = weekendCarer.id;
+      carerId = weekendCarer.userId;
       carerUsername = weekendCarer.username;
     }
 
@@ -228,16 +228,19 @@ const prepareAppointmentsData = async () => {
 
   //ask for reallocation for the last appointment created
   const appointments = await Appointment.find({});
-  const supervisor = User.findOne({ accountType: "supervisor" });
-  const supervisorId = (await supervisor).id;
-  const appointmentToReallocate = appointments[appointments.length - 1];
+  const supervisor = await User.findOne({ accountType: "supervisor" });
+
+  const supervisorId = supervisor.id;
+
+  const appointmentToReallocate = appointments.pop();
+  const senderId = appointmentToReallocate.carerId;
 
   const { _id } = appointmentToReallocate;
   const notification = {
     notificationDate: new Date(),
     isRead: false,
     isProcessed: false,
-    senderId: appointmentToReallocate.carerId,
+    senderId: senderId,
     receiverId: supervisorId,
     appointmentId: _id,
     appointmentDate: appointmentToReallocate.appointmentDate,
