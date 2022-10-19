@@ -238,6 +238,7 @@ const prepareAppointmentsData = async () => {
   const { _id } = appointmentToReallocate;
   const notification = {
     notificationDate: new Date(),
+    notificationType: "Schedule change",
     isRead: false,
     isProcessed: false,
     senderId: senderId,
